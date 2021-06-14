@@ -1,6 +1,6 @@
 const express = require("express");
 const renter = express.Router();
-const { register } = require("../utils");
+const { register, login } = require("../utils");
 const models = require("../models");
 
 renter.use(express.json());
@@ -23,6 +23,16 @@ renter.post("/create", (req, res) => {
       phone_number,
     }).then(() => res.status(201).send(email + " registered"));
   });
+});
+
+renter.post("/login", (req, res) => {
+  login(req, res, models.Renters)
+    .then(() => {
+      console.log("success!");
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
 });
 
 module.exports = renter;
