@@ -1,72 +1,72 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Assets', {
+    await queryInterface.createTable("Assets", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       owner_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       city: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       number_of_peoples: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       number_of_rooms: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       kosher: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       shabat: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       parking: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       animals: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
-      AC: {
-        type: Sequelize.BOOLEAN
+      ac: {
+        type: Sequelize.BOOLEAN,
       },
       accessibility: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       babies: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       picture: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       started_at: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       ended_at: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Assets');
-  }
+    await queryInterface.dropTable("Assets");
+  },
 };

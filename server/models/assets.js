@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       shabat: DataTypes.BOOLEAN,
       parking: DataTypes.BOOLEAN,
       animals: DataTypes.BOOLEAN,
-      AC: DataTypes.BOOLEAN,
+      ac: DataTypes.BOOLEAN,
       accessibility: DataTypes.BOOLEAN,
       babies: DataTypes.BOOLEAN,
       picture: DataTypes.STRING,

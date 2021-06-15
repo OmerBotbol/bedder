@@ -77,7 +77,28 @@ renter.put("/update:id", (req, res) => {
     }
   )
     .then(() => res.send("updated successfully"))
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
+});
+
+renter.get("/:id", (req, res) => {
+  let id = req.params.id;
+  models.Renters.findOne({
+    where: { id },
+    raw: true,
+  })
+    .then((data) => {
+      const dataToSend = {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        purpose: data.purpose,
+        picture: data.picture,
+        phone_number: data.phone_number,
+      };
+      console.log(data);
+      res.send(dataToSend);
+    })
+    .catch((err) => res.status(500).send(err));
 });
 
 module.exports = renter;

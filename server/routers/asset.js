@@ -23,6 +23,33 @@ asset.post("/create", cookieParser(), (req, res) => {
   });
 });
 
+asset.get("/", (req, res) => {
+  const searchBy = req.query.searchBy;
+  const value = req.query.value;
+  const searchQuery = {};
+  searchQuery[searchBy] = value;
+  console.log(searchQuery);
+  models.Assets.findAll({
+    where: searchBy && value ? searchQuery : "",
+    raw: true,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+asset.get("/myAssets:owner_id", (req, res) => {
+  const owner_id = req.params.owner_id;
+  models.Assets.findAll({
+    where: { owner_id },
+  })
+    .then((data) => res.send(data))
+    .catch((err) => res.status(500).send(err));
+});
+
 asset.put("/update:id", (req, res) => {
   const id = req.params.id;
   console.log(id);
@@ -36,7 +63,7 @@ asset.put("/update:id", (req, res) => {
     shabat,
     parking,
     animals,
-    AC,
+    ac,
     accessibility,
     babies,
     picture,
@@ -55,7 +82,7 @@ asset.put("/update:id", (req, res) => {
       shabat,
       parking,
       animals,
-      AC,
+      ac,
       accessibility,
       babies,
       picture,
@@ -69,7 +96,7 @@ asset.put("/update:id", (req, res) => {
     }
   )
     .then(() => res.send("updated successfully"))
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 });
 
 module.exports = asset;

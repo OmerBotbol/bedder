@@ -43,6 +43,7 @@ owner.post("/logout", (req, res) => {
 
 owner.post("/refreshToken", cookieParser(), (req, res) => {
   const refreshToken = req.cookies["refreshToken"];
+  console.log(refreshToken);
   if (!refreshToken) {
     return res.status(403).send("refresh token is required");
   }
@@ -76,7 +77,7 @@ owner.put("/update:id", (req, res) => {
     }
   )
     .then(() => res.send("updated successfully"))
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 });
 
 module.exports = owner;
