@@ -63,7 +63,7 @@ owner.post("/refreshToken", cookieParser(), (req, res) => {
   });
 });
 
-owner.put("/update:id", (req, res) => {
+owner.put("/update/:id", (req, res) => {
   const id = req.params.id;
   console.log(id);
   const { first_name, last_name, email, picture, phone_number } = req.body;
@@ -77,6 +77,25 @@ owner.put("/update:id", (req, res) => {
     }
   )
     .then(() => res.send("updated successfully"))
+    .catch((err) => res.status(500).send(err));
+});
+
+owner.get("/:id", (req, res) => {
+  let id = req.params.id;
+  models.Owners.findOne({
+    where: { id },
+    raw: true,
+  })
+    .then((data) => {
+      const dataToSend = {
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        picture: data.picture,
+        phone_number: data.phone_number,
+      };
+      res.send(dataToSend);
+    })
     .catch((err) => res.status(500).send(err));
 });
 

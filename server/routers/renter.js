@@ -64,7 +64,7 @@ renter.post("/refreshToken", cookieParser(), (req, res) => {
   });
 });
 
-renter.put("/update:id", (req, res) => {
+renter.put("/update/:id", (req, res) => {
   const id = req.params.id;
   const { first_name, last_name, email, purpose, picture, phone_number } =
     req.body;
@@ -95,7 +95,6 @@ renter.get("/:id", (req, res) => {
         picture: data.picture,
         phone_number: data.phone_number,
       };
-      console.log(data);
       res.send(dataToSend);
     })
     .catch((err) => res.status(500).send(err));

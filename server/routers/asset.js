@@ -40,7 +40,7 @@ asset.get("/", (req, res) => {
     });
 });
 
-asset.put("/update:id", (req, res) => {
+asset.put("/update/:id", (req, res) => {
   const id = req.params.id;
   console.log(id);
   const {
