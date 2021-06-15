@@ -2,6 +2,8 @@ const express = require("express");
 const renter = express.Router();
 const { register, login } = require("../utils");
 const models = require("../models");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 renter.use(express.json());
 
