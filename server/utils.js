@@ -30,7 +30,7 @@ const login = async (req, res, modelName) => {
     expiresIn: "7d",
   });
   sendRefreshToken(refreshToken, res);
-  return res.json({ email, accessToken });
+  return res.json({ email, accessToken, refreshToken });
 };
 
 //send the refresh token to cookie
@@ -42,4 +42,4 @@ function sendRefreshToken(refreshToken, response) {
   });
 }
 
-module.exports = { register, login };
+module.exports = { register, login, sendRefreshToken };
