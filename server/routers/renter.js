@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const renter = express.Router();
 const { register, login } = require("../utils");
@@ -28,7 +29,7 @@ renter.post("/create", (req, res) => {
 });
 
 renter.post("/login", (req, res) => {
-  login(req, res, models.Renters)
+  login(req, res, models.Renters, false)
     .then(() => {
       console.log("success!");
     })
@@ -53,7 +54,7 @@ renter.post("/refreshToken", cookieParser(), (req, res) => {
       return res.status(403).json({ message: "Invalid Refresh token" });
     }
     const newAccessToken = jwt.sign(
-      { email: decoded.email },
+      { email: decoded.email, isOwner: false },
       process.env.ACCESS_TOKEN,
       {
         expiresIn: "2m",
@@ -61,6 +62,22 @@ renter.post("/refreshToken", cookieParser(), (req, res) => {
     );
     res.json({ accessToken: newAccessToken, email: decoded.email });
   });
+});
+
+renter.put("/update:id", (req, res) => {
+  const id = req.params.id;
+  const { first_name, last_name, email, purpose, picture, phone_number } =
+    req.body;
+  models.Renters.update(
+    { first_name, last_name, email, purpose, picture, phone_number },
+    {
+      where: { id },
+      returning: true,
+      plain: true,
+    }
+  )
+    .then(() => res.send("updated successfully"))
+    .catch((err) => console.log(err));
 });
 
 module.exports = renter;

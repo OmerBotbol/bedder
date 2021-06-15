@@ -16,14 +16,14 @@ const register = async (req, modelName) => {
   return await bcrypt.hash(password, bcrypt.genSaltSync(10));
 };
 
-const login = async (req, res, modelName) => {
+const login = async (req, res, modelName, isOwner) => {
   const { email, password } = req.body;
   const user = await modelName.findOne({ where: { email: email } });
   if (!user) return res.status(404).json({ error: "User doesn't exists" });
   const isPasswordCorrect = bcrypt.compareSync(password, user.password);
   if (!isPasswordCorrect)
     return res.status(403).json({ error: "Incorrect password" });
-  const accessToken = jwt.sign({ email }, process.env.ACCESS_TOKEN, {
+  const accessToken = jwt.sign({ email, isOwner }, process.env.ACCESS_TOKEN, {
     expiresIn: "2m",
   });
   const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN, {

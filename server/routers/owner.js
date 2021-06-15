@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const owner = express.Router();
 const { register, login, sendRefreshToken } = require("../utils");
@@ -26,7 +27,7 @@ owner.post("/create", (req, res) => {
 });
 
 owner.post("/login", (req, res) => {
-  login(req, res, models.Owners)
+  login(req, res, models.Owners, true)
     .then(() => {
       console.log("success!");
     })
@@ -51,7 +52,7 @@ owner.post("/refreshToken", cookieParser(), (req, res) => {
       return res.status(403).json({ message: "Invalid Refresh token" });
     }
     const newAccessToken = jwt.sign(
-      { email: decoded.email },
+      { email: decoded.email, isOwner: true },
       process.env.ACCESS_TOKEN,
       {
         expiresIn: "2m",
@@ -59,6 +60,23 @@ owner.post("/refreshToken", cookieParser(), (req, res) => {
     );
     res.json({ accessToken: newAccessToken, email: decoded.email });
   });
+});
+
+owner.put("/update:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const { first_name, last_name, email, picture, phone_number } = req.body;
+  console.log(first_name);
+  models.Owners.update(
+    { first_name, last_name, email, picture, phone_number },
+    {
+      where: { id },
+      returning: true,
+      plain: true,
+    }
+  )
+    .then(() => res.send("updated successfully"))
+    .catch((err) => console.log(err));
 });
 
 module.exports = owner;
