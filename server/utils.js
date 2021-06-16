@@ -1,10 +1,19 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 const register = async (req, modelName) => {
   const reg = "[a-zA-Z0-9]$";
   const { email, password } = req.body;
+  const isValidEmail = await axios.get(
+    `http://apilayer.net/api/check?access_key=7f5ccfb6d92c49b992ad51d6c10278fb&email=${email}&smtp=1&format=1`
+  );
   if (
+    !(
+      isValidEmail.data.format_valid &&
+      isValidEmail.data.mx_found &&
+      isValidEmail.data.smtp_check
+    ) ||
     email === "" ||
     password === "" ||
     !email.match(reg) ||
@@ -14,6 +23,24 @@ const register = async (req, modelName) => {
   const exists = await modelName.findOne({ where: { email: email } });
   if (exists) return "Email exists";
   return await bcrypt.hash(password, bcrypt.genSaltSync(10));
+};
+
+const validateEmail = (email) => {
+  const unirest = require("unirest");
+  const req = unirest("GET", "https://email-checker.p.rapidapi.com/verify/v1");
+  req.query({
+    email: email,
+  });
+  req.headers({
+    "x-rapidapi-host": "email-checker.p.rapidapi.com",
+    useQueryString: true,
+  });
+
+  req.end(function (res) {
+    if (res.error) return new Error(res.error);
+
+    return res.body;
+  });
 };
 
 const login = async (req, res, modelName, isOwner) => {
@@ -26,7 +53,7 @@ const login = async (req, res, modelName, isOwner) => {
   const accessToken = jwt.sign({ email, isOwner }, process.env.ACCESS_TOKEN, {
     expiresIn: "2m",
   });
-  const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN, {
+  const refreshToken = jwt.sign({ email, isOwner }, process.env.REFRESH_TOKEN, {
     expiresIn: "7d",
   });
   sendRefreshToken(refreshToken, res);
