@@ -26,11 +26,6 @@ renter.post("/create", (req, res) => {
   });
 });
 
-renter.post("/logout", (req, res) => {
-  sendRefreshToken("", res);
-  res.send("user logout");
-});
-
 renter.put("/update/:id", (req, res) => {
   const id = req.params.id;
   const { first_name, last_name, email, purpose, picture, phone_number } =

@@ -24,11 +24,6 @@ owner.post("/create", (req, res) => {
   });
 });
 
-owner.post("/logout", (req, res) => {
-  sendRefreshToken("", res);
-  res.send("user logout");
-});
-
 owner.put("/update/:id", (req, res) => {
   const id = req.params.id;
   console.log(id);

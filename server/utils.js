@@ -25,24 +25,6 @@ const register = async (req, modelName) => {
   return await bcrypt.hash(password, bcrypt.genSaltSync(10));
 };
 
-const validateEmail = (email) => {
-  const unirest = require("unirest");
-  const req = unirest("GET", "https://email-checker.p.rapidapi.com/verify/v1");
-  req.query({
-    email: email,
-  });
-  req.headers({
-    "x-rapidapi-host": "email-checker.p.rapidapi.com",
-    useQueryString: true,
-  });
-
-  req.end(function (res) {
-    if (res.error) return new Error(res.error);
-
-    return res.body;
-  });
-};
-
 const login = async (req, res, modelName, isOwner) => {
   const { email, password } = req.body;
   const user = await modelName.findOne({ where: { email: email } });
@@ -56,8 +38,7 @@ const login = async (req, res, modelName, isOwner) => {
   const refreshToken = jwt.sign({ email, isOwner }, process.env.REFRESH_TOKEN, {
     expiresIn: "7d",
   });
-  sendRefreshToken(refreshToken, res);
-  return res.json({ email, accessToken, refreshToken });
+  return res.json({ email, isOwner, accessToken, refreshToken });
 };
 
 //send the refresh token to cookie

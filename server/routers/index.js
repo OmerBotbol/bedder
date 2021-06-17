@@ -17,8 +17,6 @@ api.use("/transaction", transaction);
 
 api.post("/login", (req, res) => {
   const modelToSend = req.body.isOwner ? models.Owners : models.Renters;
-  console.log(modelToSend);
-  console.log(req.body.isOwner);
   login(req, res, modelToSend, req.body.isOwner)
     .then(() => {
       console.log("success!");
@@ -50,6 +48,16 @@ api.post("/refreshToken", (req, res) => {
       email: decoded.email,
       isOwner: decoded.isOwner,
     });
+  });
+});
+
+api.get("/data", (req, res) => {
+  const accessToken = req.headers["authorization"];
+  jwt.verify(accessToken.slice(7), process.env.ACCESS_TOKEN, (err, decode) => {
+    if (err) {
+      return res.status(403).send(err);
+    }
+    res.send(decode);
   });
 });
 

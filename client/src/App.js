@@ -5,8 +5,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import NotFound from "./components/NotFound";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { eraseCookie, readCookie, createCookie } from "./utils/cookies";
 import { getHttp, intercept } from "./utils/networkWrapper";
 
 function App() {
@@ -14,18 +12,31 @@ function App() {
 
   useEffect(() => {
     intercept();
+    getHttp("/api/data", "accessToken")
+      .then((res) => {
+        const userToSave = {
+          email: res.data.email,
+          isOwner: res.data.isOwner,
+        };
+        setUser(userToSave);
+      })
+      .catch((err) => {
+        if (!err.message.slice(-3) === "403") {
+          console.log(err.message);
+        }
+      });
   }, []);
 
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route
-            exact
-            path="/"
-            children={<HomePage user={user} setUser={setUser} />}
-          />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/">
+            <HomePage user={user} setUser={setUser} />
+          </Route>
+          <Route exact path="/login">
+            <Login user={user} setUser={setUser} />
+          </Route>
           <Route exact path="/register" component={Register} />
           <Route component={NotFound} />
         </Switch>
