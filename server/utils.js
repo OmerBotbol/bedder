@@ -41,13 +41,4 @@ const login = async (req, res, modelName, isOwner) => {
   return res.json({ email, isOwner, accessToken, refreshToken });
 };
 
-//send the refresh token to cookie
-function sendRefreshToken(refreshToken, response) {
-  response.cookie("refreshToken", refreshToken, {
-    expires: new Date(Date.now() * 1000 * 60 * 60 * 24 * 7),
-    httpOnly: true,
-    // secure: true,
-  });
-}
-
-module.exports = { register, login, sendRefreshToken };
+module.exports = { register, login };

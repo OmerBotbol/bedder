@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const owner = express.Router();
-const { register, sendRefreshToken } = require("../utils");
+const { register } = require("../utils");
 const models = require("../models");
 
 owner.use(express.json());
