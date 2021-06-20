@@ -1,22 +1,25 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default function Profile({ user, setUser }) {
   const [userDetails, setUserDetails] = useState({});
-  useEffect(async () => {
-    console.log(user);
-    if (user.isOwner) {
-      const findUser = await axios
-        .get(`/api/owner/${user.id}`)
-        .then((data) => setUserDetails(data.data))
-        .catch((err) => console.log(err));
-    } else {
-      const findUser = await axios
-        .get(`/api/renter/${user.id}`)
-        .then((data) => setUserDetails(data.data))
-        .catch((err) => console.log(err));
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      if (user.isOwner) {
+        const findUser = axios
+          .get(`/api/owner/${user.id}`)
+          .then((data) => setUserDetails(data.data))
+          .catch((err) => console.log(err));
+      } else {
+        const findUser = axios
+          .get(`/api/renter/${user.id}`)
+          .then((data) => setUserDetails(data.data))
+          .catch((err) => console.log(err));
+      }
     }
-  }, []);
+  }, [user]);
   return (
     <div>
       <h1>

@@ -19,7 +19,7 @@ function Login({ user, setUser }) {
     };
     if (chooseCustomerType) {
       try {
-        const findUser = await axios.post('api/login', user);
+        const findUser = await axios.post('/api/login', user);
         createCookie('accessToken', findUser.data.accessToken, 120000);
         createCookie('refreshToken', findUser.data.refreshToken);
         console.log('success logging in');
@@ -28,6 +28,7 @@ function Login({ user, setUser }) {
           isOwner: findUser.data.isOwner,
           id: findUser.data.id,
         };
+        console.log(findUser.data);
         setUser(userToSave);
       } catch (error) {
         console.log('error invalid user');
@@ -40,7 +41,6 @@ function Login({ user, setUser }) {
 
   return (
     <>
-      {console.log(isOwner)}
       {!user ? (
         <div>
           <h1>Bedder</h1>

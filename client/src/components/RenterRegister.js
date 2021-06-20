@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-function RenterRegister({ setUser }) {
+function RenterRegister({ user, setUser }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -57,44 +57,53 @@ function RenterRegister({ setUser }) {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <label>First Name</label>
-      <input type="text" onChange={(e) => setFirstName(e.target.value)} />
-      <label>Last Name</label>
-      <input type="text" onChange={(e) => setLastName(e.target.value)} />
-      <label>Email</label>
-      <input type="email" onChange={(e) => setEmail(e.target.value)} />
-      <label>Password</label>
-      <input type="password" onChange={(e) => setPassword(e.target.value)} />
-      <label>Confirm password</label>
-      <input
-        type="password"
-        onChange={(e) =>
-          password === e.target.value
-            ? setConfirmPassword(true)
-            : setConfirmPassword(false)
-        }
-      />
-      {confirmPassword ? (
-        <i className="fa fa-check-circle-o" aria-hidden="true"></i>
+    <>
+      {!user ? (
+        <div>
+          <h1>Register</h1>
+          <label>First Name</label>
+          <input type="text" onChange={(e) => setFirstName(e.target.value)} />
+          <label>Last Name</label>
+          <input type="text" onChange={(e) => setLastName(e.target.value)} />
+          <label>Email</label>
+          <input type="email" onChange={(e) => setEmail(e.target.value)} />
+          <label>Password</label>
+          <input
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label>Confirm password</label>
+          <input
+            type="password"
+            onChange={(e) =>
+              password === e.target.value
+                ? setConfirmPassword(true)
+                : setConfirmPassword(false)
+            }
+          />
+          {confirmPassword ? (
+            <i className="fa fa-check-circle-o" aria-hidden="true"></i>
+          ) : (
+            <i className="fa fa-times-circle-o" aria-hidden="true"></i>
+          )}
+          <label>Purpose</label>
+          <textarea
+            rows="5"
+            cols="10"
+            onChange={(e) => setPurpose(e.target.value)}
+          />
+          <label>Picture</label>
+          <input type="text" onChange={(e) => setPicture(e.target.value)} />
+          <label>Phone Number</label>
+          <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} />
+          <button onClick={() => handleClick()}>Register</button>
+          {message && <p>{message}</p>}
+          {redirect && <Redirect to="/login" />}
+        </div>
       ) : (
-        <i className="fa fa-times-circle-o" aria-hidden="true"></i>
+        <Redirect to="/" />
       )}
-      <label>Purpose</label>
-      <textarea
-        rows="5"
-        cols="10"
-        onChange={(e) => setPurpose(e.target.value)}
-      />
-      <label>Picture</label>
-      <input type="text" onChange={(e) => setPicture(e.target.value)} />
-      <label>Phone Number</label>
-      <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} />
-      <button onClick={() => handleClick()}>Register</button>
-      {message && <p>{message}</p>}
-      {redirect && <Redirect to="/login" />}
-    </div>
+    </>
   );
 }
 
