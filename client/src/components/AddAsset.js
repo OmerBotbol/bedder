@@ -69,40 +69,55 @@ export default function AddAsset({ user, setUser }) {
       <h1>Add asset</h1>
       <label>City</label>
       <input type="text" onChange={(e) => setCity(e.target.value)} />
+      <br />
       <label>Address</label>
       <input type="text" onChange={(e) => setAddress(e.target.value)} />
+      <br />
       <label>Description</label>
       <input type="email" onChange={(e) => setDescription(e.target.value)} />
+      <br />
       <label>Number of people</label>
       <input
         type="number"
         onChange={(e) => setNumberOfPeople(e.target.value)}
       />
+      <br />
       <label>Number of rooms</label>
       <input type="number" onChange={(e) => setNumberOfRooms(e.target.value)} />
+      <br />
       <label>Kosher</label>
       <input type="checkbox" onChange={(e) => setKosher(!kosher)} />
+      <br />
       <label>Shabbat</label>
       <input type="checkbox" onChange={(e) => setShabbat(!shabbat)} />
+      <br />
       <label>Parking</label>
       <input type="checkbox" onChange={(e) => setParking(!parking)} />
+      <br />
       <label>Animals</label>
       <input type="checkbox" onChange={(e) => setAnimals(!animals)} />
+      <br />
       <label>AC</label>
       <input type="checkbox" onChange={(e) => setAC(!AC)} />
+      <br />
       <label>Accessibility</label>
       <input
         type="checkbox"
         onChange={(e) => setAccessibility(!accessibility)}
       />
+      <br />
       <label>Babies</label>
       <input type="checkbox" onChange={(e) => setBabies(!babies)} />
+      <br />
       <label>Picture</label>
       <input type="email" onChange={(e) => setPicture(e.target.value)} />
+      <br />
       <label>Starts at</label>
       <input type="date" onChange={(e) => setStartedAt(e.target.value)} />
+      <br />
       <label>Ends at</label>
       <input type="date" onChange={(e) => setEndedAt(e.target.value)} />
+      <br />
       <button
         onClick={() => {
           handleClick();
