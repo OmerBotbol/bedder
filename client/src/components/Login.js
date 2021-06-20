@@ -1,13 +1,15 @@
-import React from "react";
-import { useState } from "react";
-import { createCookie } from "../utils/cookies";
-import axios from "axios";
-import { Redirect } from "react-router-dom";
+import React from 'react';
+import { useState } from 'react';
+import { createCookie } from '../utils/cookies';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 function Login({ user, setUser }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isOwner, setIsOwner] = useState(false);
+  const [message, setMessage] = useState('');
+  const [chooseCustomerType, setChooseCustomerType] = useState(false);
 
   const login = async () => {
     const user = {
@@ -15,24 +17,30 @@ function Login({ user, setUser }) {
       password: password,
       isOwner: isOwner,
     };
-    try {
-      const findUser = await axios.post("api/login", user);
-      createCookie("accessToken", findUser.data.accessToken, 120000);
-      createCookie("refreshToken", findUser.data.refreshToken);
-      console.log("success logging in");
-      const userToSave = {
-        email: findUser.data.email,
-        isOwner: findUser.data.isOwner,
-        id: findUser.data.id,
-      };
-      setUser(userToSave);
-    } catch (error) {
-      console.log("error invalid user");
+    if (chooseCustomerType) {
+      try {
+        const findUser = await axios.post('api/login', user);
+        createCookie('accessToken', findUser.data.accessToken, 120000);
+        createCookie('refreshToken', findUser.data.refreshToken);
+        console.log('success logging in');
+        const userToSave = {
+          email: findUser.data.email,
+          isOwner: findUser.data.isOwner,
+          id: findUser.data.id,
+        };
+        setUser(userToSave);
+      } catch (error) {
+        console.log('error invalid user');
+        setMessage('User name, password or customer type are incorrect');
+      }
+    } else {
+      setMessage('Please select customer type');
     }
   };
 
   return (
     <>
+      {console.log(isOwner)}
       {!user ? (
         <div>
           <h1>Bedder</h1>
@@ -40,36 +48,40 @@ function Login({ user, setUser }) {
             type="email"
             placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value)}
-            required
-          ></input>
+            required></input>
           <br />
           <input
             type="password"
             placeholder="Enter password"
             onChange={(e) => setPassword(e.target.value)}
-            required
-          ></input>
+            required></input>
+          <label>Owner</label>
           <input
             type="radio"
             name="customer"
             value={true}
-            onChange={(e) => setIsOwner(e.target.value === "true")}
+            onChange={(e) => {
+              setIsOwner(e.target.value === 'true');
+              setChooseCustomerType(true);
+            }}
           />
-          <label>owner</label>
+          <label>Renter</label>
           <input
             type="radio"
             name="customer"
             value={false}
-            onChange={(e) => setIsOwner(e.target.value === "true")}
+            onChange={(e) => {
+              setIsOwner(e.target.value === 'true');
+              setChooseCustomerType(true);
+            }}
           />
-          <label>renter</label>
           <button
             onClick={() => login()}
             className="start-btn"
-            variant="contained"
-          >
+            variant="contained">
             LOGIN
           </button>
+          <div>{message}</div>
         </div>
       ) : (
         <Redirect to="/" />

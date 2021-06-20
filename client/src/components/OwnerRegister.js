@@ -1,17 +1,16 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { createCookie } from "../utils/cookies";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 function OwnerRegister({ setUser }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [picture, setPicture] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [picture, setPicture] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
 
   const handleClick = () => {
@@ -23,19 +22,32 @@ function OwnerRegister({ setUser }) {
       picture,
       phone_number: phoneNumber,
     };
-    axios
-      .post("/api/owner/create", dataToSend)
-      .then((data) => {
-        const userData = { email: email, isOwner: true, id: data.data.id };
-        setUser(userData);
-        setRedirect(true);
-      })
-      .catch((err) => {
-        if (err.message.slice(-3) === "401")
-          setMessage("Invalid password or email");
-        if (err.message.slice(-3) === "409") setMessage("Email already exists");
-        else setMessage("Problem, please try again later");
-      });
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !picture ||
+      !phoneNumber
+    ) {
+      setMessage('Please fill all the fields');
+    } else if (confirmPassword) {
+      axios
+        .post('/api/owner/create', dataToSend)
+        .then((data) => {
+          const userData = { email: email, isOwner: true, id: data.data.id };
+          setRedirect(true);
+        })
+        .catch((err) => {
+          if (err.message.slice(-3) === '401')
+            setMessage('Invalid password or email');
+          if (err.message.slice(-3) === '409')
+            setMessage('Email already exists');
+          else setMessage('Problem, please try again later');
+        });
+    } else {
+      setMessage("Password doesn't match");
+    }
   };
 
   return (
@@ -70,8 +82,7 @@ function OwnerRegister({ setUser }) {
       <button
         onClick={() => {
           handleClick();
-        }}
-      >
+        }}>
         Register
       </button>
       {message && <p>{message}</p>}
