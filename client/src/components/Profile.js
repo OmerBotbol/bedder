@@ -27,6 +27,7 @@ export default function Profile({ user, setUser }) {
       </h1>
       <p>{userDetails.email}</p>
       <p>{userDetails.phone_number}</p>
+      {userDetails.isOwner ? <p>Owner</p> : <p>Renter</p>}
     </div>
   );
 }

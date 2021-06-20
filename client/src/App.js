@@ -1,5 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
+
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -12,6 +14,7 @@ import { getHttp, intercept } from './utils/networkWrapper';
 
 function App() {
   const [user, setUser] = useState();
+  const [userDetails, setUserDetails] = useState({});
 
   useEffect(() => {
     intercept();
@@ -30,9 +33,48 @@ function App() {
         }
       });
   }, []);
-
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      if (user.isOwner) {
+        const findUser = axios
+          .get(`/api/owner/${user.id}`)
+          .then((data) => setUserDetails(data.data))
+          .catch((err) => console.log(err));
+      } else {
+        const findUser = axios
+          .get(`/api/renter/${user.id}`)
+          .then((data) => setUserDetails(data.data))
+          .catch((err) => console.log(err));
+      }
+    }
+  }, [user]);
   return (
     <div className="App">
+      {user ? (
+        user.isOwner ? (
+          <div>
+            <i className="fa fa-user-circle-o" aria-hidden="true"></i>
+            <span> </span>
+
+            <span>
+              {userDetails.first_name} {userDetails.last_name}
+            </span>
+            {console.log(userDetails)}
+          </div>
+        ) : (
+          <div>
+            <i className="fa fa-user-circle" aria-hidden="true"></i>
+            <span> </span>
+            <span>
+              {userDetails.first_name} {userDetails.last_name}
+            </span>
+          </div>
+        )
+      ) : (
+        ''
+      )}
+
       {console.log(user)}
       <Router>
         <Switch>
