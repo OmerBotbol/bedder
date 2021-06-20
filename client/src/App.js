@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-
+import AddAsset from './components/AddAsset';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -35,7 +35,6 @@ function App() {
   }, []);
   useEffect(() => {
     if (user) {
-      console.log(user);
       if (user.isOwner) {
         const findUser = axios
           .get(`/api/owner/${user.id}`)
@@ -56,7 +55,6 @@ function App() {
           <div>
             <i className="fa fa-user-circle-o" aria-hidden="true"></i>
             <span> </span>
-
             <span>
               {userDetails.first_name} {userDetails.last_name}
             </span>
@@ -96,6 +94,9 @@ function App() {
           </Route>
           <Route exact path="/profile">
             <Profile user={user} setUser={setUser} />
+          </Route>
+          <Route exact path="/addAsset">
+            <AddAsset user={user} setUser={setUser} />
           </Route>
           <Route component={NotFound} />
         </Switch>

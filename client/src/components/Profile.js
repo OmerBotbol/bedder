@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 export default function Profile({ user, setUser }) {
   const [userDetails, setUserDetails] = useState({});
+  const [addAsset, setAddAsset] = useState(false);
   useEffect(() => {
     if (user) {
       console.log(user);
@@ -27,7 +28,19 @@ export default function Profile({ user, setUser }) {
       </h1>
       <p>{userDetails.email}</p>
       <p>{userDetails.phone_number}</p>
-      {userDetails.isOwner ? <p>Owner</p> : <p>Renter</p>}
+      {user ? (
+        user.isOwner ? (
+          <div>
+            <p>Owner</p>
+            <button onClick={() => setAddAsset(true)}>Add asset</button>
+            {addAsset && <Redirect to="/addAsset" />}
+          </div>
+        ) : (
+          <p>Renter</p>
+        )
+      ) : (
+        ''
+      )}
     </div>
   );
 }
