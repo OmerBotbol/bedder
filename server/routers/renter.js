@@ -11,9 +11,9 @@ renter.post("/create", (req, res) => {
     req.body;
   register(req, models.Renters).then((newPassword) => {
     if (newPassword === "Invalid email or password")
-      return res.status(400).send("Invalid email or password");
+      return res.status(401).send("Invalid email or password");
     if (newPassword === "Email exists")
-      return res.status(400).send("Email exists");
+      return res.status(409).send("Email exists");
     models.Renters.create({
       first_name,
       last_name,

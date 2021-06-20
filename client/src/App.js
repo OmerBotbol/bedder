@@ -4,6 +4,9 @@ import HomePage from "./components/HomePage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import NotFound from "./components/NotFound";
+import RenterRegister from "./components/RenterRegister";
+import OwnerRegister from "./components/OwnerRegister";
+import Profile from "./components/Profile";
 import { useEffect, useState } from "react";
 import { getHttp, intercept } from "./utils/networkWrapper";
 
@@ -25,7 +28,7 @@ function App() {
           console.log(err.message);
         }
       });
-  }, []);
+  }, [user]);
 
   return (
     <div className="App">
@@ -38,6 +41,15 @@ function App() {
             <Login user={user} setUser={setUser} />
           </Route>
           <Route exact path="/register" component={Register} />
+          <Route exact path="/renterRegister">
+            <RenterRegister setUser={setUser} />
+          </Route>
+          <Route exact path="/ownerRegister">
+            <OwnerRegister setUser={setUser} />
+          </Route>
+          <Route exact path="/profile">
+            <Profile user={user} setUser={setUser} />
+          </Route>
           <Route component={NotFound} />
         </Switch>
       </Router>

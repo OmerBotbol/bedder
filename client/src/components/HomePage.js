@@ -15,7 +15,7 @@ function HomePage({ user, setUser }) {
       {user ? (
         <>
           <div>{user.email}</div>
-          <div>{user.isOwner ? "Owner" : "renter"}</div>
+          <div>{user.isOwner ? "Owner" : "Renter"}</div>
           <button
             onClick={() => {
               logout();
@@ -28,6 +28,8 @@ function HomePage({ user, setUser }) {
         <>
           <div>welcome to bedder</div>
           <Link to="/login">login</Link>
+          <br />
+          <Link to="/register">Register</Link>
         </>
       )}
     </>
