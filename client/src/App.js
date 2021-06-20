@@ -20,6 +20,7 @@ function App() {
         const userToSave = {
           email: res.data.email,
           isOwner: res.data.isOwner,
+          id: res.data.id,
         };
         setUser(userToSave);
       })
@@ -28,10 +29,11 @@ function App() {
           console.log(err.message);
         }
       });
-  }, [user]);
+  }, []);
 
   return (
     <div className="App">
+      {console.log(user)}
       <Router>
         <Switch>
           <Route exact path="/">

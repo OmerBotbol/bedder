@@ -37,7 +37,7 @@ api.post("/refreshToken", (req, res) => {
       return res.status(403).json({ message: "Invalid Refresh token" });
     }
     const newAccessToken = jwt.sign(
-      { email: decoded.email, isOwner: decoded.isOwner },
+      { email: decoded.email, isOwner: decoded.isOwner, id: decoded.id },
       process.env.ACCESS_TOKEN,
       {
         expiresIn: "2m",

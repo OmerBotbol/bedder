@@ -38,7 +38,7 @@ const login = async (req, res, modelName, isOwner) => {
   const refreshToken = jwt.sign({ email, isOwner }, process.env.REFRESH_TOKEN, {
     expiresIn: "7d",
   });
-  return res.json({ email, isOwner, accessToken, refreshToken });
+  return res.json({ id: user.id, email, isOwner, accessToken, refreshToken });
 };
 
 module.exports = { register, login };

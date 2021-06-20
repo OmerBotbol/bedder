@@ -1,7 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { createCookie } from "../utils/cookies";
 
-function OwnerRegister({ user, setUser }) {
+function OwnerRegister({ setUser }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,6 +12,7 @@ function OwnerRegister({ user, setUser }) {
   const [picture, setPicture] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleClick = () => {
     const dataToSend = {
@@ -22,8 +25,10 @@ function OwnerRegister({ user, setUser }) {
     };
     axios
       .post("/api/owner/create", dataToSend)
-      .then(() => {
-        setUser({ email: email, isOwner: true });
+      .then((data) => {
+        const userData = { email: email, isOwner: true, id: data.data.id };
+        setUser(userData);
+        setRedirect(true);
       })
       .catch((err) => {
         if (err.message.slice(-3) === "401")
@@ -37,17 +42,13 @@ function OwnerRegister({ user, setUser }) {
     <div>
       <h1>Register</h1>
       <label>First name</label>
-      <input onChange={(e) => setFirstName(e.target.value)} require />
+      <input onChange={(e) => setFirstName(e.target.value)} />
       <label>Last name</label>
-      <input onChange={(e) => setLastName(e.target.value)} require />
+      <input onChange={(e) => setLastName(e.target.value)} />
       <label>Email</label>
-      <input type="email" onChange={(e) => setEmail(e.target.value)} require />
+      <input type="email" onChange={(e) => setEmail(e.target.value)} />
       <label>Password</label>
-      <input
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        require
-      />
+      <input type="password" onChange={(e) => setPassword(e.target.value)} />
       <label>Confirm password</label>
       <input
         type="password"
@@ -56,7 +57,6 @@ function OwnerRegister({ user, setUser }) {
             ? setConfirmPassword(true)
             : setConfirmPassword(false)
         }
-        require
       />
       {confirmPassword ? (
         <i className="fa fa-check-circle-o" aria-hidden="true"></i>
@@ -64,9 +64,9 @@ function OwnerRegister({ user, setUser }) {
         <i className="fa fa-times-circle-o" aria-hidden="true"></i>
       )}
       <label>Picture</label>
-      <input onChange={(e) => setPicture(e.target.value)} require />
+      <input onChange={(e) => setPicture(e.target.value)} />
       <label>Phone number</label>
-      <input onChange={(e) => setPhoneNumber(e.target.value)} require />
+      <input onChange={(e) => setPhoneNumber(e.target.value)} />
       <button
         onClick={() => {
           handleClick();
@@ -75,6 +75,7 @@ function OwnerRegister({ user, setUser }) {
         Register
       </button>
       {message && <p>{message}</p>}
+      {redirect && <Redirect to="/login" />}
     </div>
   );
 }

@@ -22,7 +22,9 @@ renter.post("/create", (req, res) => {
       purpose,
       picture,
       phone_number,
-    }).then(() => res.status(201).send(email + " registered"));
+    }).then((data) => {
+      res.status(201).send({ email, isOwner: true, id: data.id });
+    });
   });
 });
 

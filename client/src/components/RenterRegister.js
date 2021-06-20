@@ -38,11 +38,9 @@ function RenterRegister({ setUser }) {
     } else if (confirmPassword) {
       axios
         .post("/api/renter/create", dataToSend)
-        .then(() => {
-          const userData = { email: email, isOwner: false };
+        .then((data) => {
+          const userData = { email: email, isOwner: false, id: data.data.id };
           setUser(userData);
-          createCookie("accessToken", userData, 120000);
-          createCookie("refreshToken", userData);
           setRedirect(true);
         })
         .catch((err) => {
@@ -64,25 +62,13 @@ function RenterRegister({ setUser }) {
     <>
       <h1>Register</h1>
       <label>First Name</label>
-      <input
-        type="text"
-        onChange={(e) => setFirstName(e.target.value)}
-        required
-      />
+      <input type="text" onChange={(e) => setFirstName(e.target.value)} />
       <label>Last Name</label>
-      <input
-        type="text"
-        onChange={(e) => setLastName(e.target.value)}
-        required
-      />
+      <input type="text" onChange={(e) => setLastName(e.target.value)} />
       <label>Email</label>
-      <input type="email" onChange={(e) => setEmail(e.target.value)} required />
+      <input type="email" onChange={(e) => setEmail(e.target.value)} />
       <label>Password</label>
-      <input
-        type="password"
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+      <input type="password" onChange={(e) => setPassword(e.target.value)} />
       <label>Confirm password</label>
       <input
         type="password"
@@ -102,23 +88,14 @@ function RenterRegister({ setUser }) {
         rows="5"
         cols="10"
         onChange={(e) => setPurpose(e.target.value)}
-        required
       />
       <label>Picture</label>
-      <input
-        type="text"
-        onChange={(e) => setPicture(e.target.value)}
-        required
-      />
+      <input type="text" onChange={(e) => setPicture(e.target.value)} />
       <label>Phone Number</label>
-      <input
-        type="text"
-        onChange={(e) => setPhoneNumber(e.target.value)}
-        required
-      />
+      <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} />
       <button onClick={() => handleClick()}>register</button>
       {message && <p>{message}</p>}
-      {redirect && <Redirect to="/" />}
+      {redirect && <Redirect to="/login" />}
     </>
   );
 }

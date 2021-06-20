@@ -23,6 +23,7 @@ function Login({ user, setUser }) {
       const userToSave = {
         email: findUser.data.email,
         isOwner: findUser.data.isOwner,
+        id: findUser.data.id,
       };
       setUser(userToSave);
     } catch (error) {
