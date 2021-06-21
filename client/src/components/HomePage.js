@@ -5,9 +5,13 @@ import { eraseCookie } from '../utils/cookies';
 import ShowAsset from './ShowAsset';
 import ClipLoader from 'react-spinners/ClipLoader';
 
+let cancelToken;
+
 function HomePage({ user, setUser }) {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
+  const [error, setError] = useState('');
 
   const logout = () => {
     eraseCookie('accessToken');
@@ -31,6 +35,37 @@ function HomePage({ user, setUser }) {
       setLoading(false);
     }, 1000);
   }, []);
+
+  useEffect(() => {
+    if (user && !user.isOwner) {
+      if (typeof cancelToken != typeof undefined) {
+        cancelToken.cancel('new request');
+      }
+
+      cancelToken = axios.CancelToken.source();
+      console.log(searchInput);
+      axios
+        .get(`/api/asset?searchBy=city&value=${searchInput}`, {
+          cancelToken: cancelToken.token,
+        })
+        .then((res) => {
+          setAssets(res.data);
+          console.log(res.data);
+          setError('');
+        })
+        .catch((err) => {
+          console.log(err.message);
+          // if (err.message !== 'new request') {
+          //   if (err.response.status === 404) {
+          //     setError('No headline found');
+          //     assets([]);
+          //   } else {
+          //     setError('Server problem please try again');
+          //   }
+          // }
+        });
+    }
+  }, [searchInput]);
   return (
     <>
       {loading ? (
@@ -52,6 +87,11 @@ function HomePage({ user, setUser }) {
                 ''
               ) : (
                 <div>
+                  <input
+                    type="search"
+                    onChange={(event) => setSearchInput(event.target.value)}
+                  />
+                  {error ? <div>{error}</div> : ''}
                   {assets.map((asset, i) => (
                     <ShowAsset key={i} asset={asset} />
                   ))}

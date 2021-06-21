@@ -4,6 +4,7 @@ const asset = express.Router();
 const models = require('../models');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const { Op } = require('sequelize');
 
 asset.use(express.json());
 
@@ -28,10 +29,12 @@ asset.get('/', (req, res) => {
   const searchBy = req.query.searchBy;
   const value = req.query.value;
   const searchQuery = {};
-  searchQuery[searchBy] = value;
+  searchQuery[searchBy] = { [Op.like]: value + '%' };
+  console.log(searchQuery);
   models.Assets.findAll({
     where: searchBy && value ? searchQuery : '',
     raw: true,
+    // searchBy && value ? searchQuery : ''
   })
     .then((data) => {
       res.send(data);

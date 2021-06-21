@@ -1,7 +1,6 @@
 export default function ShowAsset({ asset }) {
   return (
     <div className="asset">
-      {console.log(1)}
       <span>{asset.city}</span>
       <p>{asset.description}</p>
       <p>Availability</p>
