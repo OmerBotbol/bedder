@@ -1,35 +1,36 @@
-require("dotenv").config();
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
 const asset = express.Router();
-const models = require("../models");
-const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
+const models = require('../models');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 asset.use(express.json());
 
-asset.post("/create", cookieParser(), (req, res) => {
-  const accessToken = req.cookies["accessToken"];
+asset.post('/create', cookieParser(), (req, res) => {
+  const accessToken = req.cookies['accessToken'];
   console.log(accessToken);
   jwt.verify(accessToken, process.env.ACCESS_TOKEN, (err, decoded) => {
     if (err) {
-      return res.send("invalid Access Token");
+      return res.send('invalid Access Token');
     }
     if (!decoded.isOwner) {
-      return res.send("you need to be owner to create asset");
+      return res.send('you need to be owner to create asset');
     }
     models.Assets.create(req.body).then(() => {
-      res.send("new asset created!");
+      res.send('new asset created!');
     });
   });
 });
 
-asset.get("/", (req, res) => {
+//A GET request that can use for search/specific user/everything
+asset.get('/', (req, res) => {
   const searchBy = req.query.searchBy;
   const value = req.query.value;
   const searchQuery = {};
   searchQuery[searchBy] = value;
   models.Assets.findAll({
-    where: searchBy && value ? searchQuery : "",
+    where: searchBy && value ? searchQuery : '',
     raw: true,
   })
     .then((data) => {
@@ -40,7 +41,7 @@ asset.get("/", (req, res) => {
     });
 });
 
-asset.put("/update/:id", (req, res) => {
+asset.put('/update/:id', (req, res) => {
   const id = req.params.id;
   console.log(id);
   const {
@@ -85,7 +86,7 @@ asset.put("/update/:id", (req, res) => {
       plain: true,
     }
   )
-    .then(() => res.send("updated successfully"))
+    .then(() => res.send('updated successfully'))
     .catch((err) => res.status(500).send(err));
 });
 

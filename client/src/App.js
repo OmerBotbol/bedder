@@ -11,10 +11,12 @@ import OwnerRegister from './components/OwnerRegister';
 import Profile from './components/Profile';
 import { useEffect, useState } from 'react';
 import { getHttp, intercept } from './utils/networkWrapper';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 function App() {
   const [user, setUser] = useState();
   const [userDetails, setUserDetails] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     intercept();
@@ -32,6 +34,9 @@ function App() {
           console.log(err.message);
         }
       });
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, []);
   useEffect(() => {
     if (user) {
@@ -51,24 +56,32 @@ function App() {
   return (
     <div className="App">
       {user ? (
-        user.isOwner ? (
-          <div>
-            <i className="fa fa-user-circle-o" aria-hidden="true"></i>
-            <span> </span>
-            <span>
-              {userDetails.first_name} {userDetails.last_name}
-            </span>
-            {console.log(userDetails)}
-          </div>
-        ) : (
-          <div>
-            <i className="fa fa-user-circle" aria-hidden="true"></i>
-            <span> </span>
-            <span>
-              {userDetails.first_name} {userDetails.last_name}
-            </span>
-          </div>
-        )
+        <>
+          {loading ? (
+            ''
+          ) : (
+            <>
+              {user.isOwner ? (
+                <div>
+                  <i className="fa fa-user-circle-o" aria-hidden="true"></i>
+                  <span> </span>
+                  <span>
+                    {userDetails.first_name} {userDetails.last_name}
+                  </span>
+                  {console.log(userDetails)}
+                </div>
+              ) : (
+                <div>
+                  <i className="fa fa-user-circle" aria-hidden="true"></i>
+                  <span> </span>
+                  <span>
+                    {userDetails.first_name} {userDetails.last_name}
+                  </span>
+                </div>
+              )}
+            </>
+          )}
+        </>
       ) : (
         ''
       )}
