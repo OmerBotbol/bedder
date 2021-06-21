@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
+import OwnerProfile from './OwnerProfile';
+import RenterProfile from './RenterProfile';
 
 export default function Profile({ user, setUser }) {
   const [userDetails, setUserDetails] = useState({});
-  const [addAsset, setAddAsset] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,15 +42,16 @@ export default function Profile({ user, setUser }) {
           <p>{userDetails.email}</p>
           <p>{userDetails.phone_number}</p>
           {user ? (
-            user.isOwner ? (
-              <div>
-                <p>Owner</p>
-                <button onClick={() => setAddAsset(true)}>Add asset</button>
-                {addAsset && <Redirect to="/addAsset" />}
-              </div>
-            ) : (
-              <p>Renter</p>
-            )
+            <>
+              {user.isOwner ? (
+                <div>
+                  <OwnerProfile user={user} />
+                </div>
+              ) : (
+                <RenterProfile user={user} />
+              )}
+              <Link to="/">Home</Link>
+            </>
           ) : (
             <Redirect to="/" />
           )}

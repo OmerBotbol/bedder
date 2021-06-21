@@ -57,6 +57,7 @@ function HomePage({ user, setUser }) {
                   ))}
                 </div>
               )}
+              <Link to="/profile">Profile</Link>
             </>
           ) : (
             <>

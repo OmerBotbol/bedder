@@ -11,7 +11,6 @@ import OwnerRegister from './components/OwnerRegister';
 import Profile from './components/Profile';
 import { useEffect, useState } from 'react';
 import { getHttp, intercept } from './utils/networkWrapper';
-import ClipLoader from 'react-spinners/ClipLoader';
 
 function App() {
   const [user, setUser] = useState();
