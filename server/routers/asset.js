@@ -28,13 +28,59 @@ asset.post('/create', cookieParser(), (req, res) => {
 asset.get('/', (req, res) => {
   const searchBy = req.query.searchBy;
   const value = req.query.value;
-  const searchQuery = {};
-  searchQuery[searchBy] = { [Op.like]: value + '%' };
+  let city = req.query.city;
+  let searchQuery = {};
+
+  //GET for example by city/owner_id
+  if (searchBy && value && !city) {
+    console.log('searchBy && value && !city');
+    searchQuery[searchBy] = value;
+  }
+  if (city && !searchBy) {
+    console.log('city && !searchBy');
+
+    searchQuery['city'] = { [Op.like]: city + '%' };
+    console.log(searchQuery);
+  }
+  if (city && searchBy) {
+    console.log('city && searchBy');
+    const options = searchBy.split(',');
+    const convertedOptions = options.map((option) => {
+      const query = {};
+      query[option] = true;
+      return query;
+    });
+    const cityObj = { city: { [Op.like]: city + '%' } };
+    convertedOptions.push(cityObj);
+    searchQuery[Op.and] = convertedOptions;
+    console.log(searchQuery);
+  }
+  //GET by filters
+  if (searchBy && !value && !city) {
+    console.log('searchBy && !value && !city');
+
+    console.log(value);
+    console.log(searchBy);
+
+    const options = searchBy.split(',');
+    const convertedOptions = options.map((option) => {
+      const query = {};
+      query[option] = true;
+      return query;
+    });
+
+    searchQuery[Op.and] = convertedOptions;
+    console.log(searchQuery);
+  }
+  //GET all assets
+  if (!searchBy && !value && !city) {
+    console.log('!searchBy && !value && !city');
+    searchQuery = '';
+  }
   console.log(searchQuery);
   models.Assets.findAll({
-    where: searchBy && value ? searchQuery : '',
+    where: searchQuery,
     raw: true,
-    // searchBy && value ? searchQuery : ''
   })
     .then((data) => {
       res.send(data);

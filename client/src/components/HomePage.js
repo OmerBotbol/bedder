@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { eraseCookie } from '../utils/cookies';
-import ShowAsset from './ShowAsset';
+import ShowAsset from './asset/ShowAsset';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 let cancelToken;
@@ -12,13 +12,56 @@ function HomePage({ user, setUser }) {
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState('');
   const [error, setError] = useState('');
+  const [filterBy, setFilterBy] = useState([
+    { name: 'Ac', value: false },
+    { name: 'Accessibility', value: false },
+    { name: 'Animals', value: false },
+    { name: 'Babies', value: false },
+    { name: 'Kosher', value: false },
+    { name: 'Parking', value: false },
+    { name: 'Shabbat', value: false },
+  ]);
 
+  const changeValue = (i) => {
+    const copyArr = [...filterBy];
+    copyArr[i].value = !filterBy[i].value;
+    setFilterBy(copyArr);
+  };
   const logout = () => {
     eraseCookie('accessToken');
     eraseCookie('refreshToken');
     setUser('');
   };
 
+  const filterOptions = () => {
+    let filterString = '';
+    for (let i = 0; i < filterBy.length; i++) {
+      if (filterBy[i].value) {
+        if (filterString === '') {
+          filterString = filterBy[i].name;
+        } else {
+          filterString = filterString + ',' + filterBy[i].name;
+        }
+      }
+    }
+
+    console.log(filterString);
+
+    axios
+      .get(`/api/asset?searchBy=${filterString}&city=${searchInput}`)
+      .then((data) => {
+        setAssets(data.data);
+        console.log(data);
+        console.log(data.data.length);
+        if (data.data.length === 0) {
+          setError('No match found');
+        } else {
+          setError('');
+        }
+      })
+      .catch((err) => console.log(err));
+    console.log(assets);
+  };
   const getAssets = () => {
     axios
       .get('/api/asset')
@@ -36,36 +79,51 @@ function HomePage({ user, setUser }) {
     }, 1000);
   }, []);
 
-  useEffect(() => {
+  const searchByCity = () => {
     if (user && !user.isOwner) {
       if (typeof cancelToken != typeof undefined) {
         cancelToken.cancel('new request');
       }
 
       cancelToken = axios.CancelToken.source();
-      console.log(searchInput);
-      axios
-        .get(`/api/asset?searchBy=city&value=${searchInput}`, {
-          cancelToken: cancelToken.token,
-        })
-        .then((res) => {
-          setAssets(res.data);
-          console.log(res.data);
-          setError('');
-        })
-        .catch((err) => {
-          console.log(err.message);
-          // if (err.message !== 'new request') {
-          //   if (err.response.status === 404) {
-          //     setError('No headline found');
-          //     assets([]);
-          //   } else {
-          //     setError('Server problem please try again');
-          //   }
-          // }
-        });
+      if (searchInput) {
+        axios
+          .get(`/api/asset?city=${searchInput}`, {
+            cancelToken: cancelToken.token,
+          })
+          .then((res) => {
+            setAssets(res.data);
+            if (res.data.length === 0) {
+              setError('No city found');
+            } else {
+              setError('');
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+            setError('Server problem please try again');
+          });
+        console.log(assets);
+      } else {
+        axios
+          .get(`/api/asset`, {
+            cancelToken: cancelToken.token,
+          })
+          .then((res) => {
+            setAssets(res.data);
+            if (res.data.length === 0) {
+              setError('No city found');
+            } else {
+              setError('');
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+            setError('Server problem please try again');
+          });
+      }
     }
-  }, [searchInput]);
+  };
   return (
     <>
       {loading ? (
@@ -89,8 +147,22 @@ function HomePage({ user, setUser }) {
                 <div>
                   <input
                     type="search"
+                    placeholder="Search By City"
                     onChange={(event) => setSearchInput(event.target.value)}
                   />
+                  <button onClick={() => searchByCity()}>Search</button>
+                  <div className="filter">
+                    {filterBy.map((option, i) => (
+                      <div key={i} className={`${i} filter-option`}>
+                        <label>{option.name}</label>
+                        <input
+                          type="checkbox"
+                          onChange={() => changeValue(i)}
+                        />
+                      </div>
+                    ))}
+                    <button onClick={() => filterOptions()}>Filter</button>
+                  </div>
                   {error ? <div>{error}</div> : ''}
                   {assets.map((asset, i) => (
                     <ShowAsset key={i} asset={asset} />

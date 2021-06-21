@@ -1,7 +1,8 @@
 import { Link, Redirect } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProfileAsset from './ProfileAsset';
+import ProfileAsset from '../asset/ProfileAsset';
+
 export default function OwnerProfile({ user, setUser }) {
   const [addAsset, setAddAsset] = useState(false);
   const [assets, setAssets] = useState([]);

@@ -1,13 +1,13 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import AddAsset from './components/AddAsset';
+import AddAsset from './components/asset/AddAsset';
 import HomePage from './components/HomePage';
 import Login from './components/Login';
 import Register from './components/Register';
 import NotFound from './components/NotFound';
-import RenterRegister from './components/RenterRegister';
-import OwnerRegister from './components/OwnerRegister';
+import RenterRegister from './components/renter/RenterRegister';
+import OwnerRegister from './components/owner/OwnerRegister';
 import Profile from './components/Profile';
 import { useEffect, useState } from 'react';
 import { getHttp, intercept } from './utils/networkWrapper';

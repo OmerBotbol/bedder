@@ -2,8 +2,8 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import OwnerProfile from './OwnerProfile';
-import RenterProfile from './RenterProfile';
+import OwnerProfile from './owner/OwnerProfile';
+import RenterProfile from './renter/RenterProfile';
 
 export default function Profile({ user, setUser }) {
   const [userDetails, setUserDetails] = useState({});
@@ -18,12 +18,12 @@ export default function Profile({ user, setUser }) {
     if (user) {
       console.log(user);
       if (user.isOwner) {
-        const findUser = axios
+        axios
           .get(`/api/owner/${user.id}`)
           .then((data) => setUserDetails(data.data))
           .catch((err) => console.log(err));
       } else {
-        const findUser = axios
+        axios
           .get(`/api/renter/${user.id}`)
           .then((data) => setUserDetails(data.data))
           .catch((err) => console.log(err));
