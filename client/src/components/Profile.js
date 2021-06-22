@@ -45,10 +45,10 @@ export default function Profile({ user, setUser }) {
             <>
               {user.isOwner ? (
                 <div>
-                  <OwnerProfile user={user} />
+                  <OwnerProfile user={userDetails} />
                 </div>
               ) : (
-                <RenterProfile user={user} />
+                <RenterProfile user={userDetails} />
               )}
               <Link to="/">Home</Link>
             </>
