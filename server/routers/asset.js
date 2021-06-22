@@ -139,4 +139,14 @@ asset.put('/update/:id', (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+asset.post('/addUnavailableDates', (req, res) => {
+  models.Unavailable_Dates.create(req.body)
+    .then(() => {
+      res.send('New unavailable date created!');
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+      console.log(err);
+    });
+});
 module.exports = asset;

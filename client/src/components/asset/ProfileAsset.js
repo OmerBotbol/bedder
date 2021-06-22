@@ -1,9 +1,34 @@
+import { useState } from 'react';
+import axios from 'axios';
 export default function ProfileAsset({ user, asset }) {
+  const [startedAt, setStartedAt] = useState('');
+  const [endedAt, setEndedAt] = useState('');
+  const [hideDates, setHideDates] = useState(true);
+  const [error, setError] = useState('');
   const Exists = (subject) => {
     if (subject === 1) {
       return <i className="fa fa-check" aria-hidden="true"></i>;
     } else {
       return <i className="fa fa-times" aria-hidden="true"></i>;
+    }
+  };
+
+  const unavailableDates = () => {
+    if (!startedAt || !endedAt) {
+      setError('Fill all fields');
+    } else {
+      const dataToSend = {
+        asset_id: asset.id,
+        started_at: startedAt,
+        ended_at: endedAt,
+      };
+
+      axios
+        .post('/api/asset/addUnavailableDates', dataToSend)
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err));
+      setHideDates(!hideDates);
+      setError('');
     }
   };
   return (
@@ -26,6 +51,39 @@ export default function ProfileAsset({ user, asset }) {
       <p>Kosher: {Exists(asset.kosher)}</p>
       <p>Parking: {Exists(asset.parking)}</p>
       <p>Shabbat: {Exists(asset.shabat)}</p>
+
+      <button
+        onClick={() => {
+          setHideDates(!hideDates);
+        }}>
+        Add unavailable dates
+      </button>
+      <div>
+        <label className={hideDates.toString()}>Start date</label>
+        <input
+          className={hideDates.toString()}
+          type="date"
+          onChange={(e) => {
+            setStartedAt(e.target.value);
+          }}
+        />
+        <label className={hideDates.toString()}>End date</label>
+        <input
+          className={hideDates.toString()}
+          type="date"
+          onChange={(e) => {
+            setEndedAt(e.target.value);
+          }}
+        />
+        <button
+          className={hideDates.toString()}
+          onClick={() => {
+            unavailableDates();
+          }}>
+          +
+        </button>
+        {error && <p>{error}</p>}
+      </div>
     </div>
   );
 }

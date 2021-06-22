@@ -118,6 +118,8 @@ export default function AddAsset({ user, setUser }) {
       <label>Ends at</label>
       <input type="date" onChange={(e) => setEndedAt(e.target.value)} />
       <br />
+
+      <div></div>
       <button
         onClick={() => {
           handleClick();
