@@ -2,13 +2,14 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
+let picture;
+
 function OwnerRegister({ user, setUser }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [picture, setPicture] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
@@ -27,7 +28,7 @@ function OwnerRegister({ user, setUser }) {
       !lastName ||
       !email ||
       !password ||
-      !picture ||
+      picture == null ||//check if image is exits 
       !phoneNumber
     ) {
       setMessage('Please fill all the fields');
@@ -49,6 +50,23 @@ function OwnerRegister({ user, setUser }) {
       setMessage("Password doesn't match");
     }
   };
+/**
+ * This function gets an image path
+ * it gets the image itself
+ * after it gets the pic it update picture var
+ * @param {*} file the file path gets from file picker
+ */
+  function onFileSelected(file) {
+    var input = file.target;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var dataURL = reader.result;
+      var output = document.getElementById('output');
+      output.src = dataURL;
+      picture = dataURL;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
 
   return (
     <>
@@ -81,13 +99,19 @@ function OwnerRegister({ user, setUser }) {
             <i className="fa fa-times-circle-o" aria-hidden="true"></i>
           )}
           <label>Picture</label>
-          <input onChange={(e) => setPicture(e.target.value)} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => onFileSelected(e)}
+          />
+          <img id="output" style={{ height: 100, width: 100 }}></img>
           <label>Phone number</label>
           <input onChange={(e) => setPhoneNumber(e.target.value)} />
           <button
             onClick={() => {
               handleClick();
-            }}>
+            }}
+          >
             Register
           </button>
           {message && <p>{message}</p>}

@@ -110,7 +110,7 @@ export default function AddAsset({ user, setUser }) {
       <input type="checkbox" onChange={(e) => setBabies(!babies)} />
       <br />
       <label>Picture</label>
-      <input type="email" onChange={(e) => setPicture(e.target.value)} />
+      <input type="file" onChange={(e) => setPicture(e.target.value)} />
       <br />
       <label>Starts at</label>
       <input type="date" onChange={(e) => setStartedAt(e.target.value)} />
@@ -121,7 +121,8 @@ export default function AddAsset({ user, setUser }) {
       <button
         onClick={() => {
           handleClick();
-        }}>
+        }}
+      >
         Add
       </button>
       {message && <p>{message}</p>}

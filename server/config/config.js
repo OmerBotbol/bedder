@@ -1,28 +1,28 @@
-require("dotenv").config();
+require('dotenv').config();
 module.exports = {
   development: {
-    username: "root",
+    username: 'root',
     password: process.env.DB_PASSWORD,
     database: process.env.DATABASE,
-    seederStorage: "sequelize",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    seederStorage: 'sequelize',
+    host: '127.0.0.1',
+    dialect: 'mysql',
     logging: false,
   },
   test: {
-    username: "root",
+    username: 'root',
     password: process.env.DB_PASSWORD,
-    database: "database_test",
-    seederStorage: "sequelize",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_test',
+    seederStorage: 'sequelize',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
   production: {
-    username: "root",
+    username: 'root',
     password: process.env.DB_PASSWORD,
-    database: "database_production",
-    seederStorage: "sequelize",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_production',
+    seederStorage: 'sequelize',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
 };
