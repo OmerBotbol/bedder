@@ -1,16 +1,17 @@
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import axios from 'axios';
-import AddAsset from './components/asset/AddAsset';
-import HomePage from './components/HomePage';
-import Login from './components/Login';
-import Register from './components/Register';
-import NotFound from './components/NotFound';
-import RenterRegister from './components/renter/RenterRegister';
-import OwnerRegister from './components/owner/OwnerRegister';
-import Profile from './components/Profile';
-import { useEffect, useState } from 'react';
-import { getHttp, intercept } from './utils/networkWrapper';
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from "axios";
+import AddAsset from "./components/asset/AddAsset";
+import HomePage from "./components/HomePage";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import NotFound from "./components/NotFound";
+import RenterRegister from "./components/renter/RenterRegister";
+import OwnerRegister from "./components/owner/OwnerRegister";
+import Profile from "./components/Profile";
+import { useEffect, useState } from "react";
+import { getHttp, intercept } from "./utils/networkWrapper";
+import UploadImage from "./components/UploadImage";
 
 function App() {
   const [user, setUser] = useState();
@@ -19,7 +20,7 @@ function App() {
 
   useEffect(() => {
     intercept();
-    getHttp('/api/data', 'accessToken')
+    getHttp("/api/data", "accessToken")
       .then((res) => {
         const userToSave = {
           email: res.data.email,
@@ -29,7 +30,7 @@ function App() {
         setUser(userToSave);
       })
       .catch((err) => {
-        if (!err.message.slice(-3) === '403') {
+        if (!err.message.slice(-3) === "403") {
           console.log(err.message);
         }
       });
@@ -57,7 +58,7 @@ function App() {
       {user ? (
         <>
           {loading ? (
-            ''
+            ""
           ) : (
             <>
               {user.isOwner ? (
@@ -82,7 +83,7 @@ function App() {
           )}
         </>
       ) : (
-        ''
+        ""
       )}
 
       {console.log(user)}
@@ -97,7 +98,7 @@ function App() {
           <Route exact path="/register">
             <Register user={user} setUser={setUser} />
           </Route>
-
+          <Route exact path="/upload" component={UploadImage} />
           <Route exact path="/renterRegister">
             <RenterRegister user={user} setUser={setUser} />
           </Route>

@@ -1,26 +1,30 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import axios from "axios";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 let picture;
 
 function OwnerRegister({ user, setUser }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [message, setMessage] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [image, setImage] = useState("");
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    const imageInForm = new FormData();
+    imageInForm.append("file", image);
+    const imageKey = await axios.post("/api/picture/upload", imageInForm);
     const dataToSend = {
       first_name: firstName,
       last_name: lastName,
       email,
       password,
-      picture,
+      picture: imageKey.data,
       phone_number: phoneNumber,
     };
     if (
@@ -28,45 +32,27 @@ function OwnerRegister({ user, setUser }) {
       !lastName ||
       !email ||
       !password ||
-      picture == null ||//check if image is exits 
+      !imageKey.data || //check if image is exits
       !phoneNumber
     ) {
-      setMessage('Please fill all the fields');
+      setMessage("Please fill all the fields");
     } else if (confirmPassword) {
       axios
-        .post('/api/owner/create', dataToSend)
-        .then((data) => {
-          const userData = { email: email, isOwner: true, id: data.data.id };
+        .post("/api/owner/create", dataToSend)
+        .then(() => {
           setRedirect(true);
         })
         .catch((err) => {
-          if (err.message.slice(-3) === '401')
-            setMessage('Invalid password or email');
-          if (err.message.slice(-3) === '409')
-            setMessage('Email already exists');
-          else setMessage('Problem, please try again later');
+          if (err.message.slice(-3) === "401")
+            setMessage("Invalid password or email");
+          if (err.message.slice(-3) === "409")
+            setMessage("Email already exists");
+          else setMessage("Problem, please try again later");
         });
     } else {
       setMessage("Password doesn't match");
     }
   };
-/**
- * This function gets an image path
- * it gets the image itself
- * after it gets the pic it update picture var
- * @param {*} file the file path gets from file picker
- */
-  function onFileSelected(file) {
-    var input = file.target;
-    var reader = new FileReader();
-    reader.onload = function () {
-      var dataURL = reader.result;
-      var output = document.getElementById('output');
-      output.src = dataURL;
-      picture = dataURL;
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
 
   return (
     <>
@@ -102,7 +88,7 @@ function OwnerRegister({ user, setUser }) {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => onFileSelected(e)}
+            onChange={(e) => setImage(e.target.files[0])}
           />
           <img id="output" style={{ height: 100, width: 100 }}></img>
           <label>Phone number</label>

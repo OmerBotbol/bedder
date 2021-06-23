@@ -1,3 +1,3 @@
-export default function RenterProfile({ user, setUser }) {
+export default function RenterProfile({ userDetails }) {
   return <div></div>;
 }
