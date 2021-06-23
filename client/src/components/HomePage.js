@@ -1,25 +1,25 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { eraseCookie } from '../utils/cookies';
-import ShowAsset from './asset/ShowAsset';
-import ClipLoader from 'react-spinners/ClipLoader';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { eraseCookie } from "../utils/cookies";
+import ShowAsset from "./asset/ShowAsset";
+import ClipLoader from "react-spinners/ClipLoader";
 
 let cancelToken;
 
 function HomePage({ user, setUser }) {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchInput, setSearchInput] = useState('');
-  const [error, setError] = useState('');
+  const [searchInput, setSearchInput] = useState("");
+  const [error, setError] = useState("");
   const [filterBy, setFilterBy] = useState([
-    { name: 'Ac', value: false },
-    { name: 'Accessibility', value: false },
-    { name: 'Animals', value: false },
-    { name: 'Babies', value: false },
-    { name: 'Kosher', value: false },
-    { name: 'Parking', value: false },
-    { name: 'Shabbat', value: false },
+    { name: "Ac", value: false },
+    { name: "Accessibility", value: false },
+    { name: "Animals", value: false },
+    { name: "Babies", value: false },
+    { name: "Kosher", value: false },
+    { name: "Parking", value: false },
+    { name: "Shabbat", value: false },
   ]);
 
   const changeValue = (i) => {
@@ -28,19 +28,19 @@ function HomePage({ user, setUser }) {
     setFilterBy(copyArr);
   };
   const logout = () => {
-    eraseCookie('accessToken');
-    eraseCookie('refreshToken');
-    setUser('');
+    eraseCookie("accessToken");
+    eraseCookie("refreshToken");
+    setUser("");
   };
 
   const filterOptions = () => {
-    let filterString = '';
+    let filterString = "";
     for (let i = 0; i < filterBy.length; i++) {
       if (filterBy[i].value) {
-        if (filterString === '') {
+        if (filterString === "") {
           filterString = filterBy[i].name;
         } else {
-          filterString = filterString + ',' + filterBy[i].name;
+          filterString = filterString + "," + filterBy[i].name;
         }
       }
     }
@@ -54,9 +54,9 @@ function HomePage({ user, setUser }) {
         console.log(data);
         console.log(data.data.length);
         if (data.data.length === 0) {
-          setError('No match found');
+          setError("No match found");
         } else {
-          setError('');
+          setError("");
         }
       })
       .catch((err) => console.log(err));
@@ -64,9 +64,8 @@ function HomePage({ user, setUser }) {
   };
   const getAssets = () => {
     axios
-      .get('/api/asset')
+      .get("/api/asset")
       .then((data) => {
-        console.log(data.data);
         setAssets(data.data);
       })
       .catch((err) => console.log(err));
@@ -82,7 +81,7 @@ function HomePage({ user, setUser }) {
   const searchByCity = () => {
     if (user && !user.isOwner) {
       if (typeof cancelToken != typeof undefined) {
-        cancelToken.cancel('new request');
+        cancelToken.cancel("new request");
       }
 
       cancelToken = axios.CancelToken.source();
@@ -94,14 +93,14 @@ function HomePage({ user, setUser }) {
           .then((res) => {
             setAssets(res.data);
             if (res.data.length === 0) {
-              setError('No city found');
+              setError("No city found");
             } else {
-              setError('');
+              setError("");
             }
           })
           .catch((err) => {
             console.log(err.message);
-            setError('Server problem please try again');
+            setError("Server problem please try again");
           });
         console.log(assets);
       } else {
@@ -112,14 +111,14 @@ function HomePage({ user, setUser }) {
           .then((res) => {
             setAssets(res.data);
             if (res.data.length === 0) {
-              setError('No city found');
+              setError("No city found");
             } else {
-              setError('');
+              setError("");
             }
           })
           .catch((err) => {
             console.log(err.message);
-            setError('Server problem please try again');
+            setError("Server problem please try again");
           });
       }
     }
@@ -127,22 +126,23 @@ function HomePage({ user, setUser }) {
   return (
     <>
       {loading ? (
-        <ClipLoader color={'red'} loading={loading} size={150} />
+        <ClipLoader color={"red"} loading={loading} size={150} />
       ) : (
         <div>
           <h1>Home Page</h1>
           {user ? (
             <>
               <div>{user.email}</div>
-              <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
+              <div>{user.isOwner ? "Owner" : "Renter"}</div>
               <button
                 onClick={() => {
                   logout();
-                }}>
+                }}
+              >
                 logout
               </button>
               {user.isOwner ? (
-                ''
+                ""
               ) : (
                 <div>
                   <input
@@ -163,7 +163,7 @@ function HomePage({ user, setUser }) {
                     ))}
                     <button onClick={() => filterOptions()}>Filter</button>
                   </div>
-                  {error ? <div>{error}</div> : ''}
+                  {error ? <div>{error}</div> : ""}
                   {assets.map((asset, i) => (
                     <ShowAsset key={i} asset={asset} />
                   ))}

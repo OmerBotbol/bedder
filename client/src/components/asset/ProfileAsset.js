@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 export default function ProfileAsset({ userDetails, asset }) {
   const [startedAt, setStartedAt] = useState("");
   const [endedAt, setEndedAt] = useState("");
   const [hideDates, setHideDates] = useState(true);
   const [error, setError] = useState("");
+  const [pictureUrl, setPictureUrl] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`/api/picture/image/${asset.picture}`)
+      .then((data) => {
+        setPictureUrl(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [asset.picture]);
+
   const Exists = (subject) => {
     if (subject === 1) {
       return <i className="fa fa-check" aria-hidden="true"></i>;
@@ -33,7 +46,7 @@ export default function ProfileAsset({ userDetails, asset }) {
   };
   return (
     <div className="profile-owner-asset">
-      <p>{asset.picture}</p>
+      <img src={pictureUrl} alt="asset" />
 
       <p>{asset.city}</p>
       <p>{asset.address}</p>

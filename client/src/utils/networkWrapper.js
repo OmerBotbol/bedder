@@ -25,7 +25,7 @@ const intercept = () => {
               if (data.data.accessToken) {
                 createCookie("accessToken", data.data.accessToken, 120000);
                 err.config.headers["authorization"] =
-                  "Bearer " + data.data.authorization;
+                  "Bearer " + data.data.accessToken;
                 return axios.request(err.config);
               }
               eraseCookie("refreshToken");

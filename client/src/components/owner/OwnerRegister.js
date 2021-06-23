@@ -2,9 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 
-let picture;
-
-function OwnerRegister({ user, setUser }) {
+function OwnerRegister({ user }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,38 +14,43 @@ function OwnerRegister({ user, setUser }) {
   const [image, setImage] = useState("");
 
   const handleClick = async () => {
-    const imageInForm = new FormData();
-    imageInForm.append("file", image);
-    const imageKey = await axios.post("/api/picture/upload", imageInForm);
-    const dataToSend = {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      password,
-      picture: imageKey.data,
-      phone_number: phoneNumber,
-    };
     if (
       !firstName ||
       !lastName ||
       !email ||
       !password ||
-      !imageKey.data || //check if image is exits
+      !image ||
       !phoneNumber
     ) {
       setMessage("Please fill all the fields");
     } else if (confirmPassword) {
+      const imageInForm = new FormData();
+      imageInForm.append("file", image);
+      const imageKey = await axios.post("/api/picture/upload", imageInForm);
+      const dataToSend = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        picture: imageKey.data,
+        phone_number: phoneNumber,
+      };
       axios
         .post("/api/owner/create", dataToSend)
         .then(() => {
           setRedirect(true);
         })
-        .catch((err) => {
-          if (err.message.slice(-3) === "401")
+        .catch(async (err) => {
+          if (err.message.slice(-3) === "401") {
             setMessage("Invalid password or email");
-          if (err.message.slice(-3) === "409")
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
+          } else if (err.message.slice(-3) === "409") {
             setMessage("Email already exists");
-          else setMessage("Problem, please try again later");
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
+          } else {
+            setMessage("Problem, please try again later");
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
+          }
         });
     } else {
       setMessage("Password doesn't match");
@@ -90,7 +93,6 @@ function OwnerRegister({ user, setUser }) {
             accept="image/*"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <img id="output" style={{ height: 100, width: 100 }}></img>
           <label>Phone number</label>
           <input onChange={(e) => setPhoneNumber(e.target.value)} />
           <button
