@@ -1,10 +1,10 @@
-require("dotenv").config();
-const AWS = require("aws-sdk");
-const express = require("express");
+require('dotenv').config();
+const AWS = require('aws-sdk');
+const express = require('express');
 const picture = express.Router();
-const multer = require("multer");
-const multerS3 = require("multer-s3");
-const { v4: uuidv4 } = require("uuid");
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { v4: uuidv4 } = require('uuid');
 
 picture.use(express.json());
 
@@ -29,23 +29,23 @@ const upload = multer({
 });
 
 //post request to upload file
-picture.post("/upload", upload.single("file"), (req, res) => {
+picture.post('/upload', upload.single('file'), (req, res) => {
   console.log(req.file);
   res.send(req.file.key);
 });
 
 //get request for url signed
-picture.get("/image/:imageId", (req, res) => {
+picture.get('/image/:imageId', (req, res) => {
   const params = { Bucket: process.env.BUCKET_NAME, Key: req.params.imageId };
-  res.send(s3.getSignedUrl("getObject", params));
+  res.send(s3.getSignedUrl('getObject', params));
 });
 
-picture.delete("/image/:imageId", (req, res) => {
+picture.delete('/image/:imageId', (req, res) => {
   const params = { Bucket: process.env.BUCKET_NAME, Key: req.params.imageId };
   s3.deleteObject(params, function (err, data) {
     if (err) console.log(err, err.stack);
     // error
-    else res.send("image deleted");
+    else res.send('image deleted');
   });
 });
 

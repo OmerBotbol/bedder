@@ -1,20 +1,28 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 function RenterRegister({ user, setUser }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [purpose, setPurpose] = useState("");
-  const [image, setImage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [purpose, setPurpose] = useState('');
+  const [image, setImage] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
+  const [imageKey, setImageKey] = useState('');
 
-  const handleClick = async () => {
+  const deleteBucket = () => {
+    axios
+      .delete(`/api/picture/image/${imageKey.data}`)
+      .then(() => console.log('bucket deleted'))
+      .catch((err) => console.log(err));
+  };
+
+  const handleClick = () => {
     if (
       !firstName ||
       !lastName ||
@@ -24,20 +32,18 @@ function RenterRegister({ user, setUser }) {
       !image ||
       !phoneNumber
     ) {
-      console.log({
-        firstName,
-        lastName,
-        email,
-        password,
-        purpose,
-        image,
-        phoneNumber,
-      });
-      setMessage("Please fill all the fields");
+      setMessage('Please fill all the fields');
     } else if (confirmPassword) {
       const imageInForm = new FormData();
-      imageInForm.append("file", image);
-      const imageKey = await axios.post("/api/picture/upload", imageInForm);
+      imageInForm.append('file', image);
+
+      axios
+        .post('/api/picture/upload', imageInForm)
+        .then((data) => {
+          console.log(data);
+          setImageKey(data.data);
+        })
+        .catch((err) => console.log(err));
       const dataToSend = {
         first_name: firstName,
         last_name: lastName,
@@ -48,20 +54,19 @@ function RenterRegister({ user, setUser }) {
         phone_number: phoneNumber,
       };
       axios
-        .post("/api/renter/create", dataToSend)
+        .post('/api/renter/create', dataToSend)
         .then(() => {
           setRedirect(true);
         })
-        .catch(async (err) => {
-          if (err.message.slice(-3) === "401") {
-            setMessage("Invalid password or email");
-            await axios.delete(`/api/picture/image/${imageKey.data}`);
-          } else if (err.message.slice(-3) === "409") {
-            setMessage("Email already exists");
-            await axios.delete(`/api/picture/image/${imageKey.data}`);
+        .catch((err) => {
+          //check for invalid email if works
+          deleteBucket();
+          if (err.message.slice(-3) === '401') {
+            setMessage('Invalid password or email');
+          } else if (err.message.slice(-3) === '409') {
+            setMessage('Email already exists');
           } else {
-            setMessage("Problem, please try again later");
-            await axios.delete(`/api/picture/image/${imageKey.data}`);
+            setMessage('Problem, please try again later');
           }
         });
     } else {
