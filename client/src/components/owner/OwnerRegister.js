@@ -93,7 +93,6 @@ function OwnerRegister({ user }) {
             accept="image/*"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <img id="output" style={{ height: 100, width: 100 }}></img>
           <label>Phone number</label>
           <input onChange={(e) => setPhoneNumber(e.target.value)} />
           <button

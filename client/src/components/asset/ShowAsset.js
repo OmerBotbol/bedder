@@ -13,10 +13,10 @@ export default function ShowAsset({ asset }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [asset.picture]);
   return (
     <div className="asset">
-      <img src={pictureUrl} />
+      <img src={pictureUrl} alt="asset" />
       <span>{asset.city}</span>
       <p>{asset.description}</p>
       <p>Availability</p>

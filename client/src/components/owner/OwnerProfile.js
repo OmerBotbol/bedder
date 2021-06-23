@@ -1,4 +1,4 @@
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ProfileAsset from "../asset/ProfileAsset";
@@ -22,12 +22,16 @@ export default function OwnerProfile({ user, userDetails }) {
       .get(`/api/asset?searchBy=owner_id&value=${user.id}`)
       .then((data) => setAssets(data.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [userDetails.picture, user.id]);
 
   return (
     <div>
       <p>Owner</p>
-      <img src={pictureUrl} style={{ height: 100, width: 100 }}></img>
+      <img
+        src={pictureUrl}
+        style={{ height: 100, width: 100 }}
+        alt="profile"
+      ></img>
       <button onClick={() => setAddAsset(true)}>Add asset</button>
       {addAsset && <Redirect to="/addAsset" />}
       <h2>My Assets</h2>

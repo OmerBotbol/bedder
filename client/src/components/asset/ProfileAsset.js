@@ -16,7 +16,7 @@ export default function ProfileAsset({ userDetails, asset }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [asset.picture]);
 
   const Exists = (subject) => {
     if (subject === 1) {

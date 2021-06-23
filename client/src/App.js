@@ -11,7 +11,6 @@ import OwnerRegister from "./components/owner/OwnerRegister";
 import Profile from "./components/Profile";
 import { useEffect, useState } from "react";
 import { getHttp, intercept } from "./utils/networkWrapper";
-import UploadImage from "./components/UploadImage";
 
 function App() {
   const [user, setUser] = useState();
@@ -22,6 +21,7 @@ function App() {
     intercept();
     getHttp("/api/data", "accessToken")
       .then((res) => {
+        console.log("i'm trying");
         const userToSave = {
           email: res.data.email,
           isOwner: res.data.isOwner,
@@ -31,8 +31,9 @@ function App() {
       })
       .catch((err) => {
         if (!err.message.slice(-3) === "403") {
-          console.log(err.message);
+          return console.log(err.message);
         }
+        console.log("please refresh the page");
       });
     setTimeout(() => {
       setLoading(false);
@@ -41,12 +42,12 @@ function App() {
   useEffect(() => {
     if (user) {
       if (user.isOwner) {
-        const findUser = axios
+        axios
           .get(`/api/owner/${user.id}`)
           .then((data) => setUserDetails(data.data))
           .catch((err) => console.log(err));
       } else {
-        const findUser = axios
+        axios
           .get(`/api/renter/${user.id}`)
           .then((data) => setUserDetails(data.data))
           .catch((err) => console.log(err));
@@ -68,7 +69,6 @@ function App() {
                   <span>
                     {userDetails.first_name} {userDetails.last_name}
                   </span>
-                  {console.log(userDetails)}
                 </div>
               ) : (
                 <div>
@@ -85,8 +85,6 @@ function App() {
       ) : (
         ""
       )}
-
-      {console.log(user)}
       <Router>
         <Switch>
           <Route exact path="/">
@@ -98,7 +96,6 @@ function App() {
           <Route exact path="/register">
             <Register user={user} setUser={setUser} />
           </Route>
-          <Route exact path="/upload" component={UploadImage} />
           <Route exact path="/renterRegister">
             <RenterRegister user={user} setUser={setUser} />
           </Route>
