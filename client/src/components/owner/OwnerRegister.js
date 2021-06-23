@@ -1,17 +1,17 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 function OwnerRegister({ user }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
 
   const handleClick = async () => {
     if (
@@ -22,11 +22,11 @@ function OwnerRegister({ user }) {
       !image ||
       !phoneNumber
     ) {
-      setMessage("Please fill all the fields");
+      setMessage('Please fill all the fields');
     } else if (confirmPassword) {
       const imageInForm = new FormData();
-      imageInForm.append("file", image);
-      const imageKey = await axios.post("/api/picture/upload", imageInForm);
+      imageInForm.append('file', image);
+      const imageKey = await axios.post('/api/picture/upload', imageInForm);
       const dataToSend = {
         first_name: firstName,
         last_name: lastName,
@@ -36,19 +36,19 @@ function OwnerRegister({ user }) {
         phone_number: phoneNumber,
       };
       axios
-        .post("/api/owner/create", dataToSend)
+        .post('/api/owner/create', dataToSend)
         .then(() => {
           setRedirect(true);
         })
         .catch(async (err) => {
-          if (err.message.slice(-3) === "401") {
-            setMessage("Invalid password or email");
+          if (err.message.slice(-3) === '401') {
+            setMessage('Invalid password or email');
             await axios.delete(`/api/picture/image/${imageKey.data}`);
-          } else if (err.message.slice(-3) === "409") {
-            setMessage("Email already exists");
+          } else if (err.message.slice(-3) === '409') {
+            setMessage('Email already exists');
             await axios.delete(`/api/picture/image/${imageKey.data}`);
           } else {
-            setMessage("Problem, please try again later");
+            setMessage('Problem, please try again later');
             await axios.delete(`/api/picture/image/${imageKey.data}`);
           }
         });
@@ -98,8 +98,7 @@ function OwnerRegister({ user }) {
           <button
             onClick={() => {
               handleClick();
-            }}
-          >
+            }}>
             Register
           </button>
           {message && <p>{message}</p>}

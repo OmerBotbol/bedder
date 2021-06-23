@@ -13,16 +13,8 @@ function RenterRegister({ user, setUser }) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
-  const [imageKey, setImageKey] = useState('');
 
-  const deleteBucket = () => {
-    axios
-      .delete(`/api/picture/image/${imageKey.data}`)
-      .then(() => console.log('bucket deleted'))
-      .catch((err) => console.log(err));
-  };
-
-  const handleClick = () => {
+  const handleClick = async () => {
     if (
       !firstName ||
       !lastName ||
@@ -32,18 +24,20 @@ function RenterRegister({ user, setUser }) {
       !image ||
       !phoneNumber
     ) {
+      console.log({
+        firstName,
+        lastName,
+        email,
+        password,
+        purpose,
+        image,
+        phoneNumber,
+      });
       setMessage('Please fill all the fields');
     } else if (confirmPassword) {
       const imageInForm = new FormData();
       imageInForm.append('file', image);
-
-      axios
-        .post('/api/picture/upload', imageInForm)
-        .then((data) => {
-          console.log(data);
-          setImageKey(data.data);
-        })
-        .catch((err) => console.log(err));
+      const imageKey = await axios.post('/api/picture/upload', imageInForm);
       const dataToSend = {
         first_name: firstName,
         last_name: lastName,
@@ -58,15 +52,16 @@ function RenterRegister({ user, setUser }) {
         .then(() => {
           setRedirect(true);
         })
-        .catch((err) => {
-          //check for invalid email if works
-          deleteBucket();
+        .catch(async (err) => {
           if (err.message.slice(-3) === '401') {
             setMessage('Invalid password or email');
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
           } else if (err.message.slice(-3) === '409') {
             setMessage('Email already exists');
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
           } else {
             setMessage('Problem, please try again later');
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
           }
         });
     } else {
