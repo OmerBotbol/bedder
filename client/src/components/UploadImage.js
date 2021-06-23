@@ -25,7 +25,6 @@ function UploadImage() {
       />
       <input
         type="file"
-        name="avatar"
         onChange={(e) => {
           setImage(e.target.files[0]);
         }}

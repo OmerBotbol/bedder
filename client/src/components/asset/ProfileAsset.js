@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import axios from 'axios';
-export default function ProfileAsset({ user, asset }) {
-  const [startedAt, setStartedAt] = useState('');
-  const [endedAt, setEndedAt] = useState('');
+import { useState } from "react";
+import axios from "axios";
+export default function ProfileAsset({ userDetails, asset }) {
+  const [startedAt, setStartedAt] = useState("");
+  const [endedAt, setEndedAt] = useState("");
   const [hideDates, setHideDates] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const Exists = (subject) => {
     if (subject === 1) {
       return <i className="fa fa-check" aria-hidden="true"></i>;
@@ -15,7 +15,7 @@ export default function ProfileAsset({ user, asset }) {
 
   const unavailableDates = () => {
     if (!startedAt || !endedAt) {
-      setError('Fill all fields');
+      setError("Fill all fields");
     } else {
       const dataToSend = {
         asset_id: asset.id,
@@ -24,11 +24,11 @@ export default function ProfileAsset({ user, asset }) {
       };
 
       axios
-        .post('/api/asset/addUnavailableDates', dataToSend)
+        .post("/api/asset/addUnavailableDates", dataToSend)
         .then((data) => console.log(data))
         .catch((err) => console.log(err));
       setHideDates(!hideDates);
-      setError('');
+      setError("");
     }
   };
   return (
@@ -41,8 +41,8 @@ export default function ProfileAsset({ user, asset }) {
       <p>Number of people: {asset.number_of_peoples}</p>
       <p>Number of rooms: {asset.number_of_rooms}</p>
       <p>
-        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
-        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
+        {asset.started_at.slice(0, 10).replaceAll("-", "/")}-
+        {asset.ended_at.slice(0, 10).replaceAll("-", "/")}
       </p>
       <p>AC: {Exists(asset.ac)}</p>
       <p>Accessibility: {Exists(asset.accessibility)}</p>
@@ -55,7 +55,8 @@ export default function ProfileAsset({ user, asset }) {
       <button
         onClick={() => {
           setHideDates(!hideDates);
-        }}>
+        }}
+      >
         Add unavailable dates
       </button>
       <div>
@@ -79,7 +80,8 @@ export default function ProfileAsset({ user, asset }) {
           className={hideDates.toString()}
           onClick={() => {
             unavailableDates();
-          }}>
+          }}
+        >
           +
         </button>
         {error && <p>{error}</p>}

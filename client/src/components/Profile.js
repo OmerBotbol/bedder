@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import ClipLoader from 'react-spinners/ClipLoader';
-import OwnerProfile from './owner/OwnerProfile';
-import RenterProfile from './renter/RenterProfile';
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import OwnerProfile from "./owner/OwnerProfile";
+import RenterProfile from "./renter/RenterProfile";
 
 export default function Profile({ user, setUser }) {
   const [userDetails, setUserDetails] = useState({});
@@ -33,7 +33,7 @@ export default function Profile({ user, setUser }) {
   return (
     <div>
       {loading ? (
-        <ClipLoader color={'red'} loading={loading} size={150} />
+        <ClipLoader color={"red"} loading={loading} size={150} />
       ) : (
         <div>
           <h1>
@@ -45,10 +45,10 @@ export default function Profile({ user, setUser }) {
             <>
               {user.isOwner ? (
                 <div>
-                  <OwnerProfile user={userDetails} />
+                  <OwnerProfile userDetails={userDetails} />
                 </div>
               ) : (
-                <RenterProfile user={userDetails} />
+                <RenterProfile userDetails={userDetails} />
               )}
               <Link to="/">Home</Link>
             </>
