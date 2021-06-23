@@ -40,4 +40,13 @@ picture.get("/image/:imageId", (req, res) => {
   res.send(s3.getSignedUrl("getObject", params));
 });
 
+picture.delete("/image/:imageId", (req, res) => {
+  const params = { Bucket: process.env.BUCKET_NAME, Key: req.params.imageId };
+  s3.deleteObject(params, function (err, data) {
+    if (err) console.log(err, err.stack);
+    // error
+    else res.send("image deleted");
+  });
+});
+
 module.exports = picture;

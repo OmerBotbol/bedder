@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ProfileAsset from "../asset/ProfileAsset";
 
-export default function OwnerProfile({ userDetails }) {
+export default function OwnerProfile({ user, userDetails }) {
   const [addAsset, setAddAsset] = useState(false);
   const [assets, setAssets] = useState([]);
   const [pictureUrl, setPictureUrl] = useState("");
@@ -19,7 +19,7 @@ export default function OwnerProfile({ userDetails }) {
         console.log(err);
       });
     axios
-      .get(`/api/asset?searchBy=owner_id&value=${userDetails.id}`)
+      .get(`/api/asset?searchBy=owner_id&value=${user.id}`)
       .then((data) => setAssets(data.data))
       .catch((err) => console.log(err));
   }, []);

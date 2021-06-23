@@ -1,54 +1,67 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import axios from "axios";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 function RenterRegister({ user, setUser }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [purpose, setPurpose] = useState('');
-  const [picture, setPicture] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [message, setMessage] = useState('');
+  const [purpose, setPurpose] = useState("");
+  const [image, setImage] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  const handleClick = () => {
-    const dataToSend = {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      password,
-      purpose,
-      picture,
-      phone_number: phoneNumber,
-    };
+  const handleClick = async () => {
     if (
       !firstName ||
       !lastName ||
       !email ||
       !password ||
       !purpose ||
-      !picture ||
+      !image ||
       !phoneNumber
     ) {
-      setMessage('Please fill all the fields');
+      console.log({
+        firstName,
+        lastName,
+        email,
+        password,
+        purpose,
+        image,
+        phoneNumber,
+      });
+      setMessage("Please fill all the fields");
     } else if (confirmPassword) {
+      const imageInForm = new FormData();
+      imageInForm.append("file", image);
+      const imageKey = await axios.post("/api/picture/upload", imageInForm);
+      const dataToSend = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        purpose,
+        picture: imageKey.data,
+        phone_number: phoneNumber,
+      };
       axios
-        .post('/api/renter/create', dataToSend)
-        .then((data) => {
-          const userData = { email: email, isOwner: false, id: data.data.id };
+        .post("/api/renter/create", dataToSend)
+        .then(() => {
           setRedirect(true);
         })
-        .catch((err) => {
-          console.log(err.message.slice(-3) === '401');
-          if (err.message.slice(-3) === '401') {
-            setMessage('Invalid password or email');
-          } else if (err.message.slice(-3) === '409') {
-            setMessage('Email already exists');
+        .catch(async (err) => {
+          if (err.message.slice(-3) === "401") {
+            setMessage("Invalid password or email");
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
+          } else if (err.message.slice(-3) === "409") {
+            setMessage("Email already exists");
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
           } else {
-            setMessage('Problem, please try again later');
+            setMessage("Problem, please try again later");
+            await axios.delete(`/api/picture/image/${imageKey.data}`);
           }
         });
     } else {
@@ -93,7 +106,11 @@ function RenterRegister({ user, setUser }) {
             onChange={(e) => setPurpose(e.target.value)}
           />
           <label>Picture</label>
-          <input type="text" onChange={(e) => setPicture(e.target.value)} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImage(e.target.files[0])}
+          />
           <label>Phone Number</label>
           <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} />
           <button onClick={() => handleClick()}>Register</button>
