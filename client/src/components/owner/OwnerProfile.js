@@ -19,7 +19,7 @@ export default function OwnerProfile({ user, userDetails }) {
         console.log(err);
       });
     axios
-      .get(`/api/asset?searchBy=owner_id&value=${user.id}`)
+      .get(`/api/asset?owner_id=${user.id}`)
       .then((data) => setAssets(data.data))
       .catch((err) => console.log(err));
   }, [userDetails.picture, user.id]);

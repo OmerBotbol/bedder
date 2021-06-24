@@ -3,69 +3,34 @@ const express = require("express");
 const asset = express.Router();
 const models = require("../models");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 const { Op } = require("sequelize");
 
 asset.use(express.json());
 
-asset.post("/create", cookieParser(), (req, res) => {
-  const accessToken = req.cookies["accessToken"];
-  console.log(accessToken);
-  jwt.verify(accessToken, process.env.ACCESS_TOKEN, (err, decoded) => {
-    if (err) {
-      return res.send("invalid Access Token");
-    }
-    if (!decoded.isOwner) {
-      return res.send("you need to be owner to create asset");
-    }
-    models.Assets.create(req.body).then(() => {
-      res.send("new asset created!");
-    });
+asset.post("/create", (req, res) => {
+  models.Assets.create(req.body).then(() => {
+    res.send("new asset created!");
   });
 });
 
 //A GET request that can use for search/specific user/everything
 asset.get("/", (req, res) => {
-  const searchBy = req.query.searchBy;
-  const value = req.query.value;
-  let city = req.query.city;
-  let searchQuery = {};
-
-  //GET for example by city/owner_id
-  if (searchBy && value && !city) {
-    searchQuery[searchBy] = value;
+  const startDate = new Date(req.query.startDate);
+  const stopDate = new Date(req.query.stopDate);
+  const city = req.query.city;
+  const owner_id = req.query.owner_id;
+  let searchQuery = {
+    [Op.and]: [
+      { city: { [Op.like]: city + "%" } },
+      { started_at: { [Op.lte]: startDate } },
+      { ended_at: { [Op.gte]: stopDate } },
+    ],
+  };
+  if (owner_id) {
+    searchQuery = { owner_id };
   }
-  if (city && !searchBy) {
-    searchQuery["city"] = { [Op.like]: city + "%" };
-  }
-  if (city && searchBy) {
-    const options = searchBy.split(",");
-    const convertedOptions = options.map((option) => {
-      const query = {};
-      query[option] = true;
-      return query;
-    });
-    const cityObj = { city: { [Op.like]: city + "%" } };
-    convertedOptions.push(cityObj);
-    searchQuery[Op.and] = convertedOptions;
-    console.log(searchQuery);
-  }
-  //GET by filters
-  if (searchBy && !value && !city) {
-    const options = searchBy.split(",");
-    const convertedOptions = options.map((option) => {
-      const query = {};
-      query[option] = true;
-      return query;
-    });
-
-    searchQuery[Op.and] = convertedOptions;
-  }
-  //GET all assets
-  if (!searchBy && !value && !city) {
-    searchQuery = "";
-  }
-  console.log(searchQuery);
+  console.log(startDate);
+  console.log(stopDate);
   models.Assets.findAll({
     where: searchQuery,
     raw: true,
