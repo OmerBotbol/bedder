@@ -1,16 +1,16 @@
-import { Redirect } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import ProfileAsset from "../asset/ProfileAsset";
-import OwnerTransactions from "./OwnerTransactions";
-import NeedToBook from "./NeedToBook";
+import { Redirect } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import ProfileAsset from '../asset/ProfileAsset';
+import OwnerTransactions from './OwnerTransactions';
+import NeedToBook from './NeedToBook';
 
 export default function OwnerProfile({ user, userDetails }) {
   const [addAsset, setAddAsset] = useState(false);
   const [assets, setAssets] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [needToBook, setNeedToBook] = useState([]);
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [pictureUrl, setPictureUrl] = useState('');
 
   //get assets from database of owner
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function OwnerProfile({ user, userDetails }) {
         setNeedToBook(findNeed);
       })
       .catch((err) => console.log(err));
-  }, [userDetails.picture, user.id]);
+  }, [userDetails.picture, user.id, transactions]);
 
   return (
     <div>
@@ -54,8 +54,7 @@ export default function OwnerProfile({ user, userDetails }) {
       <img
         src={pictureUrl}
         style={{ height: 100, width: 100 }}
-        alt="profile"
-      ></img>
+        alt="profile"></img>
       <button onClick={() => setAddAsset(true)}>Add asset</button>
       {addAsset && <Redirect to="/addAsset" />}
       <h2>My Assets</h2>
