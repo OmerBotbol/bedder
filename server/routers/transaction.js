@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const transaction = express.Router();
-const models = require('../models');
+const models = require("../models");
 
-transaction.post('/new', (req, res) => {
+transaction.post("/new", (req, res) => {
   const { asset_id, owner_id, renter_id, started_at, ended_at, comments } =
     req.body;
   models.Transactions.create({
@@ -13,32 +13,44 @@ transaction.post('/new', (req, res) => {
     ended_at,
     comments,
   })
-    .then((data) => res.send('Transaction added'))
+    .then((data) => res.send("Transaction added"))
     .catch((err) => res.status(500).send(err));
 });
 
-transaction.put('/', (req, res) => {
+transaction.put("/", (req, res) => {
   const { value, field, id } = req.body;
   const updateQuery = {};
   updateQuery[field] = value;
   models.Transactions.update(updateQuery, { where: { id } })
-    .then(() => res.send('Transaction updated'))
+    .then(() => res.send("Transaction updated"))
     .catch((err) => res.status(500).send(err));
 });
 
-transaction.get('/:id', (req, res) => {
+transaction.get("/:id", (req, res) => {
   const { id } = req.params;
   models.Transactions.findOne({ where: { id } })
     .then((data) => {
       if (data === null || data === undefined) {
-        return res.status(404).send('Id not found');
+        return res.status(404).send("Id not found");
       }
       res.send(data);
     })
     .catch((err) => res.status(500).send(err));
 });
 
-transaction.delete('/', (req, res) => {
+transaction.get("/ownerAll/:ownerId", (req, res) => {
+  const { ownerId } = req.params;
+  models.Transactions.findAll({
+    where: { owner_id: ownerId },
+    raw: true,
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
+transaction.delete("/", (req, res) => {
   const { id } = req.body;
   models.Transactions.destroy({ where: { id } })
     .then((data) => {
