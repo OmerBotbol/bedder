@@ -15,8 +15,35 @@ transaction.post('/new', (req, res) => {
   })
     .then((data) => res.send('Transaction added'))
     .catch((err) => res.status(500).send(err));
+});
 
-  //add a column in transaction of owner approval
-  models.Approvement.create({});
+transaction.put('/', (req, res) => {
+  const { value, field, id } = req.body;
+  const updateQuery = {};
+  updateQuery[field] = value;
+  models.Transactions.update(updateQuery, { where: { id } })
+    .then(() => res.send('Transaction updated'))
+    .catch((err) => res.status(500).send(err));
+});
+
+transaction.get('/:id', (req, res) => {
+  const { id } = req.params;
+  models.Transactions.findOne({ where: { id } })
+    .then((data) => {
+      if (data === null || data === undefined) {
+        return res.status(404).send('Id not found');
+      }
+      res.send(data);
+    })
+    .catch((err) => res.status(500).send(err));
+});
+
+transaction.delete('/', (req, res) => {
+  const { id } = req.body;
+  models.Transactions.destroy({ where: { id } })
+    .then((data) => {
+      res.sendStatus(410);
+    })
+    .catch((err) => res.sendStatus(500));
 });
 module.exports = transaction;
