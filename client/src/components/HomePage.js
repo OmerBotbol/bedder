@@ -63,35 +63,6 @@ function HomePage({ user, setUser }) {
     }
   };
 
-  // const filterOptions = () => {
-  //   let filterString = '';
-  //   for (let i = 0; i < filterBy.length; i++) {
-  //     if (filterBy[i].value) {
-  //       if (filterString === '') {
-  //         filterString = filterBy[i].name;
-  //       } else {
-  //         filterString = filterString + ',' + filterBy[i].name;
-  //       }
-  //     }
-  //   }
-
-  //   console.log(filterString);
-
-  //   axios
-  //     .get(`/api/asset?searchBy=${filterString}&city=${searchInput}`)
-  //     .then((data) => {
-  //       setAssets(data.data);
-  //       console.log(data);
-  //       console.log(data.data.length);
-  //       if (data.data.length === 0) {
-  //         setError('No match found');
-  //       } else {
-  //         setError('');
-  //       }
-  //     })
-  //     .catch((err) => console.log(err));
-  //   console.log(assets);
-  // };
   const getAssets = () => {
     axios
       .get("/api/asset")
@@ -138,6 +109,7 @@ function HomePage({ user, setUser }) {
                     setAssets={setAssets}
                     user={user}
                     assets={assets}
+                    setFilteredAssets={setFilteredAssets}
                     setStartedAt={setStartedAt}
                     setEndedAt={setEndedAt}
                     startedAt={startedAt}
@@ -157,7 +129,13 @@ function HomePage({ user, setUser }) {
                   </div>
                   {error ? <div>{error}</div> : ""}
                   {filteredAssets.map((asset, i) => (
-                    <ShowAsset key={i} asset={asset} />
+                    <ShowAsset
+                      key={i}
+                      user={user}
+                      asset={asset}
+                      startedAt={startedAt}
+                      endedAt={endedAt}
+                    />
                   ))}
                 </div>
               )}

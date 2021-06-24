@@ -1,8 +1,10 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import axios from "axios";
+import { useState, useEffect } from "react";
+import SendRequest from "./SendRequest";
 
-export default function ShowAsset({ asset }) {
-  const [pictureUrl, setPictureUrl] = useState('');
+export default function ShowAsset({ user, asset, startedAt, endedAt }) {
+  const [pictureUrl, setPictureUrl] = useState("");
+  const [openSendRequest, setOpenSendRequest] = useState(false);
 
   useEffect(() => {
     axios
@@ -14,6 +16,7 @@ export default function ShowAsset({ asset }) {
         console.log(err);
       });
   }, [asset.picture]);
+
   return (
     <div className="asset">
       <img src={pictureUrl} alt="asset" />
@@ -21,10 +24,19 @@ export default function ShowAsset({ asset }) {
       <p>{asset.description}</p>
       <p>Availability</p>
       <p>
-        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
-        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
+        {asset.started_at.slice(0, 10).replaceAll("-", "/")}-
+        {asset.ended_at.slice(0, 10).replaceAll("-", "/")}
       </p>
-      <button>like</button>
+      <button onClick={() => setOpenSendRequest((prev) => !prev)}>like</button>
+      {openSendRequest && (
+        <SendRequest
+          user={user}
+          asset={asset}
+          startedAt={startedAt}
+          endedAt={endedAt}
+          setOpenSendRequest={setOpenSendRequest}
+        />
+      )}
     </div>
   );
 }

@@ -13,6 +13,7 @@ export default function Search({
   setEndedAt,
   startedAt,
   endedAt,
+  setFilteredAssets,
 }) {
   const searchByCity = () => {
     if (user && !user.isOwner) {
@@ -31,6 +32,7 @@ export default function Search({
           )
           .then((res) => {
             setAssets(res.data);
+            setFilteredAssets(res.data);
             if (res.data.length === 0) {
               setError("No city found");
             } else {
@@ -49,6 +51,7 @@ export default function Search({
           })
           .then((res) => {
             setAssets(res.data);
+            setFilteredAssets(res.data);
             if (res.data.length === 0) {
               setError("No city found");
             } else {
