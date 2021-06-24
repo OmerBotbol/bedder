@@ -1,11 +1,12 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import SendRequest from "./SendRequest";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import SendRequest from './SendRequest';
 
 export default function ShowAsset({ user, asset, startedAt, endedAt }) {
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [pictureUrl, setPictureUrl] = useState('');
   const [openSendRequest, setOpenSendRequest] = useState(false);
 
+  //Show asset on home page
   useEffect(() => {
     axios
       .get(`/api/picture/image/${asset.picture}`)
@@ -24,8 +25,8 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
       <p>{asset.description}</p>
       <p>Availability</p>
       <p>
-        {asset.started_at.slice(0, 10).replaceAll("-", "/")}-
-        {asset.ended_at.slice(0, 10).replaceAll("-", "/")}
+        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
+        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
       </p>
       <button onClick={() => setOpenSendRequest((prev) => !prev)}>like</button>
       {openSendRequest && (

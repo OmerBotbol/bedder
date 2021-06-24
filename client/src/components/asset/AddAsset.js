@@ -1,11 +1,11 @@
-import axios from "axios";
-import { useState } from "react";
-import { Redirect } from "react-router-dom";
+import axios from 'axios';
+import { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default function AddAsset({ user, setUser }) {
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  const [description, setDescription] = useState("");
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [numberOfRooms, setNumberOfRooms] = useState(0);
   const [kosher, setKosher] = useState(false);
@@ -15,10 +15,10 @@ export default function AddAsset({ user, setUser }) {
   const [AC, setAC] = useState(false);
   const [accessibility, setAccessibility] = useState(false);
   const [babies, setBabies] = useState(false);
-  const [picture, setPicture] = useState("");
-  const [startedAt, setStartedAt] = useState("");
-  const [endedAt, setEndedAt] = useState("");
-  const [message, setMessage] = useState("");
+  const [picture, setPicture] = useState('');
+  const [startedAt, setStartedAt] = useState('');
+  const [endedAt, setEndedAt] = useState('');
+  const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
 
   const handleClick = async () => {
@@ -33,11 +33,12 @@ export default function AddAsset({ user, setUser }) {
         !endedAt ||
         !picture
       ) {
-        setMessage("Please fill all the fields");
+        setMessage('Please fill all the fields');
       } else {
+        //Upload picture to S3
         const imageInForm = new FormData();
-        imageInForm.append("file", picture);
-        const imageKey = await axios.post("/api/picture/upload", imageInForm);
+        imageInForm.append('file', picture);
+        const imageKey = await axios.post('/api/picture/upload', imageInForm);
         const dataToSend = {
           owner_id: user.id,
           city,
@@ -56,14 +57,16 @@ export default function AddAsset({ user, setUser }) {
           started_at: startedAt,
           ended_at: endedAt,
         };
+
+        //Create asset
         axios
-          .post("/api/asset/create", dataToSend)
+          .post('/api/asset/create', dataToSend)
           .then(() => {
             setRedirect(true);
           })
           .catch(async (err) => {
             await axios.delete(`/api/picture/image/${imageKey.data}`);
-            setMessage("Problem, please try again later");
+            setMessage('Problem, please try again later');
           });
       }
     }
@@ -131,8 +134,7 @@ export default function AddAsset({ user, setUser }) {
       <button
         onClick={() => {
           handleClick();
-        }}
-      >
+        }}>
         Add
       </button>
       {message && <p>{message}</p>}

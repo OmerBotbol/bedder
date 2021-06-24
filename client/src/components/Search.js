@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 let cancelToken;
 
@@ -15,13 +15,17 @@ export default function Search({
   endedAt,
   setFilteredAssets,
 }) {
+  console.log(startedAt, endedAt);
+
   const searchByCity = () => {
     if (user && !user.isOwner) {
       if (typeof cancelToken != typeof undefined) {
-        cancelToken.cancel("new request");
+        cancelToken.cancel('new request');
       }
-
       cancelToken = axios.CancelToken.source();
+      if (!startedAt || !endedAt || !searchInput) {
+        return setError('Please fill all the fields');
+      }
       if (searchInput) {
         axios
           .get(
@@ -34,14 +38,14 @@ export default function Search({
             setAssets(res.data);
             setFilteredAssets(res.data);
             if (res.data.length === 0) {
-              setError("No city found");
+              setError('No city found');
             } else {
-              setError("");
+              setError('');
             }
           })
           .catch((err) => {
             console.log(err.message);
-            setError("Server problem please try again");
+            setError('Server problem please try again');
           });
         console.log(assets);
       } else {
@@ -53,14 +57,14 @@ export default function Search({
             setAssets(res.data);
             setFilteredAssets(res.data);
             if (res.data.length === 0) {
-              setError("No city found");
+              setError('No city found');
             } else {
-              setError("");
+              setError('');
             }
           })
           .catch((err) => {
             console.log(err.message);
-            setError("Server problem please try again");
+            setError('Server problem please try again');
           });
       }
     }

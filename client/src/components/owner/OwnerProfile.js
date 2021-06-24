@@ -12,7 +12,7 @@ export default function OwnerProfile({ user, userDetails }) {
   const [needToBook, setNeedToBook] = useState([]);
   const [pictureUrl, setPictureUrl] = useState('');
 
-  //get assets from database of owner
+  //Get assets from database of owner
   useEffect(() => {
     axios
       .get(`/api/picture/image/${userDetails.picture}`)

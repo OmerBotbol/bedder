@@ -6,6 +6,7 @@ const models = require('../models');
 
 owner.use(express.json());
 
+//POST request to create new owner
 owner.post('/create', (req, res) => {
   const { first_name, last_name, email, picture, phone_number } = req.body;
   register(req, models.Owners).then((newPassword) => {
@@ -26,6 +27,7 @@ owner.post('/create', (req, res) => {
   });
 });
 
+//PUT request to update owner
 owner.put('/update/:id', (req, res) => {
   const id = req.params.id;
   console.log(id);
@@ -43,6 +45,7 @@ owner.put('/update/:id', (req, res) => {
     .catch((err) => res.status(500).send(err));
 });
 
+//GET request for specific owner
 owner.get('/:id', (req, res) => {
   let id = req.params.id;
   models.Owners.findOne({

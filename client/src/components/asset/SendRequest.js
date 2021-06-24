@@ -1,10 +1,11 @@
-import axios from "axios";
-import React from "react";
-import { useState } from "react";
+import axios from 'axios';
+import React from 'react';
+import { useState } from 'react';
 
 function SendRequest({ user, asset, startedAt, endedAt, setOpenSendRequest }) {
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState('');
 
+  //Add the request renter wants to send the asset owner
   const handleClick = () => {
     const dataToSend = {
       asset_id: asset.id,
@@ -15,7 +16,7 @@ function SendRequest({ user, asset, startedAt, endedAt, setOpenSendRequest }) {
       comments,
     };
     axios
-      .post("/api/transaction/new", dataToSend)
+      .post('/api/transaction/new', dataToSend)
       .then(() => {
         setOpenSendRequest(false);
       })
@@ -24,9 +25,9 @@ function SendRequest({ user, asset, startedAt, endedAt, setOpenSendRequest }) {
   return (
     <div>
       <p>
-        the date you arrive is {startedAt.slice(0, 10).replaceAll("-", "/")}
+        the date you arrive is {startedAt.slice(0, 10).replaceAll('-', '/')}
       </p>
-      <p>the date you leave is {endedAt.slice(0, 10).replaceAll("-", "/")}</p>
+      <p>the date you leave is {endedAt.slice(0, 10).replaceAll('-', '/')}</p>
       <p>add anything we need to know</p>
       <input type="text" onChange={(e) => setComments(e.target.value)} />
       <button onClick={() => handleClick()}>send</button>

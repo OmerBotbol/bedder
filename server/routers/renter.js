@@ -1,19 +1,20 @@
-require("dotenv").config();
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
 const renter = express.Router();
-const { register } = require("../utils");
-const models = require("../models");
+const { register } = require('../utils');
+const models = require('../models');
 
 renter.use(express.json());
 
-renter.post("/create", (req, res) => {
+//GET request to create new renter
+renter.post('/create', (req, res) => {
   const { first_name, last_name, email, purpose, picture, phone_number } =
     req.body;
   register(req, models.Renters).then((newPassword) => {
-    if (newPassword === "Invalid email or password")
-      return res.status(401).send("Invalid email or password");
-    if (newPassword === "Email exists")
-      return res.status(409).send("Email exists");
+    if (newPassword === 'Invalid email or password')
+      return res.status(401).send('Invalid email or password');
+    if (newPassword === 'Email exists')
+      return res.status(409).send('Email exists');
     models.Renters.create({
       first_name,
       last_name,
@@ -28,7 +29,8 @@ renter.post("/create", (req, res) => {
   });
 });
 
-renter.put("/update/:id", (req, res) => {
+//PUT request to update renter
+renter.put('/update/:id', (req, res) => {
   const id = req.params.id;
   const { first_name, last_name, email, purpose, picture, phone_number } =
     req.body;
@@ -40,11 +42,12 @@ renter.put("/update/:id", (req, res) => {
       plain: true,
     }
   )
-    .then(() => res.send("updated successfully"))
+    .then(() => res.send('updated successfully'))
     .catch((err) => res.status(500).send(err));
 });
 
-renter.get("/:id", (req, res) => {
+//GET request for specific renter
+renter.get('/:id', (req, res) => {
   let id = req.params.id;
   models.Renters.findOne({
     where: { id },
