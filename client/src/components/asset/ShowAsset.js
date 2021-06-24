@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 export default function ShowAsset({ asset }) {
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [pictureUrl, setPictureUrl] = useState('');
 
   useEffect(() => {
     axios
@@ -21,9 +21,10 @@ export default function ShowAsset({ asset }) {
       <p>{asset.description}</p>
       <p>Availability</p>
       <p>
-        {asset.started_at.slice(0, 10).replaceAll("-", "/")}-
-        {asset.ended_at.slice(0, 10).replaceAll("-", "/")}
+        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
+        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
       </p>
+      <button>like</button>
     </div>
   );
 }

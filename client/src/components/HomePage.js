@@ -1,25 +1,27 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { eraseCookie } from "../utils/cookies";
-import ShowAsset from "./asset/ShowAsset";
-import ClipLoader from "react-spinners/ClipLoader";
-
-let cancelToken;
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { eraseCookie } from '../utils/cookies';
+import ShowAsset from './asset/ShowAsset';
+import ClipLoader from 'react-spinners/ClipLoader';
+import Search from './Search';
 
 function HomePage({ user, setUser }) {
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchInput, setSearchInput] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [startedAt, setStartedAt] = useState();
+  const [endedAt, setEndedAt] = useState();
+
   const [filterBy, setFilterBy] = useState([
-    { name: "Ac", value: false },
-    { name: "Accessibility", value: false },
-    { name: "Animals", value: false },
-    { name: "Babies", value: false },
-    { name: "Kosher", value: false },
-    { name: "Parking", value: false },
-    { name: "Shabbat", value: false },
+    { name: 'Ac', value: false },
+    { name: 'Accessibility', value: false },
+    { name: 'Animals', value: false },
+    { name: 'Babies', value: false },
+    { name: 'Kosher', value: false },
+    { name: 'Parking', value: false },
+    { name: 'Shabbat', value: false },
   ]);
 
   const changeValue = (i) => {
@@ -28,19 +30,19 @@ function HomePage({ user, setUser }) {
     setFilterBy(copyArr);
   };
   const logout = () => {
-    eraseCookie("accessToken");
-    eraseCookie("refreshToken");
-    setUser("");
+    eraseCookie('accessToken');
+    eraseCookie('refreshToken');
+    setUser('');
   };
 
   const filterOptions = () => {
-    let filterString = "";
+    let filterString = '';
     for (let i = 0; i < filterBy.length; i++) {
       if (filterBy[i].value) {
-        if (filterString === "") {
+        if (filterString === '') {
           filterString = filterBy[i].name;
         } else {
-          filterString = filterString + "," + filterBy[i].name;
+          filterString = filterString + ',' + filterBy[i].name;
         }
       }
     }
@@ -54,9 +56,9 @@ function HomePage({ user, setUser }) {
         console.log(data);
         console.log(data.data.length);
         if (data.data.length === 0) {
-          setError("No match found");
+          setError('No match found');
         } else {
-          setError("");
+          setError('');
         }
       })
       .catch((err) => console.log(err));
@@ -64,7 +66,7 @@ function HomePage({ user, setUser }) {
   };
   const getAssets = () => {
     axios
-      .get("/api/asset")
+      .get('/api/asset')
       .then((data) => {
         setAssets(data.data);
       })
@@ -78,79 +80,39 @@ function HomePage({ user, setUser }) {
     }, 1000);
   }, []);
 
-  const searchByCity = () => {
-    if (user && !user.isOwner) {
-      if (typeof cancelToken != typeof undefined) {
-        cancelToken.cancel("new request");
-      }
-
-      cancelToken = axios.CancelToken.source();
-      if (searchInput) {
-        axios
-          .get(`/api/asset?city=${searchInput}`, {
-            cancelToken: cancelToken.token,
-          })
-          .then((res) => {
-            setAssets(res.data);
-            if (res.data.length === 0) {
-              setError("No city found");
-            } else {
-              setError("");
-            }
-          })
-          .catch((err) => {
-            console.log(err.message);
-            setError("Server problem please try again");
-          });
-        console.log(assets);
-      } else {
-        axios
-          .get(`/api/asset`, {
-            cancelToken: cancelToken.token,
-          })
-          .then((res) => {
-            setAssets(res.data);
-            if (res.data.length === 0) {
-              setError("No city found");
-            } else {
-              setError("");
-            }
-          })
-          .catch((err) => {
-            console.log(err.message);
-            setError("Server problem please try again");
-          });
-      }
-    }
-  };
   return (
     <>
       {loading ? (
-        <ClipLoader color={"red"} loading={loading} size={150} />
+        <ClipLoader color={'red'} loading={loading} size={150} />
       ) : (
         <div>
           <h1>Home Page</h1>
           {user ? (
             <>
               <div>{user.email}</div>
-              <div>{user.isOwner ? "Owner" : "Renter"}</div>
+              <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
               <button
                 onClick={() => {
                   logout();
-                }}
-              >
+                }}>
                 logout
               </button>
               {user.isOwner ? (
-                ""
+                ''
               ) : (
                 <div>
-                  <input
-                    type="search"
-                    placeholder="Search By City"
-                    onChange={(event) => setSearchInput(event.target.value)}
+                  <Search
+                    searchInput={searchInput}
+                    setSearchInput={setSearchInput}
+                    setError={setError}
+                    setAssets={setAssets}
+                    user={user}
+                    assets={assets}
+                    setStartedAt={setStartedAt}
+                    setEndedAt={setEndedAt}
+                    startedAt={startedAt}
+                    endedAt={endedAt}
                   />
-                  <button onClick={() => searchByCity()}>Search</button>
                   <div className="filter">
                     {filterBy.map((option, i) => (
                       <div key={i} className={`${i} filter-option`}>
@@ -163,7 +125,7 @@ function HomePage({ user, setUser }) {
                     ))}
                     <button onClick={() => filterOptions()}>Filter</button>
                   </div>
-                  {error ? <div>{error}</div> : ""}
+                  {error ? <div>{error}</div> : ''}
                   {assets.map((asset, i) => (
                     <ShowAsset key={i} asset={asset} />
                   ))}
