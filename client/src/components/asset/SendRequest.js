@@ -54,7 +54,6 @@ function SendRequest({ user, asset, setOpenSendRequest }) {
 
   return (
     <div>
-      {console.log(unavailableDates)}
       <p>Which dates would you like to arrive?</p>
       <DateRange
         editableDateInputs={true}

@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const asset = express.Router();
 const models = require("../models");
-const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
 asset.use(express.json());
@@ -14,7 +13,7 @@ asset.post("/create", (req, res) => {
 });
 
 //A GET request that can use for search/specific user/everything
-asset.get("/", (req, res) => {
+asset.get("/", async (req, res) => {
   const startDate = new Date(req.query.startDate);
   const stopDate = new Date(req.query.stopDate);
   const city = req.query.city;
@@ -29,16 +28,35 @@ asset.get("/", (req, res) => {
   if (owner_id) {
     searchQuery = { owner_id };
   }
-  models.Assets.findAll({
-    where: searchQuery,
-    raw: true,
-  })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
+  try {
+    const assets = await models.Assets.findAll({
+      where: searchQuery,
+      raw: true,
     });
+    if (owner_id) {
+      return res.send(assets);
+    }
+
+    const filteredAssets = await assets.reduce(async (filtered, asset) => {
+      const unavailableDatesInAsset = await models.Unavailable_Dates.findAll({
+        where: {
+          [Op.and]: [
+            { asset_id: asset.id },
+            { date: { [Op.between]: [startDate, stopDate] } },
+          ],
+        },
+        raw: true,
+      });
+      if (unavailableDatesInAsset.length === 0) {
+        filtered.push(asset);
+      }
+      return filtered;
+    }, []);
+
+    res.send(filteredAssets);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 //PUT request to update asset
