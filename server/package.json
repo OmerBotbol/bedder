@@ -6,7 +6,9 @@
   "scripts": {
     "start": "done index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "database": " npx sequelize db:migrate && npx sequelize db:seed:all",
+    "databaseundo": "npx sequelize db:seed:undo:all &&  npx sequelize db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",
