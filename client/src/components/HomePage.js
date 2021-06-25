@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { eraseCookie } from '../utils/cookies';
-import ShowAsset from './asset/ShowAsset';
-import ClipLoader from 'react-spinners/ClipLoader';
-import Search from './Search';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { eraseCookie } from "../utils/cookies";
+import ShowAsset from "./asset/ShowAsset";
+import ClipLoader from "react-spinners/ClipLoader";
+import Search from "./Search";
 
 function HomePage({ user, setUser }) {
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  const [error, setError] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [startedAt, setStartedAt] = useState();
   const [endedAt, setEndedAt] = useState();
 
   const [filterBy, setFilterBy] = useState([
-    { name: 'Ac', value: false },
-    { name: 'Accessibility', value: false },
-    { name: 'Animals', value: false },
-    { name: 'Babies', value: false },
-    { name: 'Kosher', value: false },
-    { name: 'Parking', value: false },
-    { name: 'Shabbat', value: false },
+    { name: "Ac", value: false },
+    { name: "Accessibility", value: false },
+    { name: "Animals", value: false },
+    { name: "Babies", value: false },
+    { name: "Kosher", value: false },
+    { name: "Parking", value: false },
+    { name: "Shabbat", value: false },
   ]);
 
   const changeValue = (i) => {
@@ -30,9 +30,9 @@ function HomePage({ user, setUser }) {
     setFilterBy(copyArr);
   };
   const logout = () => {
-    eraseCookie('accessToken');
-    eraseCookie('refreshToken');
-    setUser('');
+    eraseCookie("accessToken");
+    eraseCookie("refreshToken");
+    setUser("");
   };
 
   const filterOptions = () => {
@@ -56,9 +56,9 @@ function HomePage({ user, setUser }) {
       return filtered;
     }, []);
     setFilteredAssets(filteredArr);
-    setError('');
+    setError("");
     if (filteredArr.length === 0) {
-      setError('no assets found');
+      setError("no assets found");
     }
   };
 
@@ -71,22 +71,23 @@ function HomePage({ user, setUser }) {
   return (
     <>
       {loading ? (
-        <ClipLoader color={'red'} loading={loading} size={150} />
+        <ClipLoader color={"red"} loading={loading} size={150} />
       ) : (
         <div>
           <h1>Home Page</h1>
           {user ? (
             <>
               <div>{user.email}</div>
-              <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
+              <div>{user.isOwner ? "Owner" : "Renter"}</div>
               <button
                 onClick={() => {
                   logout();
-                }}>
+                }}
+              >
                 logout
               </button>
               {user.isOwner ? (
-                ''
+                ""
               ) : (
                 <div>
                   <Search
@@ -114,15 +115,9 @@ function HomePage({ user, setUser }) {
                     ))}
                     <button onClick={() => filterOptions()}>Filter</button>
                   </div>
-                  {error ? <div>{error}</div> : ''}
+                  {error ? <div>{error}</div> : ""}
                   {filteredAssets.map((asset, i) => (
-                    <ShowAsset
-                      key={i}
-                      user={user}
-                      asset={asset}
-                      startedAt={startedAt}
-                      endedAt={endedAt}
-                    />
+                    <ShowAsset key={i} user={user} asset={asset} />
                   ))}
                 </div>
               )}
