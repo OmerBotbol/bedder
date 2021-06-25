@@ -14,40 +14,34 @@ export default function OwnerProfile({ user, userDetails }) {
 
   //Get assets from database of owner
   useEffect(() => {
-    axios
-      .get(`/api/picture/image/${userDetails.picture}`)
+    Promise.all([
+      axios.get(`/api/picture/image/${userDetails.picture}`),
+      axios.get(`/api/asset?owner_id=${user.id}`),
+      axios.get(`/api/transaction/ownerAll/${user.id}`),
+    ])
       .then((data) => {
-        setPictureUrl(data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .get(`/api/asset?owner_id=${user.id}`)
-      .then((data) => setAssets(data.data))
-      .catch((err) => console.log(err));
+        setPictureUrl(data[0].data);
+        setAssets(data[1].data);
 
-    axios
-      .get(`/api/transaction/ownerAll/${user.id}`)
-      .then((data) => {
-        const findTrans = data.data.reduce((filtered, option) => {
+        const findTrans = data[2].data.reduce((filtered, option) => {
           if (!option.owner_approvement && !option.booked) {
             filtered.push(option);
           }
           return filtered;
         }, []);
-        const findNeed = data.data.reduce((filtered, option) => {
+        const findNeed = data[2].data.reduce((filtered, option) => {
           if (option.owner_approvement && !option.booked) {
             filtered.push(option);
           }
           return filtered;
         }, []);
-        setTransactions(findTrans);
+        if (transactions.length !== findTrans.length) {
+          setTransactions(findTrans);
+        }
         setNeedToBook(findNeed);
       })
-      .catch((err) => console.log(err));
-  }, [userDetails.picture, user.id, transactions]);
-
+      .catch((err) => console.log(2));
+  }, [user.id, userDetails.picture, transactions]);
   return (
     <div>
       <p>Owner</p>
@@ -73,11 +67,12 @@ export default function OwnerProfile({ user, userDetails }) {
         ))}
       </ol>
       <h2>you have {needToBook.length} offers that you need to book</h2>
-      {needToBook.map((offer) => (
+      {needToBook.map((offer, i) => (
         <NeedToBook
           needToBook={needToBook}
           offer={offer}
           setNeedToBook={setNeedToBook}
+          key={i}
         />
       ))}
     </div>

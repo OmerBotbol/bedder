@@ -43,6 +43,7 @@ transaction.get('/:id', (req, res) => {
 //GET request to find all transaction for specific owner
 transaction.get('/ownerAll/:ownerId', (req, res) => {
   const { ownerId } = req.params;
+  console.log('lalala');
   models.Transactions.findAll({
     where: { owner_id: ownerId },
     raw: true,
@@ -50,7 +51,10 @@ transaction.get('/ownerAll/:ownerId', (req, res) => {
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => res.status(500).send(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
 });
 
 //DELETE transaction

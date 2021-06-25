@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Unavailable_Dates", {
+    await queryInterface.createTable('Unavailable_Dates', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,10 +11,7 @@ module.exports = {
       asset_id: {
         type: Sequelize.INTEGER,
       },
-      started_at: {
-        type: Sequelize.DATE,
-      },
-      ended_at: {
+      date: {
         type: Sequelize.DATE,
       },
       created_at: {
@@ -28,6 +25,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Unavailable_Dates");
+    await queryInterface.dropTable('Unavailable_Dates');
   },
 };

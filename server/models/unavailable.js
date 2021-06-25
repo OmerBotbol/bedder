@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Unavailable.init(
     {
       asset_id: DataTypes.INTEGER,
-      started_at: DataTypes.DATE,
-      ended_at: DataTypes.DATE,
+      date: DataTypes.DATE,
     },
     {
       sequelize,

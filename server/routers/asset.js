@@ -29,8 +29,6 @@ asset.get('/', (req, res) => {
   if (owner_id) {
     searchQuery = { owner_id };
   }
-  console.log(startDate);
-  console.log(stopDate);
   models.Assets.findAll({
     where: searchQuery,
     raw: true,

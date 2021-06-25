@@ -21,9 +21,11 @@ owner.post('/create', (req, res) => {
       password: newPassword,
       picture,
       phone_number,
-    }).then((data) => {
-      res.status(201).send({ email, isOwner: true, id: data.id });
-    });
+    })
+      .then((data) => {
+        res.status(201).send({ email, isOwner: true, id: data.id });
+      })
+      .catch((err) => console.log(err));
   });
 });
 

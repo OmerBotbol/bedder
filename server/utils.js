@@ -5,6 +5,7 @@ const axios = require('axios');
 const register = async (req, modelName) => {
   const reg = '[a-zA-Z0-9]$';
   const { email, password } = req.body;
+  console.log(email, password);
   const isValidEmail = await axios.get(
     `http://apilayer.net/api/check?access_key=7f5ccfb6d92c49b992ad51d6c10278fb&email=${email}&smtp=1&format=1`
   );
