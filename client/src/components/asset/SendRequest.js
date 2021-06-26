@@ -5,14 +5,14 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
 
-function SendRequest({ user, asset, setOpenSendRequest }) {
+function SendRequest({ user, asset, setOpenSendRequest, startedAt, endedAt }) {
   const [comments, setComments] = useState("");
-  const [startedAt, setStartedAt] = useState("");
-  const [endedAt, setEndedAt] = useState("");
+  const [newsStartedAt, setNewStartedAt] = useState("");
+  const [newEndedAt, setNewEndedAt] = useState("");
   const [unavailableDates, setUnavailableDates] = useState([]);
   const [selectionRange, SetSelectionRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(startedAt),
+    endDate: new Date(endedAt),
     key: "selection",
   });
 
@@ -34,8 +34,8 @@ function SendRequest({ user, asset, setOpenSendRequest }) {
       asset_id: asset.id,
       owner_id: asset.owner_id,
       renter_id: user.id,
-      started_at: startedAt,
-      ended_at: endedAt,
+      started_at: newsStartedAt,
+      ended_at: newEndedAt,
       comments,
     };
     axios
@@ -47,8 +47,8 @@ function SendRequest({ user, asset, setOpenSendRequest }) {
   };
 
   const handleSelect = (i) => {
-    setStartedAt(i.selection.startDate);
-    setEndedAt(i.selection.endDate);
+    setNewStartedAt(i.selection.startDate);
+    setNewEndedAt(i.selection.endDate);
     SetSelectionRange(i.selection);
   };
 

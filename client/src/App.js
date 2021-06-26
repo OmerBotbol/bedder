@@ -21,7 +21,6 @@ function App() {
     intercept();
     getHttp("/api/data", "accessToken")
       .then((res) => {
-        console.log("i'm trying");
         const userToSave = {
           email: res.data.email,
           isOwner: res.data.isOwner,

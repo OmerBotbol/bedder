@@ -16,18 +16,11 @@ export default function Profile({ user, setUser }) {
   }, []);
   useEffect(() => {
     if (user) {
-      console.log(user);
-      if (user.isOwner) {
-        axios
-          .get(`/api/owner/${user.id}`)
-          .then((data) => setUserDetails(data.data))
-          .catch((err) => console.log(err));
-      } else {
-        axios
-          .get(`/api/renter/${user.id}`)
-          .then((data) => setUserDetails(data.data))
-          .catch((err) => console.log(err));
-      }
+      const route = user.isOwner ? "owner" : "renter";
+      axios
+        .get(`/api/${route}/${user.id}`)
+        .then((data) => setUserDetails(data.data))
+        .catch((err) => console.log(err));
     }
   }, [user]);
   return (

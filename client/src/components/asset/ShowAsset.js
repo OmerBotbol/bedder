@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import SendRequest from "./SendRequest";
 
-export default function ShowAsset({ user, asset }) {
+export default function ShowAsset({ user, asset, startedAt, endedAt }) {
   const [pictureUrl, setPictureUrl] = useState("");
   const [openSendRequest, setOpenSendRequest] = useState(false);
 
@@ -34,6 +34,8 @@ export default function ShowAsset({ user, asset }) {
           user={user}
           asset={asset}
           setOpenSendRequest={setOpenSendRequest}
+          startedAt={startedAt}
+          endedAt={endedAt}
         />
       )}
     </div>
