@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { eraseCookie } from "../utils/cookies";
 import ClipLoader from "react-spinners/ClipLoader";
 import OwnerHomePage from "./owner/OwnerHomePage";
 import RenterHomePage from "./renter/RenterHomePage";
 
-function HomePage({ user, setUser }) {
+function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
-
-  const logout = () => {
-    eraseCookie("accessToken");
-    eraseCookie("refreshToken");
-    setUser("");
-  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,19 +24,11 @@ function HomePage({ user, setUser }) {
             <>
               <div>{user.email}</div>
               <div>{user.isOwner ? "Owner" : "Renter"}</div>
-              <button
-                onClick={() => {
-                  logout();
-                }}
-              >
-                logout
-              </button>
               {user.isOwner ? (
                 <OwnerHomePage user={user} />
               ) : (
                 <RenterHomePage user={user} />
               )}
-              <Link to="/profile">Profile</Link>
             </>
           ) : (
             <>
