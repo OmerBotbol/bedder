@@ -1,3 +1,4 @@
+import "../styles/homepage.css";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -18,8 +19,8 @@ function HomePage({ user }) {
       {loading ? (
         <ClipLoader color={"red"} loading={loading} size={150} />
       ) : (
-        <div>
-          <h1>Home Page</h1>
+        <div className="container2">
+          <h1>Bedder</h1>
           {user ? (
             <>
               <div>{user.email}</div>

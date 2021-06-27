@@ -1,14 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
-import { createCookie } from '../utils/cookies';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+// import "../styles/login.css";
+import React from "react";
+import { useState } from "react";
+import { createCookie } from "../utils/cookies";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 function Login({ user, setUser }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isOwner, setIsOwner] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [chooseCustomerType, setChooseCustomerType] = useState(false);
 
   const login = async () => {
@@ -19,10 +20,10 @@ function Login({ user, setUser }) {
     };
     if (chooseCustomerType) {
       try {
-        const findUser = await axios.post('/api/login', user);
-        createCookie('accessToken', findUser.data.accessToken, 120000);
-        createCookie('refreshToken', findUser.data.refreshToken);
-        console.log('success logging in');
+        const findUser = await axios.post("/api/login", user);
+        createCookie("accessToken", findUser.data.accessToken, 120000);
+        createCookie("refreshToken", findUser.data.refreshToken);
+        console.log("success logging in");
         const userToSave = {
           email: findUser.data.email,
           isOwner: findUser.data.isOwner,
@@ -31,11 +32,11 @@ function Login({ user, setUser }) {
         console.log(findUser.data);
         setUser(userToSave);
       } catch (error) {
-        console.log('error invalid user');
-        setMessage('User name, password or customer type are incorrect');
+        console.log("error invalid user");
+        setMessage("User name, password or customer type are incorrect");
       }
     } else {
-      setMessage('Please select customer type');
+      setMessage("Please select customer type");
     }
   };
 
@@ -72,7 +73,7 @@ function Login({ user, setUser }) {
                     name="customer"
                     value={true}
                     onChange={(e) => {
-                      setIsOwner(e.target.value === 'true');
+                      setIsOwner(e.target.value === "true");
                       setChooseCustomerType(true);
                     }}
                   />
@@ -83,7 +84,7 @@ function Login({ user, setUser }) {
                     name="customer"
                     value={false}
                     onChange={(e) => {
-                      setIsOwner(e.target.value === 'true');
+                      setIsOwner(e.target.value === "true");
                       setChooseCustomerType(true);
                     }}
                   />
