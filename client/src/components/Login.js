@@ -42,50 +42,62 @@ function Login({ user, setUser }) {
   return (
     <>
       {!user ? (
-        <div>
-          <h1>Bedder</h1>
-          <input
-            type="email"
-            placeholder="Enter email"
-            onChange={(e) => setEmail(e.target.value)}
-            required></input>
-          <br />
-          <input
-            type="password"
-            placeholder="Enter password"
-            onChange={(e) => setPassword(e.target.value)}
-            required></input>
-          <label>Owner</label>
-          <input
-            type="radio"
-            name="customer"
-            value={true}
-            onChange={(e) => {
-              setIsOwner(e.target.value === 'true');
-              setChooseCustomerType(true);
-            }}
-          />
-          <label>Renter</label>
-          <input
-            type="radio"
-            name="customer"
-            value={false}
-            onChange={(e) => {
-              setIsOwner(e.target.value === 'true');
-              setChooseCustomerType(true);
-            }}
-          />
-          <button
-            onClick={() => login()}
-            className="start-btn"
-            variant="contained">
-            LOGIN
-          </button>
-          <div>{message}</div>
+        <div className="container">
+          <div className="container_content">
+            <div className="container_content_inner">
+              <div className="title">
+                <h1>Bedder</h1>
+              </div>
+              <div className="par">
+                <input
+                  type="email"
+                  placeholder="Enter email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                ></input>
+                <br />
+                <input
+                  type="password"
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                ></input>
+                <label>Owner</label>
+                <input
+                  type="radio"
+                  name="customer"
+                  value={true}
+                  onChange={(e) => {
+                    setIsOwner(e.target.value === 'true');
+                    setChooseCustomerType(true);
+                  }}
+                />
+                <label>Renter</label>
+                <input
+                  type="radio"
+                  name="customer"
+                  value={false}
+                  onChange={(e) => {
+                    setIsOwner(e.target.value === 'true');
+                    setChooseCustomerType(true);
+                  }}
+                />
+                <button
+                  onClick={() => login()}
+                  className="start-btn"
+                  variant="contained"
+                >
+                  LOGIN
+                </button>
+                <div>{message}</div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <Redirect to="/" />
       )}
+      <div className="overlay"></div>
     </>
   );
 }
