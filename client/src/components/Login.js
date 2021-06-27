@@ -50,6 +50,7 @@ function Login({ user, setUser }) {
               </div>
               <div className="par">
                 <input
+                  className="loginAdd text"
                   type="email"
                   placeholder="Enter email"
                   onChange={(e) => setEmail(e.target.value)}
@@ -57,38 +58,45 @@ function Login({ user, setUser }) {
                 ></input>
                 <br />
                 <input
+                  className="loginAdd text"
                   type="password"
                   placeholder="Enter password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 ></input>
-                <label>Owner</label>
-                <input
-                  type="radio"
-                  name="customer"
-                  value={true}
-                  onChange={(e) => {
-                    setIsOwner(e.target.value === 'true');
-                    setChooseCustomerType(true);
-                  }}
-                />
-                <label>Renter</label>
-                <input
-                  type="radio"
-                  name="customer"
-                  value={false}
-                  onChange={(e) => {
-                    setIsOwner(e.target.value === 'true');
-                    setChooseCustomerType(true);
-                  }}
-                />
-                <button
-                  onClick={() => login()}
-                  className="start-btn"
-                  variant="contained"
-                >
-                  LOGIN
-                </button>
+                <div className="labelName">
+                  <div className="loginAdd label">Owner</div>
+                  <input
+                    className="loginAdd option-input radio"
+                    type="radio"
+                    name="customer"
+                    value={true}
+                    onChange={(e) => {
+                      setIsOwner(e.target.value === 'true');
+                      setChooseCustomerType(true);
+                    }}
+                  />
+                  <div className="loginAdd label">Renter</div>
+                  <input
+                    className="loginAdd option-input radio"
+                    type="radio"
+                    name="customer"
+                    value={false}
+                    onChange={(e) => {
+                      setIsOwner(e.target.value === 'true');
+                      setChooseCustomerType(true);
+                    }}
+                  />
+                </div>
+                <div className="btns">
+                  <button
+                    onClick={() => login()}
+                    className="btns_more"
+                    variant="contained"
+                  >
+                    LOGIN
+                  </button>
+                </div>
                 <div>{message}</div>
               </div>
             </div>

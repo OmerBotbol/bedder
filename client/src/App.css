@@ -5,11 +5,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
 }
 
 :root {
-  --secondary-color: #151226;
-  --contrast-color: #BF307F;
+  --secondary-color: #d3e3fc;
+  --contrast-color: #00887a;
 }
 .overlay {
   position: absolute;
@@ -26,46 +27,57 @@
   display: flex;
   height: 100vh;
   justify-content: space-around;
-  align-items: center;
-  color: #fff;
-  animation: expand .8s ease forwards;
-  background-color: var(--secondary-color);
+  padding-top: 10vh;
+  color: #77a6f7;
+  animation: expand 0.8s ease forwards;
+  background-image: url('leaf.jpg');
   position: relative;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  transition: all .8s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  transition: all 0.8s ease;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.text {
+  font-size: 1.3em;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  backface-visibility: hidden;
+  line-height: 18px;
+  width: 30vw;
+  padding: 6px 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 3vh;
 }
 
+Input :hover,
+:focus {
+  outline: 0;
+}
 .container_content {
- width: 50%;
-}
-
-.container_content_inner {
-  width: 80%;
-  margin-left: 80px;
-}
-
-.container_outer_img {
-  margin: 50px;
   width: 50%;
-  overflow: hidden;
-}   
-    
-.container_img {
-  width: 100%;
-  animation: slideIn 1.5s ease-in-out forwards;
 }
-
+.label {
+  font-size: 1.5em;
+}
+.labelName {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-around;
+  width: 40%;
+}
 .par {
   height: auto;
   overflow: hidden;
 }
 
-p{
+.loginAdd {
   line-height: 28px;
   transform: translateY(300px);
-  animation: slideUp .8s ease-in-out forwards .8s;
+  animation: slideUp 0.8s ease-in-out forwards 0.8s;
 }
-
 .btns {
   height: 100%;
   position: relative;
@@ -78,32 +90,37 @@ p{
   border: 1px solid var(--contrast-color);
   border-radius: 50px;
   padding: 8px 12px;
-  color: #BF307F;
+  color: #77a6f7;
   font-size: 16px;
   text-transform: uppercase;
   position: relative;
   margin-top: 15px;
   outline: none;
   transform: translateY(50px);
-  animation: slideUp .8s ease-in-out  forwards 1s;
+  animation: slideUp 0.8s ease-in-out forwards 1s;
 }
-
+.btns_more:hover {
+  background-color: #fff;
+  color: #00887a;
+  cursor: pointer;
+}
 .title {
   overflow: hidden;
   height: auto;
 }
 
 h1 {
-    font-size: 40px;
-    color: var(--contrast-color);
-    margin-bottom: 20px;
-    transform: translateY(100px);
-    animation: slideUp .8s ease forwards .5s;
+  font-size: 60px;
+  color: var(--contrast-color);
+  margin-top: 0%;
+  margin-bottom: 20px;
+  transform: translateY(100px);
+  animation: slideUp 0.8s ease forwards 0.5s;
 }
 
 @keyframes slideIn {
   0% {
-    transform: translateX(500px) scale(.2);
+    transform: translateX(500px) scale(0.2);
   }
   100% {
     transform: translateX(0px) scale(1);
@@ -126,4 +143,74 @@ h1 {
   100% {
     transform: translateX(0px);
   }
+}
+
+@keyframes click-wave {
+  0% {
+    height: 40px;
+    width: 40px;
+    opacity: 0.35;
+    position: relative;
+  }
+  100% {
+    height: 200px;
+    width: 200px;
+    margin-left: -80px;
+    margin-top: -80px;
+    opacity: 0;
+  }
+}
+
+.option-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+
+  height: 30px;
+  width: 30px;
+  transition: all 0.15s ease-out 0s;
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+  position: relative;
+  z-index: 1000;
+}
+.option-input:hover {
+  background: #9faab7;
+}
+.option-input:checked {
+  background: #ffccbc;
+}
+.option-input:checked::before {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  content: '✔';
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  line-height: 32px;
+}
+.option-input:checked::after {
+  -webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;
+  background: #ffccbc;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+.option-input.radio {
+  border-radius: 50%;
+}
+.option-input.radio::after {
+  border-radius: 50%;
 }
