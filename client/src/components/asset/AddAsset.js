@@ -1,11 +1,14 @@
-import axios from 'axios';
-import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import axios from "axios";
+import { useState } from "react";
+import { Redirect } from "react-router-dom";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
 
-export default function AddAsset({ user, setUser }) {
-  const [city, setCity] = useState('');
-  const [address, setAddress] = useState('');
-  const [description, setDescription] = useState('');
+export default function AddAsset({ user }) {
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [numberOfRooms, setNumberOfRooms] = useState(0);
   const [kosher, setKosher] = useState(false);
@@ -15,11 +18,16 @@ export default function AddAsset({ user, setUser }) {
   const [AC, setAC] = useState(false);
   const [accessibility, setAccessibility] = useState(false);
   const [babies, setBabies] = useState(false);
-  const [picture, setPicture] = useState('');
-  const [startedAt, setStartedAt] = useState('');
-  const [endedAt, setEndedAt] = useState('');
-  const [message, setMessage] = useState('');
+  const [picture, setPicture] = useState("");
+  const [startedAt, setStartedAt] = useState("");
+  const [endedAt, setEndedAt] = useState("");
+  const [message, setMessage] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [selectionRange, SetSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
   const handleClick = async () => {
     if (user) {
@@ -33,12 +41,12 @@ export default function AddAsset({ user, setUser }) {
         !endedAt ||
         !picture
       ) {
-        setMessage('Please fill all the fields');
+        setMessage("Please fill all the fields");
       } else {
         //Upload picture to S3
         const imageInForm = new FormData();
-        imageInForm.append('file', picture);
-        const imageKey = await axios.post('/api/picture/upload', imageInForm);
+        imageInForm.append("file", picture);
+        const imageKey = await axios.post("/api/picture/upload", imageInForm);
         const dataToSend = {
           owner_id: user.id,
           city,
@@ -60,17 +68,24 @@ export default function AddAsset({ user, setUser }) {
 
         //Create asset
         axios
-          .post('/api/asset/create', dataToSend)
+          .post("/api/asset/create", dataToSend)
           .then(() => {
             setRedirect(true);
           })
           .catch(async (err) => {
             await axios.delete(`/api/picture/image/${imageKey.data}`);
-            setMessage('Problem, please try again later');
+            setMessage("Problem, please try again later");
           });
       }
     }
   };
+
+  const handleSelect = (i) => {
+    setStartedAt(i.selection.startDate);
+    setEndedAt(i.selection.endDate);
+    SetSelectionRange(i.selection);
+  };
+
   return (
     <div>
       <h1>Add asset</h1>
@@ -93,19 +108,19 @@ export default function AddAsset({ user, setUser }) {
       <input type="number" onChange={(e) => setNumberOfRooms(e.target.value)} />
       <br />
       <label>Kosher</label>
-      <input type="checkbox" onChange={(e) => setKosher(!kosher)} />
+      <input type="checkbox" onChange={() => setKosher(!kosher)} />
       <br />
       <label>Shabbat</label>
-      <input type="checkbox" onChange={(e) => setShabbat(!shabbat)} />
+      <input type="checkbox" onChange={() => setShabbat(!shabbat)} />
       <br />
       <label>Parking</label>
-      <input type="checkbox" onChange={(e) => setParking(!parking)} />
+      <input type="checkbox" onChange={() => setParking(!parking)} />
       <br />
       <label>Animals</label>
-      <input type="checkbox" onChange={(e) => setAnimals(!animals)} />
+      <input type="checkbox" onChange={() => setAnimals(!animals)} />
       <br />
       <label>AC</label>
-      <input type="checkbox" onChange={(e) => setAC(!AC)} />
+      <input type="checkbox" onChange={() => setAC(!AC)} />
       <br />
       <label>Accessibility</label>
       <input
@@ -114,7 +129,7 @@ export default function AddAsset({ user, setUser }) {
       />
       <br />
       <label>Babies</label>
-      <input type="checkbox" onChange={(e) => setBabies(!babies)} />
+      <input type="checkbox" onChange={() => setBabies(!babies)} />
       <br />
       <label>Picture</label>
       <input
@@ -123,18 +138,19 @@ export default function AddAsset({ user, setUser }) {
         onChange={(e) => setPicture(e.target.files[0])}
       />
       <br />
-      <label>Starts at</label>
-      <input type="date" onChange={(e) => setStartedAt(e.target.value)} />
+      <DateRange
+        editableDateInputs={true}
+        moveRangeOnFirstSelection={false}
+        onChange={(i) => handleSelect(i)}
+        ranges={[selectionRange]}
+        minDate={new Date()}
+      />
       <br />
-      <label>Ends at</label>
-      <input type="date" onChange={(e) => setEndedAt(e.target.value)} />
-      <br />
-
-      <div></div>
       <button
         onClick={() => {
           handleClick();
-        }}>
+        }}
+      >
         Add
       </button>
       {message && <p>{message}</p>}

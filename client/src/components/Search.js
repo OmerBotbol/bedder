@@ -1,6 +1,8 @@
-import axios from 'axios';
-
-let cancelToken;
+import axios from "axios";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
+import { useState } from "react";
 
 export default function Search({
   searchInput,
@@ -8,67 +10,47 @@ export default function Search({
   setError,
   setAssets,
   user,
-  assets,
   setStartedAt,
   setEndedAt,
   startedAt,
   endedAt,
   setFilteredAssets,
 }) {
-  console.log(startedAt, endedAt);
+  const [selectionRange, SetSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
   const searchByCity = () => {
     if (user && !user.isOwner) {
-      if (typeof cancelToken != typeof undefined) {
-        cancelToken.cancel('new request');
-      }
-      cancelToken = axios.CancelToken.source();
       if (!startedAt || !endedAt || !searchInput) {
-        return setError('Please fill all the fields');
+        return setError("Please fill all the fields");
       }
-      if (searchInput) {
-        axios
-          .get(
-            `/api/asset?city=${searchInput}&startDate=${startedAt}&stopDate=${endedAt}`,
-            {
-              cancelToken: cancelToken.token,
-            }
-          )
-          .then((res) => {
-            setAssets(res.data);
-            setFilteredAssets(res.data);
-            if (res.data.length === 0) {
-              setError('No city found');
-            } else {
-              setError('');
-            }
-          })
-          .catch((err) => {
-            console.log(err.message);
-            setError('Server problem please try again');
-          });
-        console.log(assets);
-      } else {
-        axios
-          .get(`/api/asset`, {
-            cancelToken: cancelToken.token,
-          })
-          .then((res) => {
-            setAssets(res.data);
-            setFilteredAssets(res.data);
-            if (res.data.length === 0) {
-              setError('No city found');
-            } else {
-              setError('');
-            }
-          })
-          .catch((err) => {
-            console.log(err.message);
-            setError('Server problem please try again');
-          });
-      }
+      let searchUrl;
+      searchInput
+        ? (searchUrl = `/api/asset?city=${searchInput}&startDate=${startedAt}&stopDate=${endedAt}`)
+        : (searchUrl = "/api/asset");
+      axios
+        .get(searchUrl)
+        .then((res) => {
+          setAssets(res.data);
+          setFilteredAssets(res.data);
+          res.data.length === 0 ? setError("No city found") : setError("");
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setError("Server problem please try again");
+        });
     }
   };
+
+  const handleSelect = (i) => {
+    setStartedAt(i.selection.startDate);
+    setEndedAt(i.selection.endDate);
+    SetSelectionRange(i.selection);
+  };
+
   return (
     <div>
       <input
@@ -76,10 +58,13 @@ export default function Search({
         placeholder="Search By City"
         onChange={(event) => setSearchInput(event.target.value)}
       />
-      <label>Starts at</label>
-      <input type="date" onChange={(e) => setStartedAt(e.target.value)} />
-      <label>Ends at</label>
-      <input type="date" onChange={(e) => setEndedAt(e.target.value)} />
+      <DateRange
+        editableDateInputs={true}
+        moveRangeOnFirstSelection={false}
+        onChange={(i) => handleSelect(i)}
+        ranges={[selectionRange]}
+        minDate={new Date()}
+      />
 
       <button onClick={() => searchByCity()}>Search</button>
     </div>

@@ -1,19 +1,19 @@
-require('dotenv').config();
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
 const owner = express.Router();
-const { register } = require('../utils');
-const models = require('../models');
+const { register } = require("../utils");
+const models = require("../models");
 
 owner.use(express.json());
 
 //POST request to create new owner
-owner.post('/create', (req, res) => {
+owner.post("/create", (req, res) => {
   const { first_name, last_name, email, picture, phone_number } = req.body;
   register(req, models.Owners).then((newPassword) => {
-    if (newPassword === 'Invalid email or password')
-      return res.status(403).send('Invalid email or password');
-    if (newPassword === 'Email exists')
-      return res.status(409).send('Email exists');
+    if (newPassword === "Invalid email or password")
+      return res.status(403).send("Invalid email or password");
+    if (newPassword === "Email exists")
+      return res.status(409).send("Email exists");
     models.Owners.create({
       first_name,
       last_name,
@@ -21,18 +21,18 @@ owner.post('/create', (req, res) => {
       password: newPassword,
       picture,
       phone_number,
-    }).then((data) => {
-      res.status(201).send({ email, isOwner: true, id: data.id });
-    });
+    })
+      .then((data) => {
+        res.status(201).send({ email, isOwner: true, id: data.id });
+      })
+      .catch((err) => console.log(err));
   });
 });
 
 //PUT request to update owner
-owner.put('/update/:id', (req, res) => {
+owner.put("/update/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id);
   const { first_name, last_name, email, picture, phone_number } = req.body;
-  console.log(first_name);
   models.Owners.update(
     { first_name, last_name, email, picture, phone_number },
     {
@@ -41,12 +41,12 @@ owner.put('/update/:id', (req, res) => {
       plain: true,
     }
   )
-    .then(() => res.send('updated successfully'))
+    .then(() => res.send("updated successfully"))
     .catch((err) => res.status(500).send(err));
 });
 
 //GET request for specific owner
-owner.get('/:id', (req, res) => {
+owner.get("/:id", (req, res) => {
   let id = req.params.id;
   models.Owners.findOne({
     where: { id },

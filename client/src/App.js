@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import axios from "axios";
 import AddAsset from "./components/asset/AddAsset";
 import HomePage from "./components/HomePage";
 import Login from "./components/Login";
@@ -9,19 +8,18 @@ import NotFound from "./components/NotFound";
 import RenterRegister from "./components/renter/RenterRegister";
 import OwnerRegister from "./components/owner/OwnerRegister";
 import Profile from "./components/Profile";
+import NavBar from "./components/NavBar";
 import { useEffect, useState } from "react";
 import { getHttp, intercept } from "./utils/networkWrapper";
 
 function App() {
   const [user, setUser] = useState();
-  const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     intercept();
     getHttp("/api/data", "accessToken")
       .then((res) => {
-        console.log("i'm trying");
         const userToSave = {
           email: res.data.email,
           isOwner: res.data.isOwner,
@@ -39,56 +37,13 @@ function App() {
       setLoading(false);
     }, 1000);
   }, []);
-  useEffect(() => {
-    if (user) {
-      if (user.isOwner) {
-        axios
-          .get(`/api/owner/${user.id}`)
-          .then((data) => setUserDetails(data.data))
-          .catch((err) => console.log(err));
-      } else {
-        axios
-          .get(`/api/renter/${user.id}`)
-          .then((data) => setUserDetails(data.data))
-          .catch((err) => console.log(err));
-      }
-    }
-  }, [user]);
   return (
     <div className="App">
-      {user ? (
-        <>
-          {loading ? (
-            ""
-          ) : (
-            <>
-              {user.isOwner ? (
-                <div>
-                  <i className="fa fa-user-circle-o" aria-hidden="true"></i>
-                  <span> </span>
-                  <span>
-                    {userDetails.first_name} {userDetails.last_name}
-                  </span>
-                </div>
-              ) : (
-                <div>
-                  <i className="fa fa-user-circle" aria-hidden="true"></i>
-                  <span> </span>
-                  <span>
-                    {userDetails.first_name} {userDetails.last_name}
-                  </span>
-                </div>
-              )}
-            </>
-          )}
-        </>
-      ) : (
-        ""
-      )}
       <Router>
+        {user && !loading ? <NavBar user={user} setUser={setUser} /> : ""}
         <Switch>
           <Route exact path="/">
-            <HomePage user={user} setUser={setUser} />
+            <HomePage user={user} />
           </Route>
           <Route exact path="/login">
             <Login user={user} setUser={setUser} />
@@ -103,10 +58,10 @@ function App() {
             <OwnerRegister user={user} setUser={setUser} />
           </Route>
           <Route exact path="/profile">
-            <Profile user={user} setUser={setUser} />
+            <Profile user={user} />
           </Route>
           <Route exact path="/addAsset">
-            <AddAsset user={user} setUser={setUser} />
+            <AddAsset user={user} />
           </Route>
           <Route component={NotFound} />
         </Switch>
