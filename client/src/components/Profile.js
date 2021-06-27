@@ -5,7 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import OwnerProfile from "./owner/OwnerProfile";
 import RenterProfile from "./renter/RenterProfile";
 
-export default function Profile({ user, setUser }) {
+export default function Profile({ user }) {
   const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(true);
 

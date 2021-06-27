@@ -58,10 +58,10 @@ function App() {
             <OwnerRegister user={user} setUser={setUser} />
           </Route>
           <Route exact path="/profile">
-            <Profile user={user} setUser={setUser} />
+            <Profile user={user} />
           </Route>
           <Route exact path="/addAsset">
-            <AddAsset user={user} setUser={setUser} />
+            <AddAsset user={user} />
           </Route>
           <Route component={NotFound} />
         </Switch>
