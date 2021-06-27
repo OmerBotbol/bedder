@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
+
 export default function ProfileAsset({ asset }) {
   const [startedAt, setStartedAt] = useState("");
   const [endedAt, setEndedAt] = useState("");
   const [hideDates, setHideDates] = useState(true);
   const [error, setError] = useState("");
   const [pictureUrl, setPictureUrl] = useState("");
+  const [unavailableDates, setUnavailableDates] = useState([]);
+  const [selectionRange, SetSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
   useEffect(() => {
     axios
@@ -18,32 +28,52 @@ export default function ProfileAsset({ asset }) {
       });
   }, [asset.picture]);
 
+  useEffect(() => {
+    axios
+      .get(`/api/asset/unavailableDates?assetId=${asset.id}`)
+      .then((result) => {
+        const dates = result.data.map((date) => new Date(date.date));
+        setUnavailableDates(dates);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [asset.id]);
+
   const Exists = (subject) => {
-    if (subject === 1) {
-      return <i className="fa fa-check" aria-hidden="true"></i>;
-    } else {
-      return <i className="fa fa-times" aria-hidden="true"></i>;
-    }
+    const title = subject === 1 ? "check" : "times";
+    return <i className={`fa fa-${title}`} aria-hidden="true"></i>;
   };
 
-  const unavailableDates = () => {
+  const addUnavailableDates = () => {
     if (!startedAt || !endedAt) {
       setError("Fill all fields");
     } else {
       const dataToSend = {
         asset_id: asset.id,
-        started_at: startedAt,
-        ended_at: endedAt,
+        startedAt,
+        endedAt,
       };
 
       axios
         .post("/api/asset/addUnavailableDates", dataToSend)
-        .then((data) => console.log(data))
+        .then((data) => {
+          const newUnavailable = [...unavailableDates];
+          newUnavailable.push(data.data);
+          setUnavailableDates(newUnavailable);
+        })
         .catch((err) => console.log(err));
       setHideDates(!hideDates);
       setError("");
     }
   };
+
+  const handleSelect = (i) => {
+    setStartedAt(i.selection.startDate);
+    setEndedAt(i.selection.endDate);
+    SetSelectionRange(i.selection);
+  };
+
   return (
     <div className="profile-owner-asset">
       <img src={pictureUrl} alt="asset" />
@@ -73,30 +103,27 @@ export default function ProfileAsset({ asset }) {
         Add unavailable dates
       </button>
       <div>
-        <label className={hideDates.toString()}>Start date</label>
-        <input
-          className={hideDates.toString()}
-          type="date"
-          onChange={(e) => {
-            setStartedAt(e.target.value);
-          }}
-        />
-        <label className={hideDates.toString()}>End date</label>
-        <input
-          className={hideDates.toString()}
-          type="date"
-          onChange={(e) => {
-            setEndedAt(e.target.value);
-          }}
-        />
-        <button
-          className={hideDates.toString()}
-          onClick={() => {
-            unavailableDates();
-          }}
-        >
-          +
-        </button>
+        {!hideDates && (
+          <>
+            <DateRange
+              editableDateInputs={true}
+              moveRangeOnFirstSelection={false}
+              onChange={(i) => handleSelect(i)}
+              ranges={[selectionRange]}
+              minDate={new Date(asset.started_at)}
+              maxDate={new Date(asset.ended_at)}
+              disabledDates={unavailableDates}
+            />
+            <button
+              className={hideDates.toString()}
+              onClick={() => {
+                addUnavailableDates();
+              }}
+            >
+              +
+            </button>
+          </>
+        )}
         {error && <p>{error}</p>}
       </div>
     </div>

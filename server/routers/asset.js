@@ -16,6 +16,8 @@ asset.post("/create", (req, res) => {
 asset.get("/", async (req, res) => {
   const startDate = new Date(req.query.startDate);
   const stopDate = new Date(req.query.stopDate);
+  console.log(startDate);
+  console.log(stopDate);
   const city = req.query.city;
   const owner_id = req.query.owner_id;
   let searchQuery = {
@@ -47,6 +49,8 @@ asset.get("/", async (req, res) => {
         },
         raw: true,
       });
+      console.log(unavailableDatesInAsset);
+      console.log(unavailableDatesInAsset.length);
       if (unavailableDatesInAsset.length === 0) {
         filtered.push(asset);
       }
@@ -62,7 +66,6 @@ asset.get("/", async (req, res) => {
 //PUT request to update asset
 asset.put("/update/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id);
   const {
     city,
     address,
@@ -110,19 +113,26 @@ asset.put("/update/:id", (req, res) => {
 
 //POST request to add unavailable dates
 asset.post("/addUnavailableDates", (req, res) => {
-  models.Unavailable_Dates.create(req.body)
+  const { asset_id, startedAt, endedAt } = req.body;
+  let date = new Date(startedAt);
+  let endDate = new Date(endedAt);
+  const dateArr = [];
+  while (date <= endDate) {
+    const newDate = { date: new Date(date), asset_id };
+    dateArr.push(newDate);
+    date.setDate(date.getDate() + 1);
+  }
+  models.Unavailable_Dates.bulkCreate(dateArr)
     .then(() => {
-      res.send("New unavailable date created!");
+      res.send(dateArr);
     })
     .catch((err) => {
       res.status(500).send(err);
-      console.log(err);
     });
 });
 
 asset.get("/unavailableDates", (req, res) => {
   const { assetId } = req.query;
-  console.log(assetId);
   models.Unavailable_Dates.findAll({
     where: { asset_id: assetId },
     raw: true,
