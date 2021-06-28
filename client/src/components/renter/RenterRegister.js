@@ -69,7 +69,7 @@ function RenterRegister({ user, setUser }) {
               <label className="register-label">First Name</label>
               <input
                 type="text"
-                className="text"
+                className="register-text"
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
@@ -77,7 +77,7 @@ function RenterRegister({ user, setUser }) {
               <label className="register-label">Last Name</label>
               <input
                 type="text"
-                className="text"
+                className="register-text"
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
@@ -85,7 +85,7 @@ function RenterRegister({ user, setUser }) {
               <label className="register-label">Email</label>
               <input
                 type="email"
-                className="text"
+                className="register-text"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -93,22 +93,23 @@ function RenterRegister({ user, setUser }) {
               <label className="register-label">Password</label>
               <input
                 type="password"
-                className="text"
+                className="register-text"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="form-field">
               <label className="register-label">Confirm password</label>
-              <div>
+              <div className="form-field confirm-password-container">
                 <i
                   className={`fa fa-${
                     confirmPassword ? 'check' : 'times'
-                  }-circle-o register-label`}
+                  }-circle-o register-symbol`}
+                  style={{ color: confirmPassword ? 'green' : 'red' }}
                   aria-hidden="true"
                 ></i>
                 <input
                   type="password"
-                  className="text"
+                  className="confirm-password"
                   onChange={(e) =>
                     password === e.target.value
                       ? setConfirmPassword(true)
@@ -122,30 +123,33 @@ function RenterRegister({ user, setUser }) {
               <textarea
                 rows="5"
                 cols="10"
-                className="text"
+                className="register-text"
                 onChange={(e) => setPurpose(e.target.value)}
               />
             </div>
             <div className="form-field">
               <label className="register-label">Picture</label>
-              <input
-                className="input-file"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImage(e.target.files[0])}
-              />
+              <div className="file-wrapper">
+                <label className="file-label">upload</label>
+                <input
+                  className="input-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
             </div>
             <div className="form-field">
               <label className="register-label">Phone Number</label>
               <input
                 type="text"
-                className="text"
+                className="register-text"
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <button className="register-btn" onClick={() => handleClick()}>
-              Register
-            </button>
+          </div>
+          <div className="register-btn" onClick={() => handleClick()}>
+            Register
             {message && <p>{message}</p>}
             {redirect && <Redirect to="/login" />}
           </div>

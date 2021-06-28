@@ -37,12 +37,90 @@
 }
 
 .register-btn {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vw;
   width: max-content;
+  background: transparent;
+  border: 1px solid var(--contrast-color);
+  border-radius: 50px;
+  padding: 8px 12px;
+  color: #77a6f7;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  outline: none;
+}
+
+.register-btn:hover {
+  background-color: #fff;
+  color: #00887a;
+  cursor: pointer;
 }
 
 .register-label {
   font-size: 1.5em;
   color: black;
+}
+
+.register-text {
+  font-size: 1.3em;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  backface-visibility: hidden;
+  line-height: 18px;
+  width: 20vw;
+  padding: 6px 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 3vh;
+}
+
+.input-file {
+  color: black;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.file-label {
+  background-color: var(--contrast-color);
+  color: white;
+  border: 2px solid gray;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.file-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin: 10px;
+}
+
+.confirm-password {
+  font-size: 1.3em;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  backface-visibility: hidden;
+  line-height: 18px;
+  width: 20vw;
+  padding: 6px 20px;
+  letter-spacing: 1.5px;
+}
+
+.confirm-password-container {
+  margin-bottom: 3vh;
+}
+
+.register-symbol {
+  font-size: 2em;
+  margin-top: auto;
+  margin-bottom: auto;
+  color: black;
+  margin-right: 10px;
 }
 
 @keyframes expand {
