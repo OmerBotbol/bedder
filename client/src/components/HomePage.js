@@ -17,10 +17,11 @@ function HomePage({ user }) {
   return (
     <>
       {loading ? (
-        <ClipLoader color={'red'} loading={loading} size={150} />
+        <div className="loader">
+          <ClipLoader color={'#00887a'} loading={loading} size={150} />
+        </div>
       ) : (
-        <div className="container2">
-          <h1>Bedder</h1>
+        <div className="homepage-container">
           {user ? (
             <>
               <div>{user.email}</div>
@@ -33,10 +34,16 @@ function HomePage({ user }) {
             </>
           ) : (
             <>
-              <div>welcome to bedder</div>
-              <Link to="/login">login</Link>
-              <br />
-              <Link to="/register">Register</Link>
+              <div id="welcome">welcome to</div>
+              <h1 id="homepage-header">Bedder</h1>
+              <div id="homepage-btn">
+                <Link className="link" to="/login">
+                  login
+                </Link>
+                <Link className="link" to="/register">
+                  Register
+                </Link>
+              </div>
             </>
           )}
         </div>
