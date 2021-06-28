@@ -1,9 +1,9 @@
-import "../styles/homepage.css";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
-import OwnerHomePage from "./owner/OwnerHomePage";
-import RenterHomePage from "./renter/RenterHomePage";
+import '../styles/homepage.css';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader';
+import OwnerHomePage from './owner/OwnerHomePage';
+import RenterHomePage from './renter/RenterHomePage';
 
 function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
@@ -17,14 +17,14 @@ function HomePage({ user }) {
   return (
     <>
       {loading ? (
-        <ClipLoader color={"red"} loading={loading} size={150} />
+        <ClipLoader color={'red'} loading={loading} size={150} />
       ) : (
         <div className="container2">
           <h1>Bedder</h1>
           {user ? (
             <>
               <div>{user.email}</div>
-              <div>{user.isOwner ? "Owner" : "Renter"}</div>
+              <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
               {user.isOwner ? (
                 <OwnerHomePage user={user} />
               ) : (

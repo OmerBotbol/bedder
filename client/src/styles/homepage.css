@@ -1,10 +1,10 @@
 .container2 {
-  background-image: url("../images/homepage.jpg");
+  background-image: url('../images/homepage.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
-}
-
-h1 {
-  color: red;
+  background-position: center center;
+  height: 100vh;
+  justify-content: space-around;
+  padding-top: 10vh;
+  padding-left: 76.5vh;
 }
