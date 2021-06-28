@@ -1,0 +1,55 @@
+#renter-register-container {
+  padding-top: 8vh;
+  color: #77a6f7;
+  animation: expand 0.8s ease forwards;
+  background-image: url('../images/renterRegister.jpg');
+  transition: all 0.8s ease;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 130vh;
+}
+
+#renter-register-page {
+  background-image: url('../images/register2.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+#renter-register-header {
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80vh;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.register-btn {
+  width: max-content;
+}
+
+.register-label {
+  font-size: 1.5em;
+  color: black;
+}
+
+@keyframes expand {
+  0% {
+    transform: translateX(1400px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}

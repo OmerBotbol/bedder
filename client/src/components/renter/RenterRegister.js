@@ -1,17 +1,18 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import '../../styles/renterRegister.css';
 
 function RenterRegister({ user, setUser }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(false);
-  const [purpose, setPurpose] = useState("");
-  const [image, setImage] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
+  const [purpose, setPurpose] = useState('');
+  const [image, setImage] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
 
   const handleClick = async () => {
@@ -24,11 +25,11 @@ function RenterRegister({ user, setUser }) {
       !image ||
       !phoneNumber
     ) {
-      setMessage("Please fill all the fields");
+      setMessage('Please fill all the fields');
     } else if (confirmPassword) {
       const imageInForm = new FormData();
-      imageInForm.append("file", image);
-      const imageKey = await axios.post("/api/picture/upload", imageInForm);
+      imageInForm.append('file', image);
+      const imageKey = await axios.post('/api/picture/upload', imageInForm);
       const dataToSend = {
         first_name: firstName,
         last_name: lastName,
@@ -39,17 +40,17 @@ function RenterRegister({ user, setUser }) {
         phone_number: phoneNumber,
       };
       axios
-        .post("/api/renter/create", dataToSend)
+        .post('/api/renter/create', dataToSend)
         .then(() => {
           setRedirect(true);
         })
         .catch(async (err) => {
-          if (err.message.slice(-3) === "401") {
-            setMessage("Invalid password or email");
-          } else if (err.message.slice(-3) === "409") {
-            setMessage("Email already exists");
+          if (err.message.slice(-3) === '401') {
+            setMessage('Invalid password or email');
+          } else if (err.message.slice(-3) === '409') {
+            setMessage('Email already exists');
           } else {
-            setMessage("Problem, please try again later");
+            setMessage('Problem, please try again later');
           }
           await axios.delete(`/api/picture/image/${imageKey.data}`);
         });
@@ -59,57 +60,100 @@ function RenterRegister({ user, setUser }) {
   };
 
   return (
-    <>
+    <div id="renter-register-page">
       {!user ? (
-        <div>
-          <h1>Register</h1>
-          <label>First Name</label>
-          <input type="text" onChange={(e) => setFirstName(e.target.value)} />
-          <label>Last Name</label>
-          <input type="text" onChange={(e) => setLastName(e.target.value)} />
-          <label>Email</label>
-          <input type="email" onChange={(e) => setEmail(e.target.value)} />
-          <label>Password</label>
-          <input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label>Confirm password</label>
-          <input
-            type="password"
-            onChange={(e) =>
-              password === e.target.value
-                ? setConfirmPassword(true)
-                : setConfirmPassword(false)
-            }
-          />
-          {confirmPassword ? (
-            <i className="fa fa-check-circle-o" aria-hidden="true"></i>
-          ) : (
-            <i className="fa fa-times-circle-o" aria-hidden="true"></i>
-          )}
-          <label>Purpose</label>
-          <textarea
-            rows="5"
-            cols="10"
-            onChange={(e) => setPurpose(e.target.value)}
-          />
-          <label>Picture</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-          <label>Phone Number</label>
-          <input type="text" onChange={(e) => setPhoneNumber(e.target.value)} />
-          <button onClick={() => handleClick()}>Register</button>
-          {message && <p>{message}</p>}
-          {redirect && <Redirect to="/login" />}
+        <div id="renter-register-container">
+          <h1 id="renter-register-header">Register</h1>
+          <div className="form">
+            <div className="form-field">
+              <label className="register-label">First Name</label>
+              <input
+                type="text"
+                className="text"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Last Name</label>
+              <input
+                type="text"
+                className="text"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Email</label>
+              <input
+                type="email"
+                className="text"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Password</label>
+              <input
+                type="password"
+                className="text"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Confirm password</label>
+              <div>
+                <i
+                  className={`fa fa-${
+                    confirmPassword ? 'check' : 'times'
+                  }-circle-o register-label`}
+                  aria-hidden="true"
+                ></i>
+                <input
+                  type="password"
+                  className="text"
+                  onChange={(e) =>
+                    password === e.target.value
+                      ? setConfirmPassword(true)
+                      : setConfirmPassword(false)
+                  }
+                />
+              </div>
+            </div>
+            <div className="form-field">
+              <label className="register-label">Purpose</label>
+              <textarea
+                rows="5"
+                cols="10"
+                className="text"
+                onChange={(e) => setPurpose(e.target.value)}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Picture</label>
+              <input
+                className="input-file"
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </div>
+            <div className="form-field">
+              <label className="register-label">Phone Number</label>
+              <input
+                type="text"
+                className="text"
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
+            <button className="register-btn" onClick={() => handleClick()}>
+              Register
+            </button>
+            {message && <p>{message}</p>}
+            {redirect && <Redirect to="/login" />}
+          </div>
         </div>
       ) : (
         <Redirect to="/" />
       )}
-    </>
+    </div>
   );
 }
 
