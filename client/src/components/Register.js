@@ -12,34 +12,32 @@ function Register({ user }) {
         <div id="register-container">
           <h1 id="register-header">Register as</h1>
           <div id="register-options">
-            <div className="labelName">
-              <div>
-                <label className="loginAdd label">Owner</label>{' '}
-                <input
-                  className="loginAdd option-input radio"
-                  type="radio"
-                  name="customer"
-                  onClick={() => setTemp('Owner')}
-                />
-              </div>
-              <div>
-                <label className="loginAdd label">Renter</label>{' '}
-                <input
-                  className="loginAdd option-input radio"
-                  type="radio"
-                  name="customer"
-                  onClick={() => setTemp('Renter')}
-                />
-              </div>
+            <div className="register-label">
+              <div className="loginAdd label">Owner</div>{' '}
+              <input
+                className="loginAdd option-input radio"
+                type="radio"
+                name="customer"
+                onClick={() => setTemp('Owner')}
+              />
             </div>
-            <div
-              className="next-btn"
-              onClick={() => {
-                setType(temp);
-              }}
-            >
-              Next
+            <div className="register-label">
+              <div className="loginAdd label">Renter</div>{' '}
+              <input
+                className="loginAdd option-input radio"
+                type="radio"
+                name="customer"
+                onClick={() => setTemp('Renter')}
+              />
             </div>
+          </div>
+          <div
+            className="next-btn"
+            onClick={() => {
+              setType(temp);
+            }}
+          >
+            Next
           </div>
           {type === 'Owner' && <Redirect to="/ownerRegister" />}
           {type === 'Renter' && <Redirect to="/renterRegister" />}

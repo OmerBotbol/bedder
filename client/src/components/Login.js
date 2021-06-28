@@ -46,7 +46,7 @@ function Login({ user, setUser }) {
           <div className="container_content">
             <div className="container_content_inner">
               <div className="title">
-                <h1 className="headline">Bedder</h1>
+                <h1 className="headline">LOGIN</h1>
               </div>
               <div className="par">
                 <input

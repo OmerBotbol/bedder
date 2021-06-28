@@ -12,7 +12,16 @@
 }
 
 #register-header {
-  padding-left: 25vw;
+  text-align: center;
+}
+
+.register-label {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: space-between;
+  width: 10vw;
+  min-width: fit-content;
 }
 
 .next-btn {
@@ -26,8 +35,9 @@
   padding: 8px 0px;
   color: #77a6f7;
   text-transform: uppercase;
-  position: relative;
-  margin-right: 2vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
   outline: none;
 }
 
