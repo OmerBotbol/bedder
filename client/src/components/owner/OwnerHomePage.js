@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Redirect } from "react-router-dom";
-import ProfileAsset from "../asset/ProfileAsset";
-import OwnerTransactions from "./OwnerTransactions";
-import NeedToBook from "./NeedToBook";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import ProfileAsset from '../asset/ProfileAsset';
+import OwnerTransactions from './OwnerTransactions';
+import NeedToBook from './NeedToBook';
 
 function OwnerHomePage({ user }) {
   const [addAsset, setAddAsset] = useState(false);
@@ -43,11 +43,13 @@ function OwnerHomePage({ user }) {
     <div>
       <button onClick={() => setAddAsset(true)}>Add asset</button>
       {addAsset && <Redirect to="/addAsset" />}
-      <h2>My Assets</h2>
+      <h2 id="owner-assets">My Assets</h2>
       {assets.map((asset, i) => (
         <ProfileAsset key={i} asset={asset} />
       ))}
-      <h2>you have {transactions.length} unhandled orders</h2>
+      <h2 id="owner-requests">
+        you have {transactions.length} unhandled orders
+      </h2>
       <ol>
         {transactions.map((transaction, i) => (
           <OwnerTransactions
@@ -58,7 +60,9 @@ function OwnerHomePage({ user }) {
           />
         ))}
       </ol>
-      <h2>you have {needToBook.length} offers that you need to book</h2>
+      <h2 id="owner-pending-orders">
+        you have {needToBook.length} offers that you need to book
+      </h2>
       {needToBook.map((offer, i) => (
         <NeedToBook
           needToBook={needToBook}

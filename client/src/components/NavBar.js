@@ -24,62 +24,47 @@ function NavBar({ user, setUser }) {
   };
 
   return (
-    <ul className="navbar">
-      <li className="dropbtn dropdown">
-        <i
-          className={`fa fa-user-circle${user.isOwner ? '-o' : ''}`}
-          aria-hidden="true"
-        ></i>
-
-        <span className="dropdown">
-          {userDetails.first_name} {userDetails.last_name}
-        </span>
-        <span> </span>
-        <i className="fa fa-caret-down"></i>
-
-        <div className="dropdown-content">
-          <div className="dropdown-link">
+    <>
+      <div id="top-navbar">
+        <div>
+          <i
+            className={`fa fa-user-circle${user.isOwner ? '-o' : ''}`}
+            aria-hidden="true"
+          ></i>
+          <span> </span>
+          <span id="user-name">
+            {userDetails.first_name} {userDetails.last_name}
+          </span>
+        </div>
+        <li className="navbar-title">Bedder</li>
+      </div>
+      <div className="nav">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <div className="menu">
+          <li>
+            <Link className="homepage" to="/">
+              Home
+            </Link>
+          </li>
+          <li>
             <Link className="option-link" to="/profile">
               Profile
             </Link>
-          </div>
-
-          <div
-            className="dropdown-link"
+          </li>
+          <li className="option-link">My orders</li>
+          <li
+            className="option-link"
             onClick={() => {
               logout();
             }}
           >
             logout
-          </div>
-        </div>
-        <span></span>
-      </li>
-      {user.isOwner ? (
-        <>
-          <li className="other-links">My Assets</li>
-          <li className="other-links">Requests</li>
-          <li className="other-links">Pending Orders</li>
-          <li className="other-links">My orders</li>
-          <li>
-            <Link className="home" to="/">
-              <i className="fa fa-fw fa-home home" />
-            </Link>
-          </li>{' '}
-        </>
-      ) : (
-        <>
-          <li className="other-links">Search</li>
-          <li className="other-links">My orders</li>
-          <li>
-            <Link className="home" to="/">
-              <i className="fa fa-fw fa-home home" />
-            </Link>
           </li>
-        </>
-      )}
-      <li className="navbar-title">Bedder</li>
-    </ul>
+        </div>
+      </div>
+    </>
   );
 }
 
