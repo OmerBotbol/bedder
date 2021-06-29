@@ -104,7 +104,7 @@ function RenterRegister({ user, setUser }) {
                   className={`fa fa-${
                     confirmPassword ? 'check' : 'times'
                   }-circle-o register-symbol`}
-                  style={{ color: confirmPassword ? 'green' : 'red' }}
+                  style={{ color: confirmPassword ? '#00887a' : '#e2144d' }}
                   aria-hidden="true"
                 ></i>
                 <input
@@ -119,17 +119,10 @@ function RenterRegister({ user, setUser }) {
               </div>
             </div>
             <div className="form-field">
-              <label className="register-label">Purpose</label>
-              <textarea
-                rows="5"
-                cols="10"
-                className="register-text"
-                onChange={(e) => setPurpose(e.target.value)}
-              />
-            </div>
-            <div className="form-field">
               <label className="register-label">Picture</label>
               <div className="file-wrapper">
+                <label className="file-name">{image.name}</label>
+                <span> </span>
                 <label className="file-label">upload</label>
                 <input
                   className="input-file"
@@ -147,12 +140,21 @@ function RenterRegister({ user, setUser }) {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
+            <div className="form-field">
+              <label className="register-label">Purpose</label>
+              <textarea
+                rows="5"
+                cols="10"
+                className="register-purpose"
+                onChange={(e) => setPurpose(e.target.value)}
+              />
+            </div>
           </div>
           <div className="register-btn" onClick={() => handleClick()}>
             Register
-            {message && <p>{message}</p>}
-            {redirect && <Redirect to="/login" />}
           </div>
+          {message && <div className="error">{message}</div>}
+          {redirect && <Redirect to="/login" />}
         </div>
       ) : (
         <Redirect to="/" />

@@ -69,7 +69,19 @@
   border: 1px solid #575756;
   backface-visibility: hidden;
   line-height: 18px;
-  width: 20vw;
+  width: 26vw;
+  padding: 6px 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 3vh;
+}
+
+.register-purpose {
+  font-size: 1.3em;
+  border-radius: 25px;
+  border: 1px solid #575756;
+  backface-visibility: hidden;
+  line-height: 18px;
+  width: 26vw;
   padding: 6px 20px;
   letter-spacing: 1.5px;
   margin-bottom: 3vh;
@@ -106,9 +118,13 @@
   border: 1px solid #575756;
   backface-visibility: hidden;
   line-height: 18px;
-  width: 20vw;
+  width: 26vw;
   padding: 6px 20px;
   letter-spacing: 1.5px;
+}
+
+.file-name {
+  color: black;
 }
 
 .confirm-password-container {
@@ -123,11 +139,82 @@
   margin-right: 10px;
 }
 
+.error {
+  font-size: 2em;
+  color: black;
+  text-align: center;
+  margin-top: 70px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
 @keyframes expand {
   0% {
     transform: translateX(1400px);
   }
   100% {
     transform: translateX(0px);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .register-label {
+    font-size: 1em;
+  }
+
+  .register-text {
+    font-size: 0.8em;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    width: 45vw;
+    padding-left: 10px;
+    margin-bottom: 0;
+  }
+
+  .confirm-password {
+    font-size: 0.8em;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    padding-left: 10px;
+    width: 45vw;
+  }
+
+  .register-symbol {
+    font-size: 1.2em;
+  }
+
+  .confirm-password-container {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+
+  .form {
+    width: 90%;
+    height: 65vh;
+  }
+
+  #renter-register-container {
+    padding-top: 0;
+  }
+
+  .register-purpose {
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    border-radius: 10px;
+    line-height: 18px;
+    width: 45vw;
+    margin-bottom: 0;
+    padding: 5px 5px;
+  }
+
+  .register-btn {
+    position: static;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+  }
+
+  .error {
+    margin-top: 20px;
   }
 }
