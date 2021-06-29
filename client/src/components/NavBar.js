@@ -28,7 +28,8 @@ function NavBar({ user, setUser }) {
       <li className="dropbtn dropdown">
         <i
           className={`fa fa-user-circle${user.isOwner ? '-o' : ''}`}
-          aria-hidden="true"></i>
+          aria-hidden="true"
+        ></i>
 
         <span className="dropdown">
           {userDetails.first_name} {userDetails.last_name}
@@ -38,27 +39,45 @@ function NavBar({ user, setUser }) {
 
         <div className="dropdown-content">
           <div className="dropdown-link">
-            <Link to="/profile">Profile</Link>
+            <Link className="option-link" to="/profile">
+              Profile
+            </Link>
           </div>
 
           <div
             className="dropdown-link"
             onClick={() => {
               logout();
-            }}>
+            }}
+          >
             logout
           </div>
         </div>
         <span></span>
       </li>
-      <li className="other-links">My Assets</li>
-      <li className="other-links">Likes</li>
-      <li className="other-links">My orders</li>
-      <li>
-        <Link to="/">
-          <i className="fa fa-fw fa-home" />
-        </Link>
-      </li>
+      {user.isOwner ? (
+        <>
+          <li className="other-links">My Assets</li>
+          <li className="other-links">Requests</li>
+          <li className="other-links">Pending Orders</li>
+          <li className="other-links">My orders</li>
+          <li>
+            <Link className="home" to="/">
+              <i className="fa fa-fw fa-home home" />
+            </Link>
+          </li>{' '}
+        </>
+      ) : (
+        <>
+          <li className="other-links">Search</li>
+          <li className="other-links">My orders</li>
+          <li>
+            <Link className="home" to="/">
+              <i className="fa fa-fw fa-home home" />
+            </Link>
+          </li>
+        </>
+      )}
       <li className="navbar-title">Bedder</li>
     </ul>
   );

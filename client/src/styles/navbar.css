@@ -84,3 +84,13 @@ li {
 .dropdown:hover .dropdown-content {
   visibility: visible;
 }
+
+.home {
+  outline: none;
+  color: inherit;
+}
+
+.option-link {
+  color: inherit;
+  text-decoration: none;
+}
