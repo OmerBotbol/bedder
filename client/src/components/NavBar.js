@@ -54,7 +54,9 @@ function NavBar({ user, setUser }) {
             </Link>
           </li>
           <li className="option-link">
-            <Link className="option-link">My orders</Link>
+            <Link className="option-link" to="/orders">
+              My orders
+            </Link>
           </li>
           <li
             className="option-link"

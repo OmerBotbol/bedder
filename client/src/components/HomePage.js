@@ -9,10 +9,12 @@ function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+    if (!user || !user.isOwner) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  }, [user]);
 
   return (
     <>
@@ -27,7 +29,7 @@ function HomePage({ user }) {
               <div>{user.email}</div>
               <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
               {user.isOwner ? (
-                <OwnerHomePage user={user} />
+                <OwnerHomePage user={user} setLoading={setLoading} />
               ) : (
                 <RenterHomePage user={user} />
               )}

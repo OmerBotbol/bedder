@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import ShowAsset from "../asset/ShowAsset";
-import Search from "../Search";
+import React, { useState } from 'react';
+import ShowAsset from '../asset/ShowAsset';
+import Search from '../Search';
 
 function RenterHomePage({ user }) {
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
-  const [error, setError] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+  const [error, setError] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [startedAt, setStartedAt] = useState();
   const [endedAt, setEndedAt] = useState();
   const [filterBy, setFilterBy] = useState([
-    { name: "Ac", value: false },
-    { name: "Accessibility", value: false },
-    { name: "Animals", value: false },
-    { name: "Babies", value: false },
-    { name: "Kosher", value: false },
-    { name: "Parking", value: false },
-    { name: "Shabbat", value: false },
+    { name: 'Ac', value: false },
+    { name: 'Accessibility', value: false },
+    { name: 'Animals', value: false },
+    { name: 'Babies', value: false },
+    { name: 'Kosher', value: false },
+    { name: 'Parking', value: false },
+    { name: 'Shabbat', value: false },
   ]);
 
   const changeValue = (i) => {
@@ -46,9 +46,9 @@ function RenterHomePage({ user }) {
       return filtered;
     }, []);
     setFilteredAssets(filteredArr);
-    setError("");
+    setError('');
     if (filteredArr.length === 0) {
-      setError("no assets found");
+      setError('no assets found');
     }
   };
 
@@ -76,7 +76,7 @@ function RenterHomePage({ user }) {
         ))}
         <button onClick={() => filterOptions()}>Filter</button>
       </div>
-      {error ? <div>{error}</div> : ""}
+      {error ? <div>{error}</div> : ''}
       {filteredAssets.map((asset, i) => (
         <ShowAsset
           key={i}

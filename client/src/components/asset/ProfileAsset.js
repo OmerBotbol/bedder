@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { DateRange } from "react-date-range";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { DateRange } from 'react-date-range';
 
-export default function ProfileAsset({ asset }) {
-  const [startedAt, setStartedAt] = useState("");
-  const [endedAt, setEndedAt] = useState("");
+export default function ProfileAsset({ asset, setLoading }) {
+  const [startedAt, setStartedAt] = useState('');
+  const [endedAt, setEndedAt] = useState('');
   const [hideDates, setHideDates] = useState(true);
-  const [error, setError] = useState("");
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [error, setError] = useState('');
+  const [pictureUrl, setPictureUrl] = useState('');
   const [unavailableDates, setUnavailableDates] = useState([]);
   const [selectionRange, SetSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: 'selection',
   });
 
   useEffect(() => {
@@ -22,11 +22,13 @@ export default function ProfileAsset({ asset }) {
       .get(`/api/picture/image/${asset.picture}`)
       .then((data) => {
         setPictureUrl(data.data);
+        console.log('stop loading');
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [asset.picture]);
+  }, [asset.picture, setLoading]);
 
   useEffect(() => {
     axios
@@ -41,13 +43,13 @@ export default function ProfileAsset({ asset }) {
   }, [asset.id]);
 
   const Exists = (subject) => {
-    const title = subject === 1 ? "check" : "times";
+    const title = subject === 1 ? 'check' : 'times';
     return <i className={`fa fa-${title}`} aria-hidden="true"></i>;
   };
 
   const addUnavailableDates = () => {
     if (!startedAt || !endedAt) {
-      setError("Fill all fields");
+      setError('Fill all fields');
     } else {
       const dataToSend = {
         asset_id: asset.id,
@@ -56,7 +58,7 @@ export default function ProfileAsset({ asset }) {
       };
 
       axios
-        .post("/api/asset/addUnavailableDates", dataToSend)
+        .post('/api/asset/addUnavailableDates', dataToSend)
         .then((data) => {
           const newUnavailable = [...unavailableDates];
           newUnavailable.push(data.data);
@@ -64,7 +66,7 @@ export default function ProfileAsset({ asset }) {
         })
         .catch((err) => console.log(err));
       setHideDates(!hideDates);
-      setError("");
+      setError('');
     }
   };
 
@@ -84,8 +86,8 @@ export default function ProfileAsset({ asset }) {
       <p>Number of people: {asset.number_of_peoples}</p>
       <p>Number of rooms: {asset.number_of_rooms}</p>
       <p>
-        {asset.started_at.slice(0, 10).replaceAll("-", "/")}-
-        {asset.ended_at.slice(0, 10).replaceAll("-", "/")}
+        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
+        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
       </p>
       <p>AC: {Exists(asset.ac)}</p>
       <p>Accessibility: {Exists(asset.accessibility)}</p>
