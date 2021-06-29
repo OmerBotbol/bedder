@@ -9,6 +9,8 @@
   width: 100%;
   top: 0;
   max-height: 7vh;
+  font-size: 1.2em;
+  padding: 5px;
 }
 
 .nav,
@@ -21,7 +23,7 @@
 .nav {
   width: max-content;
   position: fixed;
-  margin-top: 5vh;
+  margin-top: 7.3vh;
   margin-left: 1vw;
   background-color: #fff;
   padding: 3px;
@@ -40,7 +42,19 @@
 }
 
 .nav input:checked ~ .menu {
-  width: 450px;
+  width: 30vw;
+}
+
+.option-link {
+  color: #666;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.option-link:hover {
+  color: #161919;
 }
 
 .menu li {
@@ -95,4 +109,15 @@
 
 .nav input:checked ~ span:nth-child(3) {
   transform: translateY(0) rotate(45deg);
+}
+
+@media only screen and (max-width: 768px) {
+  .nav input:checked ~ .menu {
+    width: 85vw;
+  }
+
+  .nav {
+    font-size: 0.85em;
+    padding: 0;
+  }
 }

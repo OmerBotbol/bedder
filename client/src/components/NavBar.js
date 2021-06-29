@@ -44,7 +44,7 @@ function NavBar({ user, setUser }) {
         <span></span>
         <div className="menu">
           <li>
-            <Link className="homepage" to="/">
+            <Link className="option-link" to="/">
               Home
             </Link>
           </li>
@@ -53,7 +53,9 @@ function NavBar({ user, setUser }) {
               Profile
             </Link>
           </li>
-          <li className="option-link">My orders</li>
+          <li className="option-link">
+            <Link className="option-link">My orders</Link>
+          </li>
           <li
             className="option-link"
             onClick={() => {
