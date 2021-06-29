@@ -1,0 +1,38 @@
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -150%);
+}
+.profile-owner,
+.profile-renter {
+  width: 400px;
+  margin: 120px 120px;
+  padding: 0 20px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.075);
+  text-align: center;
+  position: absolute;
+}
+
+.profile-owner {
+  background-color: #fff;
+}
+.profile-renter {
+  background-color: #aba7ac;
+}
+.profile-picture {
+  border-radius: 100px;
+  overflow: hidden;
+  height: 150px;
+  width: 150px;
+  position: relative;
+  margin: auto;
+  top: -60px;
+  box-shadow: 0 0 0 13px #f1f2f6;
+}
+.profile-name {
+  font-size: 3em;
+  /* margin-bottom: 15px; */
+  color: #333;
+}

@@ -9,7 +9,16 @@
   padding-top: 20vh;
   padding-left: 20vw;
 }
-
+.homepage-user-container {
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  height: 100%;
+  background-position: center center;
+  justify-content: space-around;
+  padding-top: 20vh;
+  padding-left: 20vw;
+}
 #welcome {
   margin-left: -2vw;
   font-size: 1.5em;

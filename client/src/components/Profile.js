@@ -1,9 +1,10 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
-import OwnerProfile from "./owner/OwnerProfile";
-import RenterProfile from "./renter/RenterProfile";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader';
+import OwnerProfile from './owner/OwnerProfile';
+import RenterProfile from './renter/RenterProfile';
+import '../styles/profile.css';
 
 export default function Profile({ user }) {
   const [userDetails, setUserDetails] = useState({});
@@ -16,7 +17,7 @@ export default function Profile({ user }) {
   }, []);
   useEffect(() => {
     if (user) {
-      const route = user.isOwner ? "owner" : "renter";
+      const route = user.isOwner ? 'owner' : 'renter';
       axios
         .get(`/api/${route}/${user.id}`)
         .then((data) => setUserDetails(data.data))
@@ -24,16 +25,16 @@ export default function Profile({ user }) {
     }
   }, [user]);
   return (
-    <div>
+    <div
+      className={
+        user ? (user.isOwner ? 'profile-owner' : 'profile-renter') : ''
+      }>
       {loading ? (
-        <ClipLoader color={"red"} loading={loading} size={150} />
+        <div className="loader">
+          <ClipLoader color={'#00887a'} loading={loading} size={150} />
+        </div>
       ) : (
         <div>
-          <h1>
-            Hello {userDetails.first_name} {userDetails.last_name},
-          </h1>
-          <p>{userDetails.email}</p>
-          <p>{userDetails.phone_number}</p>
           {user ? (
             <>
               {user.isOwner ? (
@@ -43,11 +44,15 @@ export default function Profile({ user }) {
               ) : (
                 <RenterProfile user={user} userDetails={userDetails} />
               )}
-              <Link to="/">Home</Link>
             </>
           ) : (
             <Redirect to="/" />
           )}
+          <h1 className="profile-name">
+            {userDetails.first_name} {userDetails.last_name}
+          </h1>
+          <p>{userDetails.email}</p>
+          <p>{userDetails.phone_number}</p>
         </div>
       )}
     </div>
