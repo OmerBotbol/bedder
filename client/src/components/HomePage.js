@@ -25,8 +25,6 @@ function HomePage({ user }) {
           className={!user ? 'homepage-container' : 'homepage-user-container'}>
           {user ? (
             <>
-              <div>{user.email}</div>
-              <div>{user.isOwner ? 'Owner' : 'Renter'}</div>
               {user.isOwner ? (
                 <OwnerHomePage user={user} />
               ) : (

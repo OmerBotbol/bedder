@@ -35,8 +35,7 @@ function Register({ user }) {
             className="next-btn"
             onClick={() => {
               setType(temp);
-            }}
-          >
+            }}>
             Next
           </div>
           {type === 'Owner' && <Redirect to="/ownerRegister" />}

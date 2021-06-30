@@ -41,17 +41,26 @@ function OwnerHomePage({ user }) {
 
   return (
     <div>
-      <button onClick={() => setAddAsset(true)}>Add asset</button>
-      {addAsset && <Redirect to="/addAsset" />}
-      <h2 id="owner-assets">My Assets</h2>
+      <div className="headlines-asset">
+        <h2 id="owner-assets">My Assets </h2>
+        <div className="btns">
+          <button
+            className="add-asset-button"
+            onClick={() => setAddAsset(true)}>
+            Add asset
+          </button>
+          {addAsset && <Redirect to="/addAsset" />}
+        </div>
+      </div>
       {assets.map((asset, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>
           <ProfileAsset asset={asset} />
         </Suspense>
       ))}
       <h2 id="owner-requests">
-        you have {transactions.length} unhandled orders
+        My Likes <span className="number-orders">({transactions.length})</span>
       </h2>
+
       <ol>
         {transactions.map((transaction, i) => (
           <Suspense key={i} fallback={<div>Loading...</div>}>
@@ -64,7 +73,8 @@ function OwnerHomePage({ user }) {
         ))}
       </ol>
       <h2 id="owner-pending-orders">
-        you have {needToBook.length} offers that you need to book
+        Need To Book
+        <span className="number-orders"> ({needToBook.length})</span>
       </h2>
       {needToBook.map((offer, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>

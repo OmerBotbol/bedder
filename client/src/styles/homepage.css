@@ -128,3 +128,43 @@
   border-color: #00887a;
   color: #00887a;
 }
+.profile-owner-asset {
+  background-color: #dfdee0;
+  display: flex;
+  width: 50vw;
+  height: 40vh;
+  margin-top: 2vh;
+  word-wrap: break-word;
+}
+.asset-details {
+  padding-left: 1vw;
+  padding-right: 3vw;
+}
+
+.exists {
+  color: #00887a;
+}
+.not-exists {
+  color: #d4435c;
+}
+.dates-asset {
+  width: 12vw;
+}
+.add-asset-button {
+  background: transparent;
+  border: 1px solid var(--contrast-color);
+  border-radius: 50px;
+  padding: 8px 12px;
+  color: #77a6f7;
+  font-size: 16px;
+  text-transform: uppercase;
+  position: relative;
+  outline: none;
+}
+.headlines-asset {
+  display: flex;
+  flex-direction: row;
+}
+#owner-assets {
+  margin-right: 35vw;
+}

@@ -41,8 +41,8 @@ export default function ProfileAsset({ asset }) {
   }, [asset.id]);
 
   const Exists = (subject) => {
-    const title = subject === 1 ? 'check' : 'times';
-    return <i className={`fa fa-${title}`} aria-hidden="true"></i>;
+    const title = subject === 1 ? 'exists' : 'not-exists';
+    return title;
   };
 
   const addUnavailableDates = () => {
@@ -73,28 +73,46 @@ export default function ProfileAsset({ asset }) {
     setEndedAt(i.selection.endDate);
     SetSelectionRange(i.selection);
   };
-
   return (
     <div className="profile-owner-asset">
       <img src={pictureUrl} alt="asset" />
 
-      <p>{asset.city}</p>
-      <p>{asset.address}</p>
-      <p>{asset.description}</p>
-      <p>Number of people: {asset.number_of_peoples}</p>
-      <p>Number of rooms: {asset.number_of_rooms}</p>
-      <p>
-        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
-        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
-      </p>
-      <p>AC: {Exists(asset.ac)}</p>
-      <p>Accessibility: {Exists(asset.accessibility)}</p>
-      <p>Animals: {Exists(asset.animals)}</p>
-      <p>Babies: {Exists(asset.babies)}</p>
-      <p>Kosher: {Exists(asset.kosher)}</p>
-      <p>Parking: {Exists(asset.parking)}</p>
-      <p>Shabbat: {Exists(asset.shabat)}</p>
-
+      <div className="asset-details">
+        <h4>{asset.city},</h4>
+        <h4>{asset.address}</h4>
+        <p>{asset.description}</p>
+        <div className="asset-small-details">
+          <p className="detail">Number of people: {asset.number_of_peoples}</p>
+          <p className="detail">Number of rooms: {asset.number_of_rooms}</p>
+          <p className="dates-asset">
+            {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
+            {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
+          </p>
+          <p className="detail">
+            <i
+              className={`fas fa-fan
+            ${Exists(asset.ac)} `}
+            />{' '}
+            AC
+          </p>
+          <p className="detail">
+            <i className={`fa fa-wheelchair ${Exists(asset.accessibility)} `} />{' '}
+            accessibility
+          </p>
+          <p className="detail">
+            <i className={`fa fa-paw ${Exists(asset.animals)} `} /> Animals
+          </p>
+          <p className="detail">
+            <i className={`fa fa-baby-carriage ${Exists(asset.babies)} `} />{' '}
+            Babies
+          </p>
+          <p className="detail">
+            <i className={`fa fa-parking ${Exists(asset.parking)} `} /> Parking
+          </p>
+          <p className={`${Exists(asset.kosher)} detail`}>Kosher</p>
+          <p className={`${Exists(asset.shabbat)} detail`}>Shabbat</p>
+        </div>
+      </div>
       <button
         onClick={() => {
           setHideDates(!hideDates);
