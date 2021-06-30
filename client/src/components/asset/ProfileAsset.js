@@ -3,8 +3,9 @@ import axios from 'axios';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
+import { postHttp } from '../../utils/httpRequests';
 
-export default function ProfileAsset({ asset }) {
+export default function ProfileAsset({ asset, user }) {
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
   const [hideDates, setHideDates] = useState(true);
@@ -50,13 +51,13 @@ export default function ProfileAsset({ asset }) {
       setError('Fill all fields');
     } else {
       const dataToSend = {
+        ownerId: user.id,
         asset_id: asset.id,
         startedAt,
         endedAt,
       };
 
-      axios
-        .post('/api/asset/addUnavailableDates', dataToSend)
+      postHttp('/api/asset/addUnavailableDates', dataToSend)
         .then((data) => {
           const newUnavailable = [...unavailableDates];
           newUnavailable.push(data.data);
@@ -98,7 +99,8 @@ export default function ProfileAsset({ asset }) {
       <button
         onClick={() => {
           setHideDates(!hideDates);
-        }}>
+        }}
+      >
         <a className="add-dates" href="#demo-modal">
           Add unavailable dates
         </a>
@@ -119,7 +121,8 @@ export default function ProfileAsset({ asset }) {
               className={`modal__send ${hideDates.toString()} add-button`}
               onClick={() => {
                 addUnavailableDates();
-              }}>
+              }}
+            >
               +
             </button>
             <a href="#" className="modal__close">

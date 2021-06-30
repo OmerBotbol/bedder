@@ -1,9 +1,10 @@
 const express = require('express');
 const transaction = express.Router();
 const models = require('../models');
+const { validateToken } = require('../utils');
 
 //POST request to create new transaction
-transaction.post('/new', (req, res) => {
+transaction.post('/new', validateToken, (req, res) => {
   console.log(req.body);
   const { asset_id, owner_id, renter_id, started_at, ended_at, comments } =
     req.body;
@@ -20,7 +21,7 @@ transaction.post('/new', (req, res) => {
 });
 
 //PUT request to update transaction
-transaction.put('/', (req, res) => {
+transaction.put('/', validateToken, (req, res) => {
   const { value, field, id } = req.body;
   const updateQuery = {};
   updateQuery[field] = value;
@@ -60,12 +61,15 @@ transaction.get('/user/all', (req, res) => {
 });
 
 //DELETE transaction
-transaction.delete('/', (req, res) => {
+transaction.delete('/', validateToken, (req, res) => {
   const { id } = req.body;
   models.Transactions.destroy({ where: { id } })
     .then(() => {
       res.sendStatus(204);
     })
-    .catch((err) => res.sendStatus(500));
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 module.exports = transaction;

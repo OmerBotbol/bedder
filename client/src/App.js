@@ -10,7 +10,8 @@ import OwnerRegister from './components/owner/OwnerRegister';
 import Profile from './components/Profile';
 import NavBar from './components/NavBar';
 import { useEffect, useState } from 'react';
-import { getHttp, intercept } from './utils/networkWrapper';
+import { intercept } from './utils/networkWrapper';
+import { getHttp } from './utils/httpRequests';
 import MyOrders from './components/MyOrders';
 
 function App() {
@@ -19,6 +20,9 @@ function App() {
 
   useEffect(() => {
     intercept();
+  });
+
+  useEffect(() => {
     getHttp('/api/data', 'accessToken')
       .then((res) => {
         const userToSave = {

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const renter = express.Router();
-const { register } = require('../utils');
+const { register, validateToken } = require('../utils');
 const models = require('../models');
 
 renter.use(express.json());
@@ -30,8 +30,10 @@ renter.post('/create', (req, res) => {
 });
 
 //PUT request to update renter
-renter.put('/update/:id', (req, res) => {
+renter.put('/update/:id', validateToken, (req, res) => {
   const id = req.params.id;
+  if (id !== req.data.id)
+    return res.status(403).send('only the owner can update assets');
   const { first_name, last_name, email, purpose, picture, phone_number } =
     req.body;
   models.Renters.update(

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { deleteHttp } from '../utils/httpRequests';
 
 function OrderDisplay({ user, order, orders, setOrders }) {
   const [userDetails, setUserDetails] = useState();
@@ -22,13 +23,14 @@ function OrderDisplay({ user, order, orders, setOrders }) {
 
   const deleteOrder = () => {
     const dataToSend = {
+      ownerId: user.id,
       asset_id: assetDetails.id,
       startedAt: order.started_at,
       endedAt: order.ended_at,
     };
     Promise.all([
-      axios.delete('/api/transaction', { data: { id: order.id } }),
-      axios.delete('/api/asset/deleteUnavailableDates', { data: dataToSend }),
+      deleteHttp('/api/transaction', { id: order.id }),
+      deleteHttp('/api/asset/deleteUnavailableDates', dataToSend),
     ])
       .then(() => {
         const ordersCopy = [...orders];
