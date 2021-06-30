@@ -11,6 +11,7 @@ import Profile from './components/Profile';
 import NavBar from './components/NavBar';
 import { useEffect, useState } from 'react';
 import { getHttp, intercept } from './utils/networkWrapper';
+import MyOrders from './components/MyOrders';
 
 function App() {
   const [user, setUser] = useState();
@@ -62,6 +63,9 @@ function App() {
           </Route>
           <Route exact path="/addAsset">
             <AddAsset user={user} />
+          </Route>
+          <Route exact path="/orders">
+            <MyOrders user={user} />
           </Route>
           <Route component={NotFound} />
         </Switch>
