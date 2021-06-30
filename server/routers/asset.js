@@ -1,26 +1,37 @@
-require("dotenv").config();
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
 const asset = express.Router();
-const models = require("../models");
-const { Op } = require("sequelize");
+const models = require('../models');
+const { Op } = require('sequelize');
 
 asset.use(express.json());
 
-asset.post("/create", (req, res) => {
+asset.post('/create', (req, res) => {
   models.Assets.create(req.body).then(() => {
-    res.send("new asset created!");
+    res.send('new asset created!');
   });
 });
 
+asset.get('/:id', (req, res) => {
+  const { id } = req.params;
+  models.Assets.findOne({ where: { id: id }, raw: true })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
 //A GET request that can use for search/specific user/everything
-asset.get("/", async (req, res) => {
+asset.get('/', async (req, res) => {
   const startDate = new Date(req.query.startDate);
   const stopDate = new Date(req.query.stopDate);
   const city = req.query.city;
   const owner_id = req.query.owner_id;
   let searchQuery = {
     [Op.and]: [
-      { city: { [Op.like]: city + "%" } },
+      { city: { [Op.like]: city + '%' } },
       { started_at: { [Op.lte]: startDate } },
       { ended_at: { [Op.gte]: stopDate } },
     ],
@@ -60,7 +71,7 @@ asset.get("/", async (req, res) => {
 });
 
 //PUT request to update asset
-asset.put("/update/:id", (req, res) => {
+asset.put('/update/:id', (req, res) => {
   const id = req.params.id;
   const {
     city,
@@ -103,17 +114,15 @@ asset.put("/update/:id", (req, res) => {
       plain: true,
     }
   )
-    .then(() => res.send("updated successfully"))
+    .then(() => res.send('updated successfully'))
     .catch((err) => res.status(500).send(err));
 });
 
 //POST request to add unavailable dates
-asset.post("/addUnavailableDates", (req, res) => {
+asset.post('/addUnavailableDates', (req, res) => {
   const { asset_id, startedAt, endedAt } = req.body;
   let date = new Date(new Date(startedAt).getTime() + 10800000);
   let endDate = new Date(new Date(endedAt).getTime() + 10800000);
-  console.log(date);
-  console.log(endDate);
   const dateArr = [];
   while (date <= endDate) {
     const newDate = { date: new Date(date), asset_id };
@@ -129,7 +138,24 @@ asset.post("/addUnavailableDates", (req, res) => {
     });
 });
 
-asset.get("/unavailableDates", (req, res) => {
+asset.delete('/deleteUnavailableDates', (req, res) => {
+  const { asset_id, startedAt, endedAt } = req.body;
+  const date = new Date(new Date(startedAt));
+  const endDate = new Date(new Date(endedAt));
+  models.Unavailable_Dates.destroy({
+    where: {
+      [Op.and]: [{ date: { [Op.between]: [date, endDate] } }, { asset_id }],
+    },
+  })
+    .then(() => {
+      res.send('deleted');
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+asset.get('/unavailableDates', (req, res) => {
   const { assetId } = req.query;
   models.Unavailable_Dates.findAll({
     where: { asset_id: assetId },

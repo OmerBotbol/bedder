@@ -4,7 +4,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
 
-export default function ProfileAsset({ asset, setLoading }) {
+export default function ProfileAsset({ asset }) {
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
   const [hideDates, setHideDates] = useState(true);
@@ -22,13 +22,11 @@ export default function ProfileAsset({ asset, setLoading }) {
       .get(`/api/picture/image/${asset.picture}`)
       .then((data) => {
         setPictureUrl(data.data);
-        console.log('stop loading');
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [asset.picture, setLoading]);
+  }, [asset.picture]);
 
   useEffect(() => {
     axios

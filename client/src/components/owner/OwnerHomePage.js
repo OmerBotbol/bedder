@@ -5,7 +5,7 @@ const ProfileAsset = lazy(() => import('../asset/ProfileAsset'));
 const OwnerTransactions = lazy(() => import('./OwnerTransactions'));
 const NeedToBook = lazy(() => import('./NeedToBook'));
 
-function OwnerHomePage({ user, setLoading }) {
+function OwnerHomePage({ user }) {
   const [addAsset, setAddAsset] = useState(false);
   const [assets, setAssets] = useState([]);
   const [transactions, setTransactions] = useState([]);
@@ -14,7 +14,7 @@ function OwnerHomePage({ user, setLoading }) {
   useEffect(() => {
     Promise.all([
       axios.get(`/api/asset?owner_id=${user.id}`),
-      axios.get(`/api/transaction/ownerAll/${user.id}`),
+      axios.get(`/api/transaction/user/all?searchBy=owner_id&value=${user.id}`),
     ])
       .then((data) => {
         setAssets(data[0].data);
@@ -46,7 +46,7 @@ function OwnerHomePage({ user, setLoading }) {
       <h2 id="owner-assets">My Assets</h2>
       {assets.map((asset, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>
-          <ProfileAsset asset={asset} setLoading={setLoading} />
+          <ProfileAsset asset={asset} />
         </Suspense>
       ))}
       <h2 id="owner-requests">

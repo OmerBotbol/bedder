@@ -26,7 +26,7 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
 
   const deleteTransaction = () => {
     axios
-      .delete('/api/transaction', offer.id)
+      .delete('/api/transaction', { id: offer.id })
       .then(() => {
         refreshNeedToBook();
       })
