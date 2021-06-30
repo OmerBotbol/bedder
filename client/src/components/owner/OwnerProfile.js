@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function OwnerProfile({ userDetails }) {
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [pictureUrl, setPictureUrl] = useState('');
 
   //Get assets from database of owner
   useEffect(() => {
@@ -15,8 +15,12 @@ export default function OwnerProfile({ userDetails }) {
   }, [userDetails.picture]);
   return (
     <div>
-      <p>Owner</p>
-      <img src={pictureUrl} style={{ height: 100, width: 100 }} alt="profile" />
+      <img
+        src={pictureUrl}
+        style={{ height: 100, width: 100 }}
+        alt="profile"
+        className="profile-picture"
+      />
     </div>
   );
 }

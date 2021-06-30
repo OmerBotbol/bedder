@@ -2,7 +2,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./images/homepage.jpg');
+  background-color: #f1f2f6;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

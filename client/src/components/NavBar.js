@@ -29,8 +29,7 @@ function NavBar({ user, setUser }) {
         <div>
           <i
             className={`fa fa-user-circle${user.isOwner ? '-o' : ''}`}
-            aria-hidden="true"
-          ></i>
+            aria-hidden="true"></i>
           <span> </span>
           <span id="user-name">
             {userDetails.first_name} {userDetails.last_name}
@@ -62,8 +61,7 @@ function NavBar({ user, setUser }) {
             className="option-link"
             onClick={() => {
               logout();
-            }}
-          >
+            }}>
             logout
           </li>
         </div>

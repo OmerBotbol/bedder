@@ -21,7 +21,8 @@ function HomePage({ user }) {
           <ClipLoader color={'#00887a'} loading={loading} size={150} />
         </div>
       ) : (
-        <div className="homepage-container">
+        <div
+          className={!user ? 'homepage-container' : 'homepage-user-container'}>
           {user ? (
             <>
               <div>{user.email}</div>

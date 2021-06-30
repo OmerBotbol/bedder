@@ -98,13 +98,14 @@ export default function ProfileAsset({ asset }) {
       <button
         onClick={() => {
           setHideDates(!hideDates);
-        }}
-      >
-        Add unavailable dates
+        }}>
+        <a className="add-dates" href="#demo-modal">
+          Add unavailable dates
+        </a>
       </button>
-      <div>
+      <div id="demo-modal" className="modal">
         {!hideDates && (
-          <>
+          <div className="modal__content">
             <DateRange
               editableDateInputs={true}
               moveRangeOnFirstSelection={false}
@@ -115,16 +116,18 @@ export default function ProfileAsset({ asset }) {
               disabledDates={unavailableDates}
             />
             <button
-              className={hideDates.toString()}
+              className={`modal__send ${hideDates.toString()} add-button`}
               onClick={() => {
                 addUnavailableDates();
-              }}
-            >
+              }}>
               +
             </button>
-          </>
+            <a href="#" className="modal__close">
+              X
+            </a>
+            {error && <p>{error}</p>}
+          </div>
         )}
-        {error && <p>{error}</p>}
       </div>
     </div>
   );
