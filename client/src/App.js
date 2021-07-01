@@ -23,26 +23,24 @@ function App() {
   });
 
   useEffect(() => {
-    if (user) {
-      getHttp('/api/data', 'accessToken')
-        .then((res) => {
-          const userToSave = {
-            email: res.data.email,
-            isOwner: res.data.isOwner,
-            id: res.data.id,
-          };
-          setUser(userToSave);
-        })
-        .catch((err) => {
-          if (!err.message.slice(-3) === '401') {
-            return console.log(err.message);
-          }
-          console.log('please refresh the page');
-        });
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
+    getHttp('/api/data', 'accessToken')
+      .then((res) => {
+        const userToSave = {
+          email: res.data.email,
+          isOwner: res.data.isOwner,
+          id: res.data.id,
+        };
+        setUser(userToSave);
+      })
+      .catch((err) => {
+        if (!err.message.slice(-3) === '401') {
+          return console.log(err.message);
+        }
+        console.log('please refresh the page');
+      });
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, [user]);
   return (
     <div className="App">

@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 function Login({ user, setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userDetails, setUserDetails] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
   const [message, setMessage] = useState('');
   const [chooseCustomerType, setChooseCustomerType] = useState(false);
@@ -15,27 +16,31 @@ function Login({ user, setUser }) {
     const user = {
       email: email,
       password: password,
-      isOwner: isOwner,
     };
-    if (chooseCustomerType) {
+    if (!chooseCustomerType) {
       try {
         const findUser = await axios.post('/api/login', user);
-        createCookie('accessToken', findUser.data.accessToken, 900000);
-        createCookie('refreshToken', findUser.data.refreshToken);
-        console.log('success logging in');
-        const userToSave = {
-          email: findUser.data.email,
-          isOwner: findUser.data.isOwner,
-          id: findUser.data.id,
-        };
-        console.log(findUser.data);
-        setUser(userToSave);
+        if (findUser.data.length === 1) {
+          const userData = findUser.data[0];
+          createCookie('accessToken', userData.accessToken, 900000);
+          createCookie('refreshToken', userData.refreshToken);
+          console.log('success logging in');
+          const userToSave = {
+            email: userData.email,
+            isOwner: userData.isOwner,
+            id: userData.id,
+          };
+          setUser(userToSave);
+        } else {
+          console.log(findUser.data);
+          setUserDetails(findUser.data);
+        }
       } catch (error) {
         console.log('error invalid user');
         setMessage('User name, password or customer type are incorrect');
       }
     } else {
-      setMessage('Please select customer type');
+      setUser(isOwner ? userDetails[0] : userDetails[1]);
     }
   };
 
@@ -64,30 +69,32 @@ function Login({ user, setUser }) {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 ></input>
-                <div className="labelName">
-                  <div className="loginAdd label">Host</div>
-                  <input
-                    className="loginAdd option-input radio"
-                    type="radio"
-                    name="customer"
-                    value={true}
-                    onChange={(e) => {
-                      setIsOwner(e.target.value === 'true');
-                      setChooseCustomerType(true);
-                    }}
-                  />
-                  <div className="loginAdd label">Guest</div>
-                  <input
-                    className="loginAdd option-input radio"
-                    type="radio"
-                    name="customer"
-                    value={false}
-                    onChange={(e) => {
-                      setIsOwner(e.target.value === 'true');
-                      setChooseCustomerType(true);
-                    }}
-                  />
-                </div>
+                {userDetails.length === 2 && (
+                  <div className="labelName">
+                    <div className="loginAdd label">Host</div>
+                    <input
+                      className="loginAdd option-input radio"
+                      type="radio"
+                      name="customer"
+                      value={true}
+                      onChange={(e) => {
+                        setIsOwner(e.target.value === 'true');
+                        setChooseCustomerType(true);
+                      }}
+                    />
+                    <div className="loginAdd label">Guest</div>
+                    <input
+                      className="loginAdd option-input radio"
+                      type="radio"
+                      name="customer"
+                      value={false}
+                      onChange={(e) => {
+                        setIsOwner(e.target.value === 'true');
+                        setChooseCustomerType(true);
+                      }}
+                    />
+                  </div>
+                )}
                 <div className="btns">
                   <button
                     onClick={() => login()}

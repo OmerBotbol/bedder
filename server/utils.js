@@ -2,6 +2,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
+const models = require('./models');
 
 const register = async (req, modelName) => {
   const reg = '[a-zA-Z0-9]$';
@@ -27,28 +28,49 @@ const register = async (req, modelName) => {
   return await bcrypt.hash(password, bcrypt.genSaltSync(10));
 };
 
-const login = async (req, res, modelName, isOwner) => {
-  const { email, password } = req.body;
-  const user = await modelName.findOne({ where: { email: email } });
-  if (!user) return res.status(404).json({ error: "User doesn't exists" });
-  const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-  if (!isPasswordCorrect)
-    return res.status(403).json({ error: 'Incorrect password' });
+const createTokens = (id, email, isOwner) => {
   const accessToken = jwt.sign(
-    { email, isOwner, id: user.id },
+    { email, isOwner, id },
     process.env.ACCESS_TOKEN,
     {
       expiresIn: '15m',
     }
   );
   const refreshToken = jwt.sign(
-    { email, isOwner, id: user.id },
+    { email, isOwner, id },
     process.env.REFRESH_TOKEN,
     {
       expiresIn: '7d',
     }
   );
-  return res.json({ id: user.id, email, isOwner, accessToken, refreshToken });
+  return { id, email, isOwner, accessToken, refreshToken };
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const ownerUser = await models.Owners.findOne({ where: { email: email } });
+  const renterUser = await models.Renters.findOne({ where: { email: email } });
+  if (!ownerUser && !renterUser)
+    return res.status(404).json({ error: "User doesn't exists" });
+  let isOwnerPasswordCorrect;
+  let isRenterPasswordCorrect;
+  if (ownerUser) {
+    isOwnerPasswordCorrect = bcrypt.compareSync(password, ownerUser.password);
+  }
+  if (renterUser) {
+    isRenterPasswordCorrect = bcrypt.compareSync(password, renterUser.password);
+  }
+  if (!isOwnerPasswordCorrect && !isRenterPasswordCorrect)
+    return res.status(403).json({ error: 'Incorrect password' });
+  if (!isOwnerPasswordCorrect && isRenterPasswordCorrect)
+    return res.json([createTokens(renterUser.id, email, false)]);
+  if (isOwnerPasswordCorrect && !isRenterPasswordCorrect)
+    return res.json([createTokens(ownerUser.id, email, true)]);
+  if (isOwnerPasswordCorrect && isRenterPasswordCorrect)
+    return res.json([
+      createTokens(ownerUser.id, email, true),
+      createTokens(renterUser.id, email, false),
+    ]);
 };
 
 function validateToken(req, res, next) {

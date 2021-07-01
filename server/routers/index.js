@@ -18,8 +18,7 @@ api.use('/transaction', transaction);
 api.use('/picture', picture);
 
 api.post('/login', (req, res) => {
-  const modelToSend = req.body.isOwner ? models.Owners : models.Renters;
-  login(req, res, modelToSend, req.body.isOwner)
+  login(req, res)
     .then(() => {
       console.log('success!');
     })
