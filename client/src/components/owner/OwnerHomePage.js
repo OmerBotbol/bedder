@@ -54,7 +54,7 @@ function OwnerHomePage({ user }) {
       </div>
       {assets.map((asset, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>
-          <ProfileAsset asset={asset} />
+          <ProfileAsset asset={asset} user={user} />
         </Suspense>
       ))}
       <h2 id="owner-requests">

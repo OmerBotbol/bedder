@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { putHttp } from '../../utils/httpRequests';
 
 function OwnerTransactions({ transaction, transactions, setTransactions }) {
   const [renterDetails, setRenterDetails] = useState('');
@@ -20,7 +21,7 @@ function OwnerTransactions({ transaction, transactions, setTransactions }) {
       field: 'owner_approvement',
       id: transaction.id,
     };
-    axios.put('/api/transaction', dataToSend).then(() => {
+    putHttp('/api/transaction', dataToSend).then(() => {
       const transactionsCopy = [...transactions];
       const index = transactionsCopy.findIndex((option) => {
         return option.id === transaction.id;

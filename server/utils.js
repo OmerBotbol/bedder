@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
@@ -37,7 +38,7 @@ const login = async (req, res, modelName, isOwner) => {
     { email, isOwner, id: user.id },
     process.env.ACCESS_TOKEN,
     {
-      expiresIn: '2m',
+      expiresIn: '15m',
     }
   );
   const refreshToken = jwt.sign(
@@ -50,4 +51,18 @@ const login = async (req, res, modelName, isOwner) => {
   return res.json({ id: user.id, email, isOwner, accessToken, refreshToken });
 };
 
-module.exports = { register, login };
+function validateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token.length < 10) return res.status(401).send('Access Token Required');
+  jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
+    if (err) {
+      console.log(err);
+      return res.status(403).send('Invalid Access Token');
+    }
+    req.data = decoded;
+    next();
+  });
+}
+
+module.exports = { register, login, validateToken };

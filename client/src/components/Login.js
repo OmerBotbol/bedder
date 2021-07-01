@@ -20,7 +20,7 @@ function Login({ user, setUser }) {
     if (chooseCustomerType) {
       try {
         const findUser = await axios.post('/api/login', user);
-        createCookie('accessToken', findUser.data.accessToken, 120000);
+        createCookie('accessToken', findUser.data.accessToken, 900000);
         createCookie('refreshToken', findUser.data.refreshToken);
         console.log('success logging in');
         const userToSave = {

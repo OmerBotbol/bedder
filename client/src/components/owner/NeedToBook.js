@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { deleteHttp, putHttp } from '../../utils/httpRequests';
 
 function NeedToBook({ offer, setNeedToBook, needToBook }) {
   const [renter, setRenter] = useState({});
@@ -28,8 +29,7 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
       field: 'booked',
       id: offer.id,
     };
-    axios
-      .put('/api/transaction', dataToSend)
+    putHttp('/api/transaction', dataToSend)
       .then(() => {
         refreshNeedToBook();
       })
@@ -37,8 +37,7 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
   };
 
   const deleteTransaction = () => {
-    axios
-      .delete('/api/transaction', { id: offer.id })
+    deleteHttp('/api/transaction', { id: offer.id })
       .then(() => {
         refreshNeedToBook();
       })

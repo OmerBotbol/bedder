@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import '../../styles/renterRegister.css';
+import { deleteHttp, postHttp } from '../../utils/httpRequests';
 
 function RenterRegister({ user, setUser }) {
   const [firstName, setFirstName] = useState('');
@@ -29,7 +30,7 @@ function RenterRegister({ user, setUser }) {
     } else if (confirmPassword) {
       const imageInForm = new FormData();
       imageInForm.append('file', image);
-      const imageKey = await axios.post('/api/picture/upload', imageInForm);
+      const imageKey = await postHttp('/api/picture/upload', imageInForm);
       const dataToSend = {
         first_name: firstName,
         last_name: lastName,
@@ -52,7 +53,7 @@ function RenterRegister({ user, setUser }) {
           } else {
             setMessage('Problem, please try again later');
           }
-          await axios.delete(`/api/picture/image/${imageKey.data}`);
+          await deleteHttp(`/api/picture/image/${user.id}/${imageKey.data}`);
         });
     } else {
       setMessage("Password doesn't match");

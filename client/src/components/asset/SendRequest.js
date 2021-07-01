@@ -1,19 +1,20 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { DateRange } from "react-date-range";
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { DateRange } from 'react-date-range';
+import { postHttp } from '../../utils/httpRequests';
 
 function SendRequest({ user, asset, setOpenSendRequest, startedAt, endedAt }) {
-  const [comments, setComments] = useState("");
-  const [newsStartedAt, setNewStartedAt] = useState("");
-  const [newEndedAt, setNewEndedAt] = useState("");
+  const [comments, setComments] = useState('');
+  const [newsStartedAt, setNewStartedAt] = useState('');
+  const [newEndedAt, setNewEndedAt] = useState('');
   const [unavailableDates, setUnavailableDates] = useState([]);
   const [selectionRange, SetSelectionRange] = useState({
     startDate: new Date(startedAt),
     endDate: new Date(endedAt),
-    key: "selection",
+    key: 'selection',
   });
 
   useEffect(() => {
@@ -38,8 +39,7 @@ function SendRequest({ user, asset, setOpenSendRequest, startedAt, endedAt }) {
       ended_at: newEndedAt,
       comments,
     };
-    axios
-      .post("/api/transaction/new", dataToSend)
+    postHttp('/api/transaction/new', dataToSend)
       .then(() => {
         setOpenSendRequest(false);
       })

@@ -5,6 +5,7 @@ const picture = express.Router();
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { v4: uuidv4 } = require('uuid');
+const { validateToken } = require('../utils');
 
 picture.use(express.json());
 
@@ -39,7 +40,10 @@ picture.get('/image/:imageId', (req, res) => {
   res.send(s3.getSignedUrl('getObject', params));
 });
 
-picture.delete('/image/:imageId', (req, res) => {
+picture.delete('/image/:userId/:imageId', validateToken, (req, res) => {
+  const { userId } = reg.params;
+  if (userId !== req.data.id)
+    return res.status(403).send('only the owner can update image');
   const params = { Bucket: process.env.BUCKET_NAME, Key: req.params.imageId };
   s3.deleteObject(params, function (err, data) {
     if (err) console.log(err, err.stack);

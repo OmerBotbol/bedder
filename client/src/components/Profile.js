@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import OwnerProfile from './owner/OwnerProfile';
 import RenterProfile from './renter/RenterProfile';
@@ -28,7 +28,8 @@ export default function Profile({ user }) {
     <div
       className={
         user ? (user.isOwner ? 'profile-owner' : 'profile-renter') : ''
-      }>
+      }
+    >
       {loading ? (
         <div className="loader">
           <ClipLoader color={'#00887a'} loading={loading} size={150} />

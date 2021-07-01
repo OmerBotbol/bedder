@@ -3,10 +3,14 @@ const express = require('express');
 const asset = express.Router();
 const models = require('../models');
 const { Op } = require('sequelize');
+const { validateToken } = require('../utils');
 
 asset.use(express.json());
 
-asset.post('/create', (req, res) => {
+asset.post('/create', validateToken, (req, res) => {
+  const { data } = req;
+  if (!data.isOwner)
+    return res.status(403).send('only owners can create assets');
   models.Assets.create(req.body).then(() => {
     res.send('new asset created!');
   });
@@ -49,30 +53,37 @@ asset.get('/', async (req, res) => {
     }
 
     const filteredAssets = await assets.reduce(async (filtered, asset) => {
-      const unavailableDatesInAsset = await models.Unavailable_Dates.findAll({
-        where: {
-          [Op.and]: [
-            { asset_id: asset.id },
-            { date: { [Op.between]: [startDate, stopDate] } },
-          ],
-        },
-        raw: true,
-      });
+      const unavailableDatesInAsset = await Promise.resolve(
+        models.Unavailable_Dates.findAll({
+          where: {
+            [Op.and]: [
+              { asset_id: asset.id },
+              { date: { [Op.between]: [startDate, stopDate] } },
+            ],
+          },
+          raw: true,
+        })
+      );
+      const previous = await filtered;
       if (unavailableDatesInAsset.length === 0) {
-        filtered.push(asset);
+        previous.push(asset);
       }
-      return filtered;
-    }, []);
+      return previous;
+    }, Promise.resolve([]));
 
     res.send(filteredAssets);
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });
 
 //PUT request to update asset
-asset.put('/update/:id', (req, res) => {
+asset.put('/update/:id', validateToken, (req, res) => {
   const id = req.params.id;
+  const { ownerId } = req.body;
+  if (ownerId !== req.data.id)
+    return res.status(403).send('only the owner can update assets');
   const {
     city,
     address,
@@ -119,8 +130,10 @@ asset.put('/update/:id', (req, res) => {
 });
 
 //POST request to add unavailable dates
-asset.post('/addUnavailableDates', (req, res) => {
-  const { asset_id, startedAt, endedAt } = req.body;
+asset.post('/addUnavailableDates', validateToken, (req, res) => {
+  const { ownerId, asset_id, startedAt, endedAt } = req.body;
+  if (ownerId !== req.data.id)
+    return res.status(403).send('only the owner can update assets');
   let date = new Date(new Date(startedAt).getTime() + 10800000);
   let endDate = new Date(new Date(endedAt).getTime() + 10800000);
   const dateArr = [];
@@ -138,8 +151,10 @@ asset.post('/addUnavailableDates', (req, res) => {
     });
 });
 
-asset.delete('/deleteUnavailableDates', (req, res) => {
-  const { asset_id, startedAt, endedAt } = req.body;
+asset.delete('/deleteUnavailableDates', validateToken, (req, res) => {
+  const { ownerId, asset_id, startedAt, endedAt } = req.body;
+  if (ownerId !== req.data.id)
+    return res.status(403).send('only the owner can update assets');
   const date = new Date(new Date(startedAt));
   const endDate = new Date(new Date(endedAt));
   models.Unavailable_Dates.destroy({
