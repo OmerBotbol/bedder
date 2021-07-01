@@ -65,7 +65,7 @@ function Login({ user, setUser }) {
                   required
                 ></input>
                 <div className="labelName">
-                  <div className="loginAdd label">Owner</div>
+                  <div className="loginAdd label">Host</div>
                   <input
                     className="loginAdd option-input radio"
                     type="radio"
@@ -76,7 +76,7 @@ function Login({ user, setUser }) {
                       setChooseCustomerType(true);
                     }}
                   />
-                  <div className="loginAdd label">Renter</div>
+                  <div className="loginAdd label">Guest</div>
                   <input
                     className="loginAdd option-input radio"
                     type="radio"

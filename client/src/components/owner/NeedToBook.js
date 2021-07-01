@@ -5,8 +5,11 @@ import { deleteHttp, putHttp } from '../../utils/httpRequests';
 function NeedToBook({ offer, setNeedToBook, needToBook }) {
   const [renter, setRenter] = useState({});
   useEffect(() => {
-    renterDetails();
-  }, []);
+    axios
+      .get(`/api/renter/${offer.renter_id}`)
+      .then((data) => setRenter(data.data))
+      .catch((err) => console.log(err));
+  }, [offer.renter_id]);
 
   console.log(renter);
   const refreshNeedToBook = () => {
@@ -17,12 +20,7 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
     offersCopy.splice(index, 1);
     setNeedToBook(offersCopy);
   };
-  const renterDetails = () => {
-    axios
-      .get(`/api/renter/${offer.renter_id}`)
-      .then((data) => setRenter(data.data))
-      .catch((err) => console.log(err));
-  };
+
   const book = () => {
     const dataToSend = {
       value: true,
