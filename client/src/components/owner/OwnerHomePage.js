@@ -1,12 +1,14 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import UnavailableDates from '../asset/UnavailableDates';
 const ProfileAsset = lazy(() => import('../asset/ProfileAsset'));
 const OwnerTransactions = lazy(() => import('./OwnerTransactions'));
 const NeedToBook = lazy(() => import('./NeedToBook'));
 
-function OwnerHomePage({ user }) {
+function OwnerHomePage({ user, hideDates, setHideDates }) {
   const [addAsset, setAddAsset] = useState(false);
+  const [currentAsset, setCurrentAsset] = useState('');
   const [assets, setAssets] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [needToBook, setNeedToBook] = useState([]);
@@ -39,6 +41,11 @@ function OwnerHomePage({ user }) {
       .catch((err) => console.log(err));
   }, [user.id, transactions]);
 
+  const showUnavailableDateWindow = (asset) => {
+    setCurrentAsset(asset);
+    setHideDates((prev) => !prev);
+  };
+
   return (
     <div>
       <div className="headlines-asset">
@@ -46,7 +53,8 @@ function OwnerHomePage({ user }) {
         <div className="btns">
           <button
             className="add-asset-button"
-            onClick={() => setAddAsset(true)}>
+            onClick={() => setAddAsset(true)}
+          >
             Add asset
           </button>
           {addAsset && <Redirect to="/addAsset" />}
@@ -54,7 +62,10 @@ function OwnerHomePage({ user }) {
       </div>
       {assets.map((asset, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>
-          <ProfileAsset asset={asset} user={user} />
+          <ProfileAsset
+            asset={asset}
+            showUnavailableDateWindow={showUnavailableDateWindow}
+          />
         </Suspense>
       ))}
       <h2 id="owner-requests">
@@ -85,6 +96,14 @@ function OwnerHomePage({ user }) {
           />
         </Suspense>
       ))}
+      {!hideDates && (
+        <UnavailableDates
+          user={user}
+          asset={currentAsset}
+          hideDates={hideDates}
+          setHideDates={setHideDates}
+        />
+      )}
     </div>
   );
 }

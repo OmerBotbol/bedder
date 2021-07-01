@@ -170,8 +170,8 @@ asset.delete('/deleteUnavailableDates', validateToken, (req, res) => {
     });
 });
 
-asset.get('/unavailableDates', (req, res) => {
-  const { assetId } = req.query;
+asset.get('/unavailableDates/:assetId', (req, res) => {
+  const { assetId } = req.params;
   models.Unavailable_Dates.findAll({
     where: { asset_id: assetId },
     raw: true,

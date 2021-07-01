@@ -7,6 +7,7 @@ import RenterHomePage from './renter/RenterHomePage';
 
 function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
+  const [hideDates, setHideDates] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -15,18 +16,23 @@ function HomePage({ user }) {
   }, []);
 
   return (
-    <>
+    <div id="homepage" style={{ overflow: hideDates ? '' : 'hidden' }}>
       {loading ? (
         <div className="loader">
           <ClipLoader color={'#00887a'} loading={loading} size={150} />
         </div>
       ) : (
         <div
-          className={!user ? 'homepage-container' : 'homepage-user-container'}>
+          className={!user ? 'homepage-container' : 'homepage-user-container'}
+        >
           {user ? (
             <>
               {user.isOwner ? (
-                <OwnerHomePage user={user} />
+                <OwnerHomePage
+                  user={user}
+                  hideDates={hideDates}
+                  setHideDates={setHideDates}
+                />
               ) : (
                 <RenterHomePage user={user} />
               )}
@@ -47,7 +53,7 @@ function HomePage({ user }) {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
 

@@ -1,3 +1,10 @@
+#homepage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 100vh;
+}
+
 .homepage-container {
   background-image: url('../images/homepage.jpg');
   background-repeat: no-repeat;
@@ -17,7 +24,6 @@
   background-position: center center;
   justify-content: space-around;
   padding-top: 20vh;
-  padding-left: 20vw;
 }
 #welcome {
   margin-left: -2vw;
@@ -76,17 +82,27 @@
 .modal {
   text-align: center;
   visibility: hidden;
-  opacity: 0;
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(77, 77, 77, 0.7);
-  transition: all 0.4s;
+  animation: fadeInOpacity 0.4s ease-in;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+}
+
+@keyframes fadeInOpacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .modal:target {
