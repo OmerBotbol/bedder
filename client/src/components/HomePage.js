@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import OwnerHomePage from './owner/OwnerHomePage';
+// import PureModal from 'react-pure-modal';
 import RenterHomePage from './renter/RenterHomePage';
+import Popup from 'reactjs-popup';
 
 function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,8 @@ function HomePage({ user }) {
         </div>
       ) : (
         <div
-          className={!user ? 'homepage-container' : 'homepage-user-container'}>
+          className={!user ? 'homepage-container' : 'homepage-user-container'}
+        >
           {user ? (
             <>
               {user.isOwner ? (
@@ -43,6 +46,12 @@ function HomePage({ user }) {
                   Register
                 </Link>
               </div>
+              <Popup
+                trigger={<button> Trigger</button>}
+                position="right center"
+              >
+                <div>Popup content here !!</div>
+              </Popup>
             </>
           )}
         </div>
