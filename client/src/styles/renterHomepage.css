@@ -1,11 +1,12 @@
 #search {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   width: 90vw;
   background-color: #ffb19a;
   position: relative;
   height: 10vh;
-  z-index: 1;
+  z-index: 2;
 }
 
 .search-bar {
@@ -13,7 +14,7 @@
   border: none;
   backface-visibility: hidden;
   line-height: 18px;
-  width: 50vw;
+  width: 100%;
   min-width: fit-content;
   padding: 6px 20px;
   letter-spacing: 1.5px;
@@ -31,7 +32,7 @@
   font-size: 1.3em;
   color: #7f807f;
   margin: 2px 1px 2px 1px;
-  width: 20vw;
+  width: 25vw;
   text-align: center;
   padding-top: auto;
   padding-bottom: auto;
@@ -70,9 +71,9 @@
 
 .open-filters-btn {
   background-color: #ffb19a;
-  width: 13vw;
-  outline: none;
+  width: 20vw;
   border: none;
+  outline: none;
   padding: 8px 8px;
   font-size: 16px;
   text-transform: uppercase;
@@ -95,6 +96,7 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 20px;
+  z-index: 1;
 }
 
 .filter-btn {
@@ -108,6 +110,11 @@
   text-transform: uppercase;
   outline: none;
   margin-top: 30px;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  color: black;
 }
 
 .ks-cboxtags {
@@ -223,7 +230,7 @@
   .filter {
     padding-top: 0;
     width: 90vw;
-    top: 30.5vh;
+    top: 33vh;
     right: 50%;
     -ms-transform: translateX(50%);
     transform: translateX(50%);

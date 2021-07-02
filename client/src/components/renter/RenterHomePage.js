@@ -17,7 +17,7 @@ function RenterHomePage({ user }) {
     { name: 'Babies', value: false },
     { name: 'Kosher', value: false },
     { name: 'Parking', value: false },
-    { name: 'Shabbat', value: false },
+    { name: 'Shabat', value: false },
   ]);
 
   const changeValue = (i) => {
@@ -33,9 +33,8 @@ function RenterHomePage({ user }) {
       }
       return filtered;
     }, []);
-
-    let isValid = true;
     const filteredArr = assets.reduce((filtered, asset) => {
+      let isValid = true;
       filters.forEach((filter) => {
         if (asset[filter] === 0) {
           isValid = false;
@@ -47,6 +46,7 @@ function RenterHomePage({ user }) {
       return filtered;
     }, []);
     setFilteredAssets(filteredArr);
+    setOpenFilters((prev) => !prev);
     setError('');
     if (filteredArr.length === 0) {
       setError('no assets found');
@@ -92,11 +92,12 @@ function RenterHomePage({ user }) {
               <li key={i} className="filter-option">
                 <input
                   id={`checkbox-${i}`}
+                  defaultChecked={option.value}
                   type="checkbox"
                   onChange={() => changeValue(i)}
                 />
                 <label className="label-for-check" htmlFor={`checkbox-${i}`}>
-                  {option.name}
+                  {option.name === 'Shabat' ? 'Shabbat' : option.name}
                 </label>
               </li>
             ))}
@@ -107,15 +108,17 @@ function RenterHomePage({ user }) {
         </div>
       )}
       {error ? <div>{error}</div> : ''}
-      {filteredAssets.map((asset, i) => (
-        <ShowAsset
-          key={i}
-          user={user}
-          asset={asset}
-          startedAt={startedAt}
-          endedAt={endedAt}
-        />
-      ))}
+      <div className="assets-container">
+        {filteredAssets.map((asset, i) => (
+          <ShowAsset
+            key={i}
+            user={user}
+            asset={asset}
+            startedAt={startedAt}
+            endedAt={endedAt}
+          />
+        ))}
+      </div>
     </div>
   );
 }

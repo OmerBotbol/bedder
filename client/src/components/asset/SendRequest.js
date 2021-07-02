@@ -5,6 +5,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
 import { postHttp } from '../../utils/httpRequests';
+import '../../styles/assetCard.css';
 
 function SendRequest({ user, asset, setOpenSendRequest, startedAt, endedAt }) {
   const [comments, setComments] = useState('');
