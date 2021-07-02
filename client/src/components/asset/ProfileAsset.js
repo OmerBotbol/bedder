@@ -64,9 +64,7 @@ export default function ProfileAsset({ asset, showUnavailableDateWindow }) {
           showUnavailableDateWindow(asset);
         }}
       >
-        <a className="add-dates" href="#demo-modal">
-          Add unavailable dates
-        </a>
+        Add unavailable dates
       </button>
     </div>
   );

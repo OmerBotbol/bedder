@@ -100,7 +100,6 @@ function OwnerHomePage({ user, hideDates, setHideDates }) {
         <UnavailableDates
           user={user}
           asset={currentAsset}
-          hideDates={hideDates}
           setHideDates={setHideDates}
         />
       )}
