@@ -35,7 +35,7 @@ asset.get('/', async (req, res) => {
   const owner_id = req.query.owner_id;
   let searchQuery = {
     [Op.and]: [
-      { city: { [Op.like]: city + '%' } },
+      { city: { [Op.like]: '%' + city + '%' } },
       { started_at: { [Op.lte]: startDate } },
       { ended_at: { [Op.gte]: stopDate } },
     ],
