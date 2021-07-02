@@ -183,3 +183,62 @@
 #owner-assets {
   margin-right: 35vw;
 }
+/* .modal {
+  font-size: 12px;
+/* } */
+/* .modal > .header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+} */
+/* .box {
+  width: 140%;
+  -webkit-box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+  -moz-box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+  box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+} */
+/* .content {
+  width: 100%;
+  height: 100%;
+  padding: inherit;
+  -webkit-box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+  -moz-box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+  box-shadow: -1px -2px 42px -19px rgba(0, 0, 0, 0.74);
+  border-color: lawngreen;
+  border-radius: 9pm;
+} */
+.close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+.popup-content {
+  background: rgb(255, 255, 255);
+  width: 50vw;
+  padding: 5px;
+}
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+  width: 50vw;
+  box-shadow: rgba(15, 15, 15, 0.16) 1px 2px 42px 19px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].popup-overlay {
+  background: transparent;
+  backdrop-filter: blur(2px);
+}
