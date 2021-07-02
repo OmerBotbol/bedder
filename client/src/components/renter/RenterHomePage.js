@@ -9,6 +9,7 @@ function RenterHomePage({ user }) {
   const [searchInput, setSearchInput] = useState('');
   const [startedAt, setStartedAt] = useState();
   const [endedAt, setEndedAt] = useState();
+  const [openFilters, setOpenFilters] = useState(false);
   const [filterBy, setFilterBy] = useState([
     { name: 'Ac', value: false },
     { name: 'Accessibility', value: false },
@@ -54,28 +55,57 @@ function RenterHomePage({ user }) {
 
   return (
     <div>
-      <Search
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setError={setError}
-        setAssets={setAssets}
-        user={user}
-        assets={assets}
-        setFilteredAssets={setFilteredAssets}
-        setStartedAt={setStartedAt}
-        setEndedAt={setEndedAt}
-        startedAt={startedAt}
-        endedAt={endedAt}
-      />
-      <div className="filter">
-        {filterBy.map((option, i) => (
-          <div key={i} className={`${i} filter-option`}>
-            <label>{option.name}</label>
-            <input type="checkbox" onChange={() => changeValue(i)} />
-          </div>
-        ))}
-        <button onClick={() => filterOptions()}>Filter</button>
+      <div
+        id="search"
+        style={{
+          gridTemplateRows: `repeat(${
+            filteredAssets.length > 0 ? '3' : '2'
+          }, 1fr)`,
+        }}
+      >
+        <Search
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setError={setError}
+          setAssets={setAssets}
+          user={user}
+          assets={assets}
+          setFilteredAssets={setFilteredAssets}
+          setStartedAt={setStartedAt}
+          setEndedAt={setEndedAt}
+          startedAt={startedAt}
+          endedAt={endedAt}
+        />
+        {filteredAssets.length > 0 && (
+          <button
+            className="open-filters-btn"
+            onClick={() => setOpenFilters((prev) => !prev)}
+          >
+            Filters
+          </button>
+        )}
       </div>
+      {openFilters && filteredAssets.length > 0 && (
+        <div className="filter">
+          <ul className="ks-cboxtags">
+            {filterBy.map((option, i) => (
+              <li key={i} className="filter-option">
+                <input
+                  id={`checkbox-${i}`}
+                  type="checkbox"
+                  onChange={() => changeValue(i)}
+                />
+                <label className="label-for-check" htmlFor={`checkbox-${i}`}>
+                  {option.name}
+                </label>
+              </li>
+            ))}
+            <button className="filter-btn" onClick={() => filterOptions()}>
+              Filter
+            </button>
+          </ul>
+        </div>
+      )}
       {error ? <div>{error}</div> : ''}
       {filteredAssets.map((asset, i) => (
         <ShowAsset

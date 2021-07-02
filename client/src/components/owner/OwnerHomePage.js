@@ -48,6 +48,7 @@ function OwnerHomePage({ user, hideDates, setHideDates }) {
 
   return (
     <div>
+      {console.log('render')}
       <div className="headlines-asset">
         <h2 id="owner-assets">My Assets </h2>
         <div className="btns">

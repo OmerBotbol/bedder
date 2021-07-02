@@ -4,13 +4,10 @@ import { Link } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import OwnerHomePage from './owner/OwnerHomePage';
 import RenterHomePage from './renter/RenterHomePage';
-import Popup from 'reactjs-popup';
 
 function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
   const [hideDates, setHideDates] = useState(true);
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -52,19 +49,6 @@ function HomePage({ user }) {
                   Register
                 </Link>
               </div>
-              <Popup trigger={<button>About Us</button>} position="top left">
-                {(close) => (
-                  <div className="box">
-                    <div className="content">
-                      <h1> Our Story</h1>
-                      Content here
-                      <a className="close" onClick={close}>
-                        &times;
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </Popup>
             </>
           )}
         </div>

@@ -36,12 +36,12 @@ function App() {
         if (!err.message.slice(-3) === '401') {
           return console.log(err.message);
         }
-        console.log('please refresh the page');
       });
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [user]);
+  }, []);
+
   return (
     <div className="App">
       <Router>

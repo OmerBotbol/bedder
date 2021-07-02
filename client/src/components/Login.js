@@ -32,7 +32,6 @@ function Login({ user, setUser }) {
           };
           setUser(userToSave);
         } else {
-          console.log(findUser.data);
           setUserDetails(findUser.data);
         }
       } catch (error) {
@@ -40,7 +39,14 @@ function Login({ user, setUser }) {
         setMessage('User name, password or customer type are incorrect');
       }
     } else {
-      setUser(isOwner ? userDetails[0] : userDetails[1]);
+      const userToSet = isOwner ? userDetails[0] : userDetails[1];
+      createCookie('accessToken', userToSet.accessToken, 900000);
+      createCookie('refreshToken', userToSet.refreshToken);
+      setUser({
+        email: userToSet.email,
+        isOwner: userToSet.isOwner,
+        id: userToSet.id,
+      });
     }
   };
 
