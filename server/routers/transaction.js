@@ -5,15 +5,18 @@ const { validateToken } = require('../utils');
 
 //POST request to create new transaction
 transaction.post('/new', validateToken, (req, res) => {
-  console.log(req.body);
   const { asset_id, owner_id, renter_id, started_at, ended_at, comments } =
     req.body;
+  const convertedStartedAt = new Date(
+    new Date(started_at).getTime() + 10800000
+  );
+  const convertedEndedAt = new Date(new Date(ended_at).getTime() + 10800000);
   models.Transactions.create({
     asset_id,
     owner_id,
     renter_id,
-    started_at,
-    ended_at,
+    started_at: convertedStartedAt,
+    ended_at: convertedEndedAt,
     comments,
   })
     .then(() => res.send('Transaction added'))

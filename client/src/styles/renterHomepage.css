@@ -7,6 +7,8 @@
   position: relative;
   height: 10vh;
   z-index: 2;
+  flex-grow: 1;
+  transition: all 0.5 ease;
 }
 
 .search-bar {
@@ -70,7 +72,7 @@
 }
 
 .open-filters-btn {
-  background-color: #ffb19a;
+  background-color: transparent;
   width: 20vw;
   border: none;
   outline: none;
@@ -78,6 +80,26 @@
   font-size: 16px;
   text-transform: uppercase;
   margin-left: 0px;
+  cursor: pointer;
+  animation: SlideIn 0.5s ease-in;
+}
+
+@keyframes SlideIn {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 20vw;
+  }
+}
+
+@keyframes SlideUp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .open-filters-btn:hover {
@@ -87,8 +109,8 @@
 .filter {
   padding-top: 10vh;
   position: absolute;
-  right: 4.3vw;
-  top: 20vh;
+  right: 0;
+  top: 0;
   width: 12.7vw;
   font-size: 1.1em;
   background-color: #ffb19a;
@@ -97,6 +119,13 @@
   justify-content: space-between;
   border-radius: 20px;
   z-index: 1;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+.search-container {
+  position: relative;
+  width: max-content;
 }
 
 .filter-btn {
@@ -218,11 +247,13 @@
   .open-filters-btn {
     width: 100%;
     grid-area: 3 / 1 / 4 / 5;
+    animation: SlideUp 0.3s ease-in;
   }
   .calendar {
     position: absolute;
-    top: 35vh;
+    top: 21vh;
     right: 50%;
+    z-index: 50;
     -ms-transform: translateX(50%);
     transform: translateX(50%);
   }
@@ -230,7 +261,7 @@
   .filter {
     padding-top: 0;
     width: 90vw;
-    top: 33vh;
+    top: 18vh;
     right: 50%;
     -ms-transform: translateX(50%);
     transform: translateX(50%);

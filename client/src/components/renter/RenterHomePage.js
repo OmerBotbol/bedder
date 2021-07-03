@@ -55,58 +55,63 @@ function RenterHomePage({ user }) {
 
   return (
     <div>
-      <div
-        id="search"
-        style={{
-          gridTemplateRows: `repeat(${
-            filteredAssets.length > 0 ? '3' : '2'
-          }, 1fr)`,
-        }}
-      >
-        <Search
-          searchInput={searchInput}
-          setSearchInput={setSearchInput}
-          setError={setError}
-          setAssets={setAssets}
-          user={user}
-          assets={assets}
-          setFilteredAssets={setFilteredAssets}
-          setStartedAt={setStartedAt}
-          setEndedAt={setEndedAt}
-          startedAt={startedAt}
-          endedAt={endedAt}
-        />
+      <div className="search-container">
+        <div
+          id="search"
+          style={{
+            gridTemplateRows: `repeat(${
+              filteredAssets.length > 0 ? '3' : '2'
+            }, 1fr)`,
+          }}
+        >
+          <Search
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            setError={setError}
+            setAssets={setAssets}
+            user={user}
+            assets={assets}
+            setFilteredAssets={setFilteredAssets}
+            setStartedAt={setStartedAt}
+            setEndedAt={setEndedAt}
+            startedAt={startedAt}
+            endedAt={endedAt}
+          />
+          {filteredAssets.length > 0 && (
+            <button
+              className="open-filters-btn"
+              onClick={() => setOpenFilters((prev) => !prev)}
+            >
+              Filters
+            </button>
+          )}
+        </div>
         {filteredAssets.length > 0 && (
-          <button
-            className="open-filters-btn"
-            onClick={() => setOpenFilters((prev) => !prev)}
+          <div
+            className="filter"
+            style={{ maxHeight: openFilters ? '100vh' : '0%' }}
           >
-            Filters
-          </button>
+            <ul className="ks-cboxtags">
+              {filterBy.map((option, i) => (
+                <li key={i} className="filter-option">
+                  <input
+                    id={`checkbox-${i}`}
+                    defaultChecked={option.value}
+                    type="checkbox"
+                    onChange={() => changeValue(i)}
+                  />
+                  <label className="label-for-check" htmlFor={`checkbox-${i}`}>
+                    {option.name === 'Shabat' ? 'Shabbat' : option.name}
+                  </label>
+                </li>
+              ))}
+              <button className="filter-btn" onClick={() => filterOptions()}>
+                Filter
+              </button>
+            </ul>
+          </div>
         )}
       </div>
-      {openFilters && filteredAssets.length > 0 && (
-        <div className="filter">
-          <ul className="ks-cboxtags">
-            {filterBy.map((option, i) => (
-              <li key={i} className="filter-option">
-                <input
-                  id={`checkbox-${i}`}
-                  defaultChecked={option.value}
-                  type="checkbox"
-                  onChange={() => changeValue(i)}
-                />
-                <label className="label-for-check" htmlFor={`checkbox-${i}`}>
-                  {option.name === 'Shabat' ? 'Shabbat' : option.name}
-                </label>
-              </li>
-            ))}
-            <button className="filter-btn" onClick={() => filterOptions()}>
-              Filter
-            </button>
-          </ul>
-        </div>
-      )}
       {error ? <div>{error}</div> : ''}
       <div className="assets-container">
         {filteredAssets.map((asset, i) => (
