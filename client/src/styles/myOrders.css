@@ -1,0 +1,54 @@
+#my-orders-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 12vh;
+}
+
+#my-orders-header {
+  text-align: center;
+}
+
+#my-orders {
+  display: flex;
+  justify-content: center;
+}
+
+#all-orders {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+}
+
+.alert {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  line-height: 2em;
+  background-color: white;
+  padding: 10px 20px;
+}
+
+.delete-order-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: transparent;
+  text-transform: uppercase;
+  border: #00887a 1px solid;
+  border-radius: 20px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.delete-order-btn:hover {
+  color: #77a6f7;
+}
+
+@media only screen and (max-width: 768px) {
+  #all-orders {
+    grid-template-columns: auto;
+    grid-row-gap: 10px;
+  }
+}
