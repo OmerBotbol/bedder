@@ -1,14 +1,12 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import UnavailableDates from '../asset/UnavailableDates';
 const ProfileAsset = lazy(() => import('../asset/ProfileAsset'));
 const OwnerTransactions = lazy(() => import('./OwnerTransactions'));
 const NeedToBook = lazy(() => import('./NeedToBook'));
 
-function OwnerHomePage({ user, hideDates, setHideDates }) {
+function OwnerHomePage({ user, setHideDates }) {
   const [addAsset, setAddAsset] = useState(false);
-  const [currentAsset, setCurrentAsset] = useState('');
   const [assets, setAssets] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [needToBook, setNeedToBook] = useState([]);
@@ -41,14 +39,8 @@ function OwnerHomePage({ user, hideDates, setHideDates }) {
       .catch((err) => console.log(err));
   }, [user.id, transactions]);
 
-  const showUnavailableDateWindow = (asset) => {
-    setCurrentAsset(asset);
-    setHideDates((prev) => !prev);
-  };
-
   return (
     <div>
-      {console.log('render')}
       <div className="headlines-asset">
         <h2 id="owner-assets">My Assets </h2>
         <div className="btns">
@@ -63,10 +55,7 @@ function OwnerHomePage({ user, hideDates, setHideDates }) {
       </div>
       {assets.map((asset, i) => (
         <Suspense key={i} fallback={<div>Loading...</div>}>
-          <ProfileAsset
-            asset={asset}
-            showUnavailableDateWindow={showUnavailableDateWindow}
-          />
+          <ProfileAsset asset={asset} user={user} />
         </Suspense>
       ))}
       <h2 id="owner-requests">
@@ -97,13 +86,6 @@ function OwnerHomePage({ user, hideDates, setHideDates }) {
           />
         </Suspense>
       ))}
-      {!hideDates && (
-        <UnavailableDates
-          user={user}
-          asset={currentAsset}
-          setHideDates={setHideDates}
-        />
-      )}
     </div>
   );
 }

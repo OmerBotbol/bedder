@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import UnavailableDates from '../asset/UnavailableDates';
 import axios from 'axios';
 
-export default function ProfileAsset({ asset, showUnavailableDateWindow }) {
+export default function ProfileAsset({ asset, user }) {
+  const [hideDates, setHideDates] = useState(true);
   const [pictureUrl, setPictureUrl] = useState('');
 
   useEffect(() => {
@@ -61,11 +63,19 @@ export default function ProfileAsset({ asset, showUnavailableDateWindow }) {
       </div>
       <button
         onClick={() => {
-          showUnavailableDateWindow(asset);
+          setHideDates((prev) => !prev);
         }}
       >
         Add unavailable dates
       </button>
+
+      {!hideDates && (
+        <UnavailableDates
+          user={user}
+          asset={asset}
+          setHideDates={setHideDates}
+        />
+      )}
     </div>
   );
 }
