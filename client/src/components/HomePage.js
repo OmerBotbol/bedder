@@ -59,12 +59,11 @@ function HomePage({ user }) {
                     <div className="content">
                       <p>
                         <p>
-                          This application was established in 2021 immediately
-                          after the Operation Guardian of the Walls, by Omar
-                          Botbul, Shira Meirovitz and Noa Shalom as part of a
-                          program for veterans that operated by Scale-Up
-                          Velocity in cooperation with the IDF and the cyber
-                          system.
+                          This application was established in 2021 after the
+                          Operation Guardian of the Walls, by Omar Botbol, Shira
+                          Meirovitz and Noa Shalom as part of a program for
+                          veterans that operated by Scale-Up Velocity in
+                          cooperation with the IDF and the cyber system.
                           <br></br>
                         </p>
                         The purpose of the application is to reflect the
