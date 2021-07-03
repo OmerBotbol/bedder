@@ -47,7 +47,10 @@ function HomePage({ user }) {
                   Register
                 </Link>
               </div>
-              <Popup trigger={<button>About Us</button>} position="top left">
+              <Popup
+                trigger={<button className="about">ABOUT US</button>}
+                position="top left"
+              >
                 {(close) => (
                   <div className="box">
                     <div className="header">
@@ -62,6 +65,7 @@ function HomePage({ user }) {
                           program for veterans that operated by Scale-Up
                           Velocity in cooperation with the IDF and the cyber
                           system.
+                          <br></br>
                         </p>
                         The purpose of the application is to reflect the
                         knowledge acquired after five months of training and has
@@ -72,6 +76,7 @@ function HomePage({ user }) {
                         accessible and quick search for accommodation, as well
                         as advertising accommodation at the click of a button.
                       </p>
+                      <br></br>
                       <p>
                         We believe that volunteering can and should become
                         public domain, and that the way there is through quality
