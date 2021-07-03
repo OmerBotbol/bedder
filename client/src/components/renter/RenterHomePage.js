@@ -89,7 +89,10 @@ function RenterHomePage({ user }) {
         {filteredAssets.length > 0 && (
           <div
             className="filter"
-            style={{ maxHeight: openFilters ? '100vh' : '0%' }}
+            style={{
+              maxHeight: openFilters ? '100vh' : '0vh',
+              visibility: openFilters ? 'visible' : 'hidden',
+            }}
           >
             <ul className="ks-cboxtags">
               {filterBy.map((option, i) => (
