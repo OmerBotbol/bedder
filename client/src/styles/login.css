@@ -3,17 +3,6 @@
   --contrast-color: #00887a;
 }
 
-/* .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 10;
-  bottom: 0;
-  height: 100%;
-  z-index: -10;
-  background-color: var(--contrast-color);
-} */
-
 .container {
   display: flex;
   height: 100vh;
@@ -24,7 +13,6 @@
   color: #77a6f7;
   animation: expand 0.8s ease forwards;
   background-image: url('../images/leaf.jpg');
-  /* position: relative; */
   transition: all 0.8s ease;
   background-repeat: no-repeat;
   background-size: cover;
@@ -47,9 +35,25 @@ Input :hover,
 :focus {
   outline: 0;
 }
-/* .container_content {
-  width: 50%;
-} */
+.labels-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(2px);
+  animation: ShowIn 0.3s ease-in;
+  transition: all 0.4s ease-in-out;
+}
+
+@keyframes ShowIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .label {
   font-size: 1.5em;
 }
@@ -61,6 +65,29 @@ Input :hover,
   width: 20vw;
   min-width: fit-content;
 }
+
+.login-customer-type {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: #ffcfc1 1px solid;
+  background-color: white;
+  height: 20vh;
+  border-radius: 20px;
+}
+
+.login-labels {
+  margin-top: 3vh;
+}
+
+.next-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .par {
   height: auto;
   overflow: hidden;

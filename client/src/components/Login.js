@@ -11,34 +11,39 @@ function Login({ user, setUser }) {
   const [isOwner, setIsOwner] = useState(false);
   const [message, setMessage] = useState('');
   const [chooseCustomerType, setChooseCustomerType] = useState(false);
+  const [customerTypeWindow, setCustomerTypeWindow] = useState(false);
+  const [opacity, setOpacity] = useState(1);
 
   const login = async () => {
     const user = {
       email: email,
       password: password,
     };
-    if (!chooseCustomerType) {
-      try {
-        const findUser = await axios.post('/api/login', user);
-        if (findUser.data.length === 1) {
-          const userData = findUser.data[0];
-          createCookie('accessToken', userData.accessToken, 900000);
-          createCookie('refreshToken', userData.refreshToken);
-          console.log('success logging in');
-          const userToSave = {
-            email: userData.email,
-            isOwner: userData.isOwner,
-            id: userData.id,
-          };
-          setUser(userToSave);
-        } else {
-          setUserDetails(findUser.data);
-        }
-      } catch (error) {
-        console.log('error invalid user');
-        setMessage('User name, password or customer type are incorrect');
+    try {
+      const findUser = await axios.post('/api/login', user);
+      if (findUser.data.length === 1) {
+        const userData = findUser.data[0];
+        createCookie('accessToken', userData.accessToken, 900000);
+        createCookie('refreshToken', userData.refreshToken);
+        console.log('success logging in');
+        const userToSave = {
+          email: userData.email,
+          isOwner: userData.isOwner,
+          id: userData.id,
+        };
+        setUser(userToSave);
+      } else {
+        setUserDetails(findUser.data);
+        setCustomerTypeWindow(true);
       }
-    } else {
+    } catch (error) {
+      console.log('error invalid user');
+      setMessage('User name, password or customer type are incorrect');
+    }
+  };
+
+  const handleNext = () => {
+    if (chooseCustomerType) {
       const userToSet = isOwner ? userDetails[0] : userDetails[1];
       createCookie('accessToken', userToSet.accessToken, 900000);
       createCookie('refreshToken', userToSet.refreshToken);
@@ -47,6 +52,12 @@ function Login({ user, setUser }) {
         isOwner: userToSet.isOwner,
         id: userToSet.id,
       });
+    } else {
+      setOpacity(0);
+      setTimeout(() => {
+        setCustomerTypeWindow(false);
+        setOpacity(1);
+      }, 400);
     }
   };
 
@@ -75,32 +86,6 @@ function Login({ user, setUser }) {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 ></input>
-                {userDetails.length === 2 && (
-                  <div className="labelName">
-                    <div className="loginAdd label">Host</div>
-                    <input
-                      className="loginAdd option-input radio"
-                      type="radio"
-                      name="customer"
-                      value={true}
-                      onChange={(e) => {
-                        setIsOwner(e.target.value === 'true');
-                        setChooseCustomerType(true);
-                      }}
-                    />
-                    <div className="loginAdd label">Guest</div>
-                    <input
-                      className="loginAdd option-input radio"
-                      type="radio"
-                      name="customer"
-                      value={false}
-                      onChange={(e) => {
-                        setIsOwner(e.target.value === 'true');
-                        setChooseCustomerType(true);
-                      }}
-                    />
-                  </div>
-                )}
                 <div className="btns">
                   <button
                     onClick={() => login()}
@@ -110,6 +95,42 @@ function Login({ user, setUser }) {
                     LOGIN
                   </button>
                 </div>
+                {customerTypeWindow && (
+                  <div
+                    className="labels-container"
+                    style={{ opacity: opacity }}
+                  >
+                    <div className="login-customer-type">
+                      <div className="labelName login-labels">
+                        <div className="label">Host</div>
+                        <input
+                          className="option-input radio"
+                          type="radio"
+                          name="customer"
+                          value={true}
+                          onChange={(e) => {
+                            setIsOwner(e.target.value === 'true');
+                            setChooseCustomerType(true);
+                          }}
+                        />
+                        <div className="label">Guest</div>
+                        <input
+                          className="option-input radio"
+                          type="radio"
+                          name="customer"
+                          value={false}
+                          onChange={(e) => {
+                            setIsOwner(e.target.value === 'true');
+                            setChooseCustomerType(true);
+                          }}
+                        />
+                      </div>
+                      <button className="next-btn" onClick={() => handleNext()}>
+                        next
+                      </button>
+                    </div>
+                  </div>
+                )}
                 <div>{message}</div>
               </div>
             </div>
