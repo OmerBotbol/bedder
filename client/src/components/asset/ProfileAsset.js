@@ -23,45 +23,53 @@ export default function ProfileAsset({ asset, user }) {
   };
 
   return (
-    <div className="profile-owner-asset">
-      <img src={pictureUrl} alt="asset" />
-      <div className="asset-details">
-        <h4>{asset.city},</h4>
-        <h4>{asset.address}</h4>
-        <p>{asset.description}</p>
-        <div className="asset-small-details">
-          <p className="detail">Number of people: {asset.number_of_peoples}</p>
-          <p className="detail">Number of rooms: {asset.number_of_rooms}</p>
-          <p className="dates-asset">
-            {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
-            {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
-          </p>
-          <p className="detail">
+    <div className="asset-container">
+      <div className="asset-top">
+        <img className="asset-picture" src={pictureUrl} alt="asset" />
+        <div className="asset-address">
+          {asset.address}, {asset.city}
+        </div>
+      </div>
+      <div className="asset-middle">
+        <div className="asset-details">
+          <div className="detail">{asset.description}</div>
+          <div className="detail">
+            Number of people: {asset.number_of_peoples}
+          </div>
+          <div className="detail">Number of rooms: {asset.number_of_rooms}</div>
+          <div className="detail">
+            {new Date(asset.started_at).toLocaleDateString()} -{' '}
+            {new Date(asset.ended_at).toLocaleDateString()}
+          </div>
+        </div>
+        <div className="asset-details">
+          <div className="detail">
             <i
               className={`fas fa-fan
-            ${Exists(asset.ac)} `}
+              ${Exists(asset.ac)} `}
             />{' '}
             AC
-          </p>
-          <p className="detail">
+          </div>
+          <div className="detail">
             <i className={`fa fa-wheelchair ${Exists(asset.accessibility)} `} />{' '}
             accessibility
-          </p>
-          <p className="detail">
+          </div>
+          <div className="detail">
             <i className={`fa fa-paw ${Exists(asset.animals)} `} /> Animals
-          </p>
-          <p className="detail">
+          </div>
+          <div className="detail">
             <i className={`fa fa-baby-carriage ${Exists(asset.babies)} `} />{' '}
             Babies
-          </p>
-          <p className="detail">
+          </div>
+          <div className="detail">
             <i className={`fa fa-parking ${Exists(asset.parking)} `} /> Parking
-          </p>
-          <p className={`${Exists(asset.kosher)} detail`}>Kosher</p>
-          <p className={`${Exists(asset.shabbat)} detail`}>Shabbat</p>
+          </div>
+          <div className={`${Exists(asset.kosher)} detail`}>Kosher</div>
+          <div className={`${Exists(asset.shabbat)} detail`}>Shabbat</div>
         </div>
       </div>
       <button
+        className="add-unavailable-dates-button"
         onClick={() => {
           setHideDates((prev) => !prev);
         }}
