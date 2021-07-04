@@ -44,6 +44,47 @@ function HomePage({ user }) {
                   Register
                 </Link>
               </div>
+              <Popup
+                trigger={<button className="about">ABOUT US</button>}
+                position="top left"
+              >
+                {(close) => (
+                  <div className="box">
+                    <div className="header">
+                      <h1 className="story"> Our Story</h1>
+                    </div>
+                    <div className="content">
+                      <p>
+                        <p>
+                          This application was established in 2021 after the
+                          Operation Guardian of the Walls, by Omer Botbol, Shira
+                          Meirovitz and Noa Shalom as part of a program for
+                          veterans that operated by Scale-Up Velocity in
+                          cooperation with the IDF and the cyber system.
+                          <br></br>
+                        </p>
+                        The purpose of the application is to reflect the
+                        knowledge acquired after five months of training and has
+                        one vision: to create and expand the circles of
+                        volunteering and giving in Israeli society, with an
+                        emphasis on free accommodation. In order to promote this
+                        vision, we have developed an application that makes
+                        accessible and quick search for accommodation, as well
+                        as advertising accommodation at the click of a button.
+                      </p>
+                      <br></br>
+                      <p>
+                        We believe that volunteering can and should become
+                        public domain, and that the way there is through quality
+                        technology.
+                      </p>
+                      <a className="close" onClick={close}>
+                        &times;
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </Popup>
             </>
           )}
         </div>
