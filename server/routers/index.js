@@ -18,13 +18,9 @@ api.use('/transaction', transaction);
 api.use('/picture', picture);
 
 api.post('/login', (req, res) => {
-  login(req, res)
-    .then(() => {
-      console.log('success!');
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+  login(req, res).catch((err) => {
+    console.log(err.message);
+  });
 });
 
 api.post('/refreshToken', (req, res) => {
