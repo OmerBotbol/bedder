@@ -2,12 +2,11 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
-import OwnerProfile from './owner/OwnerProfile';
-import RenterProfile from './renter/RenterProfile';
 import '../styles/profile.css';
 
 export default function Profile({ user }) {
   const [userDetails, setUserDetails] = useState({});
+  const [pictureUrl, setPictureUrl] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,47 +14,44 @@ export default function Profile({ user }) {
       setLoading(false);
     }, 1000);
   }, []);
+
   useEffect(() => {
-    if (user) {
-      const route = user.isOwner ? 'owner' : 'renter';
-      axios
-        .get(`/api/${route}/${user.id}`)
-        .then((data) => setUserDetails(data.data))
-        .catch((err) => console.log(err));
+    async function fetchData() {
+      if (user) {
+        const route = user.isOwner ? 'owner' : 'renter';
+        const userData = await axios.get(`/api/${route}/${user.id}`);
+        const userPicture = await axios.get(
+          `/api/picture/image/${userData.data.picture}`
+        );
+        setUserDetails(userData.data);
+        setPictureUrl(userPicture.data);
+      }
     }
+    fetchData();
   }, [user]);
   return (
-    <div
-      className={
-        user ? (user.isOwner ? 'profile-owner' : 'profile-renter') : ''
-      }
-    >
+    <>
       {loading ? (
         <div className="loader">
           <ClipLoader color={'#00887a'} loading={loading} size={150} />
         </div>
       ) : (
-        <div>
+        <div className="profile-container">
           {user ? (
-            <>
-              {user.isOwner ? (
-                <div>
-                  <OwnerProfile user={user} userDetails={userDetails} />
-                </div>
-              ) : (
-                <RenterProfile user={user} userDetails={userDetails} />
-              )}
-            </>
+            <div className={user.isOwner ? 'profile-owner' : 'profile-renter'}>
+              <img src={pictureUrl} alt="profile" className="profile-picture" />
+              <h1 className="profile-name">
+                {userDetails.first_name} {userDetails.last_name}
+              </h1>
+              <p>{userDetails.email}</p>
+              <p>{userDetails.phone_number}</p>
+              <div></div>
+            </div>
           ) : (
             <Redirect to="/" />
           )}
-          <h1 className="profile-name">
-            {userDetails.first_name} {userDetails.last_name}
-          </h1>
-          <p>{userDetails.email}</p>
-          <p>{userDetails.phone_number}</p>
         </div>
       )}
-    </div>
+    </>
   );
 }

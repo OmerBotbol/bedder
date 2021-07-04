@@ -6,7 +6,6 @@ const asset = require('./asset');
 const picture = require('./picture');
 const transaction = require('./transaction');
 const { login, validateToken } = require('../utils');
-const models = require('../models');
 const jwt = require('jsonwebtoken');
 
 api.use(express.json());
@@ -18,13 +17,9 @@ api.use('/transaction', transaction);
 api.use('/picture', picture);
 
 api.post('/login', (req, res) => {
-  login(req, res)
-    .then(() => {
-      console.log('success!');
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+  login(req, res).catch((err) => {
+    console.log(err.message);
+  });
 });
 
 api.post('/refreshToken', (req, res) => {

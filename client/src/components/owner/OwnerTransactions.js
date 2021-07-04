@@ -4,16 +4,20 @@ import { putHttp } from '../../utils/httpRequests';
 
 function OwnerTransactions({ transaction, transactions, setTransactions }) {
   const [renterDetails, setRenterDetails] = useState('');
+  const [assetDetails, setAssetDetails] = useState('');
 
   //Owner needs to approve contact with renter
   useEffect(() => {
-    axios
-      .get(`/api/renter/${transaction.renter_id}`)
+    Promise.all([
+      axios.get(`/api/renter/${transaction.renter_id}`),
+      axios.get(`/api/asset/${transaction.asset_id}`),
+    ])
       .then((data) => {
-        setRenterDetails(data.data);
+        setRenterDetails(data[0].data);
+        setAssetDetails(data[1].data);
       })
       .catch((err) => console.log(err));
-  }, [transaction.renter_id]);
+  }, [transaction]);
 
   const AcceptConnection = () => {
     const dataToSend = {
@@ -34,23 +38,33 @@ function OwnerTransactions({ transaction, transactions, setTransactions }) {
   return (
     <li>
       {renterDetails && (
-        <>
-          <p>
-            Hi! my name is {renterDetails.first_name} {renterDetails.last_name}{' '}
-            and I would like to come to your asset from{' '}
-            {transaction.started_at.slice(0, 10)} to{' '}
-            {transaction.ended_at.slice(0, 10)}. my purpose is{' '}
-            {renterDetails.purpose}
-          </p>
-          {transaction.comments && (
+        <div className="transaction">
+          <div className="transaction-text">
             <p>
-              I have a few thing I would like to tell you first:{' '}
-              {transaction.comments}
+              Hi! my name is {renterDetails.first_name}{' '}
+              {renterDetails.last_name} and I would like to come to{' '}
+              {assetDetails.address}, {assetDetails.city} from{' '}
+              {new Date(transaction.started_at).toLocaleDateString()} to{' '}
+              {new Date(transaction.ended_at).toLocaleDateString()}. my purpose
+              is {renterDetails.purpose}
             </p>
-          )}
-          <button onClick={() => AcceptConnection()}>Accept</button>
-          <button>Deny</button>
-        </>
+            {transaction.comments && (
+              <p>
+                I have a few thing I would like to tell you first:{' '}
+                {transaction.comments}
+              </p>
+            )}
+          </div>
+          <div className="transaction-btn-container">
+            <button
+              className="transaction-btn"
+              onClick={() => AcceptConnection()}
+            >
+              Accept
+            </button>
+            <button className="transaction-btn cancel-btn">Deny</button>
+          </div>
+        </div>
       )}
     </li>
   );
