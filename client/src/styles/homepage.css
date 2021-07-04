@@ -154,3 +154,15 @@
   color: #ffccbc;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+  .popup-container {
+    width: 90vw;
+    height: 90vh;
+  }
+
+  .popup-content {
+    overflow-x: auto;
+    height: 75vh;
+  }
+}
