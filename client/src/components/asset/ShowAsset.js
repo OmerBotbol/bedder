@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import SendRequest from './SendRequest';
+import '../../styles/assetCard.css';
 
 export default function ShowAsset({ user, asset, startedAt, endedAt }) {
   const [pictureUrl, setPictureUrl] = useState('');
@@ -20,15 +21,19 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
 
   return (
     <div className="asset">
-      <img src={pictureUrl} alt="asset" />
-      <span>{asset.city}</span>
-      <p>{asset.description}</p>
-      <p>Availability</p>
-      <p>
-        {asset.started_at.slice(0, 10).replaceAll('-', '/')}-
-        {asset.ended_at.slice(0, 10).replaceAll('-', '/')}
-      </p>
-      <button onClick={() => setOpenSendRequest((prev) => !prev)}>like</button>
+      <img className="asset-image" src={pictureUrl} alt="asset" />
+      <div className="asset-city">{asset.city}</div>
+      <div className="card-footer">
+        <button
+          className="like-btn"
+          onClick={() => setOpenSendRequest((prev) => !prev)}
+        >
+          <i className="fas fa-thumbs-up"></i> like
+        </button>
+        <span className="separator"></span>
+        {/* need to complete after GPS and map added */}
+        <div className="distance">X KM</div>
+      </div>
       {openSendRequest && (
         <SendRequest
           user={user}

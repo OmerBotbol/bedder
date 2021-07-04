@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { deleteHttp } from '../utils/httpRequests';
+import '../styles/myOrders.css';
 
 function OrderDisplay({ user, order, orders, setOrders }) {
   const [userDetails, setUserDetails] = useState();
@@ -44,27 +45,29 @@ function OrderDisplay({ user, order, orders, setOrders }) {
   };
 
   return (
-    <div>
+    <div className="alert">
       {userDetails && assetDetails && (
         <>
           {user.isOwner ? (
-            <p>
+            <div className="owner-alert">
               {userDetails.first_name} {userDetails.last_name} is coming to{' '}
               {assetDetails.address}, {assetDetails.city} from{' '}
-              {order.started_at.slice(0, 10).replaceAll('-', '/')} until{' '}
-              {order.ended_at.slice(0, 10).replaceAll('-', '/')}
-            </p>
+              {new Date(order.started_at).toLocaleDateString()} until{' '}
+              {new Date(order.ended_at).toLocaleDateString()}
+            </div>
           ) : (
-            <p>
+            <div className="renter-alert">
               you are coming to {assetDetails.address}, {assetDetails.city} from{' '}
-              {order.started_at.slice(0, 10).replaceAll('-', '/')} until{' '}
-              {order.ended_at.slice(0, 10).replaceAll('-', '/')}
+              {new Date(order.started_at).toLocaleDateString()} until{' '}
+              {new Date(order.ended_at).toLocaleDateString()}
               <br />
               for eny changes call to: {userDetails.phone_number} -{' '}
               {userDetails.first_name} {userDetails.last_name}
-            </p>
+            </div>
           )}
-          <button onClick={() => deleteOrder()}>Delete</button>
+          <button className="delete-order-btn" onClick={() => deleteOrder()}>
+            Delete
+          </button>
         </>
       )}
     </div>

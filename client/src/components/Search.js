@@ -1,8 +1,9 @@
-import axios from "axios";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { DateRange } from "react-date-range";
-import { useState } from "react";
+import axios from 'axios';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { DateRange } from 'react-date-range';
+import { useState } from 'react';
+import '../styles/renterHomepage.css';
 
 export default function Search({
   searchInput,
@@ -16,31 +17,33 @@ export default function Search({
   endedAt,
   setFilteredAssets,
 }) {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [count, setCount] = useState(0);
   const [selectionRange, SetSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
+    key: 'selection',
   });
 
   const searchByCity = () => {
     if (user && !user.isOwner) {
       if (!startedAt || !endedAt || !searchInput) {
-        return setError("Please fill all the fields");
+        return setError('Please fill all the fields');
       }
       let searchUrl;
       searchInput
         ? (searchUrl = `/api/asset?city=${searchInput}&startDate=${startedAt}&stopDate=${endedAt}`)
-        : (searchUrl = "/api/asset");
+        : (searchUrl = '/api/asset');
       axios
         .get(searchUrl)
         .then((res) => {
           setAssets(res.data);
           setFilteredAssets(res.data);
-          res.data.length === 0 ? setError("No city found") : setError("");
+          res.data.length === 0 ? setError('No city found') : setError('');
         })
         .catch((err) => {
           console.log(err.message);
-          setError("Server problem please try again");
+          setError('Server problem please try again');
         });
     }
   };
@@ -49,24 +52,46 @@ export default function Search({
     setStartedAt(i.selection.startDate);
     setEndedAt(i.selection.endDate);
     SetSelectionRange(i.selection);
+    if (count === 1) {
+      setShowCalendar((prev) => !prev);
+      return setCount(0);
+    }
+    setCount(count + 1);
   };
 
   return (
-    <div>
+    <>
       <input
+        className="search-bar"
         type="search"
         placeholder="Search By City"
         onChange={(event) => setSearchInput(event.target.value)}
       />
-      <DateRange
-        editableDateInputs={true}
-        moveRangeOnFirstSelection={false}
-        onChange={(i) => handleSelect(i)}
-        ranges={[selectionRange]}
-        minDate={new Date()}
-      />
+      <div id="date-container">
+        <div id="date-text" onClick={() => setShowCalendar((prev) => !prev)}>
+          {startedAt
+            ? startedAt.toLocaleString().split(' ')[0].slice(0, -1)
+            : 'check-in'}{' '}
+          -{' '}
+          {endedAt
+            ? endedAt.toLocaleString().split(' ')[0].slice(0, -1)
+            : 'check-out'}
+        </div>
+      </div>
+      {showCalendar && (
+        <DateRange
+          className="calendar"
+          editableDateInputs={true}
+          moveRangeOnFirstSelection={false}
+          onChange={(i) => handleSelect(i)}
+          ranges={[selectionRange]}
+          minDate={new Date()}
+        />
+      )}
 
-      <button onClick={() => searchByCity()}>Search</button>
-    </div>
+      <button className="search-btn" onClick={() => searchByCity()}>
+        Search
+      </button>
+    </>
   );
 }

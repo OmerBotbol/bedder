@@ -4,12 +4,13 @@ import { Redirect } from 'react-router-dom';
 import '../../styles/renterRegister.css';
 import { deleteHttp, postHttp } from '../../utils/httpRequests';
 
-function RenterRegister({ user, setUser }) {
+function RenterRegister({ user }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordStatus, setConfirmPasswordStatus] = useState(false);
   const [purpose, setPurpose] = useState('');
   const [image, setImage] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -27,7 +28,7 @@ function RenterRegister({ user, setUser }) {
       !phoneNumber
     ) {
       setMessage('Please fill all the fields');
-    } else if (confirmPassword) {
+    } else if (confirmPasswordStatus) {
       const imageInForm = new FormData();
       imageInForm.append('file', image);
       const imageKey = await postHttp('/api/picture/upload', imageInForm);
@@ -58,6 +59,11 @@ function RenterRegister({ user, setUser }) {
     } else {
       setMessage("Password doesn't match");
     }
+  };
+
+  const changeConfirmPassword = (confirmPasswordValue) => {
+    setConfirmPassword(confirmPasswordValue);
+    setConfirmPasswordStatus(confirmPasswordValue === password ? true : false);
   };
 
   return (
@@ -101,21 +107,21 @@ function RenterRegister({ user, setUser }) {
             <div className="form-field">
               <label className="register-label">Confirm password</label>
               <div className="form-field confirm-password-container">
-                <i
-                  className={`fa fa-${
-                    confirmPassword ? 'check' : 'times'
-                  }-circle-o register-symbol`}
-                  style={{ color: confirmPassword ? '#00887a' : '#e2144d' }}
-                  aria-hidden="true"
-                ></i>
+                {confirmPassword && (
+                  <i
+                    className={`fa fa-${
+                      confirmPasswordStatus ? 'check' : 'times'
+                    }-circle-o register-symbol`}
+                    style={{
+                      color: confirmPasswordStatus ? '#00887a' : '#e2144d',
+                    }}
+                    aria-hidden="true"
+                  />
+                )}
                 <input
                   type="password"
                   className="confirm-password"
-                  onChange={(e) =>
-                    password === e.target.value
-                      ? setConfirmPassword(true)
-                      : setConfirmPassword(false)
-                  }
+                  onChange={(e) => changeConfirmPassword(e.target.value)}
                 />
               </div>
             </div>

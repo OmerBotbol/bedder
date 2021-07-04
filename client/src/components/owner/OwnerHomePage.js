@@ -5,7 +5,7 @@ const ProfileAsset = lazy(() => import('../asset/ProfileAsset'));
 const OwnerTransactions = lazy(() => import('./OwnerTransactions'));
 const NeedToBook = lazy(() => import('./NeedToBook'));
 
-function OwnerHomePage({ user }) {
+function OwnerHomePage({ user, setHideDates }) {
   const [addAsset, setAddAsset] = useState(false);
   const [assets, setAssets] = useState([]);
   const [transactions, setTransactions] = useState([]);
@@ -46,7 +46,8 @@ function OwnerHomePage({ user }) {
         <div className="btns">
           <button
             className="add-asset-button"
-            onClick={() => setAddAsset(true)}>
+            onClick={() => setAddAsset(true)}
+          >
             Add asset
           </button>
           {addAsset && <Redirect to="/addAsset" />}

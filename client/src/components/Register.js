@@ -13,7 +13,7 @@ function Register({ user }) {
           <h1 id="register-header">Register as</h1>
           <div id="register-options">
             <div className="register-label">
-              <div className="loginAdd label">Owner</div>{' '}
+              <div className="loginAdd label">Host</div>{' '}
               <input
                 className="loginAdd option-input radio"
                 type="radio"
@@ -22,7 +22,7 @@ function Register({ user }) {
               />
             </div>
             <div className="register-label">
-              <div className="loginAdd label">Renter</div>{' '}
+              <div className="loginAdd label">Guest</div>{' '}
               <input
                 className="loginAdd option-input radio"
                 type="radio"
@@ -35,7 +35,8 @@ function Register({ user }) {
             className="next-btn"
             onClick={() => {
               setType(temp);
-            }}>
+            }}
+          >
             Next
           </div>
           {type === 'Owner' && <Redirect to="/ownerRegister" />}

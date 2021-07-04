@@ -4,12 +4,9 @@ import { Link } from 'react-router-dom';
 import ClipLoader from 'react-spinners/ClipLoader';
 import OwnerHomePage from './owner/OwnerHomePage';
 import RenterHomePage from './renter/RenterHomePage';
-import Popup from 'reactjs-popup';
 
 function HomePage({ user }) {
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
-  const closeModal = () => setOpen(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,7 +15,7 @@ function HomePage({ user }) {
   }, []);
 
   return (
-    <>
+    <div id="homepage">
       {loading ? (
         <div className="loader">
           <ClipLoader color={'#00887a'} loading={loading} size={150} />
@@ -60,7 +57,7 @@ function HomePage({ user }) {
                       <p>
                         <p>
                           This application was established in 2021 after the
-                          Operation Guardian of the Walls, by Omar Botbol, Shira
+                          Operation Guardian of the Walls, by Omer Botbol, Shira
                           Meirovitz and Noa Shalom as part of a program for
                           veterans that operated by Scale-Up Velocity in
                           cooperation with the IDF and the cyber system.
@@ -92,7 +89,7 @@ function HomePage({ user }) {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
 

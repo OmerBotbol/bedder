@@ -35,7 +35,7 @@ asset.get('/', async (req, res) => {
   const owner_id = req.query.owner_id;
   let searchQuery = {
     [Op.and]: [
-      { city: { [Op.like]: city + '%' } },
+      { city: { [Op.like]: '%' + city + '%' } },
       { started_at: { [Op.lte]: startDate } },
       { ended_at: { [Op.gte]: stopDate } },
     ],
@@ -170,8 +170,8 @@ asset.delete('/deleteUnavailableDates', validateToken, (req, res) => {
     });
 });
 
-asset.get('/unavailableDates', (req, res) => {
-  const { assetId } = req.query;
+asset.get('/unavailableDates/:assetId', (req, res) => {
+  const { assetId } = req.params;
   models.Unavailable_Dates.findAll({
     where: { asset_id: assetId },
     raw: true,

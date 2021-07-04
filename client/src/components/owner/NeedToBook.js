@@ -1,14 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { deleteHttp, putHttp } from '../../utils/httpRequests';
+import { deleteHttp, postHttp, putHttp } from '../../utils/httpRequests';
 
 function NeedToBook({ offer, setNeedToBook, needToBook }) {
   const [renter, setRenter] = useState({});
   useEffect(() => {
-    renterDetails();
-  }, []);
+    axios
+      .get(`/api/renter/${offer.renter_id}`)
+      .then((data) => setRenter(data.data))
+      .catch((err) => console.log(err));
+  }, [offer.renter_id]);
 
-  console.log(renter);
   const refreshNeedToBook = () => {
     const offersCopy = [...needToBook];
     const index = offersCopy.findIndex((option) => {
@@ -17,19 +19,23 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
     offersCopy.splice(index, 1);
     setNeedToBook(offersCopy);
   };
-  const renterDetails = () => {
-    axios
-      .get(`/api/renter/${offer.renter_id}`)
-      .then((data) => setRenter(data.data))
-      .catch((err) => console.log(err));
-  };
+
   const book = () => {
-    const dataToSend = {
+    const dataForTransaction = {
       value: true,
       field: 'booked',
       id: offer.id,
     };
-    putHttp('/api/transaction', dataToSend)
+    const dataForAsset = {
+      ownerId: offer.owner_id,
+      asset_id: offer.asset_id,
+      startedAt: offer.started_at,
+      endedAt: offer.ended_at,
+    };
+    Promise.all([
+      putHttp('/api/transaction', dataForTransaction),
+      postHttp('/api/asset/addUnavailableDates', dataForAsset),
+    ])
       .then(() => {
         refreshNeedToBook();
       })
@@ -43,7 +49,6 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
       })
       .catch((err) => console.log(err));
   };
-  console.log(offer);
 
   return (
     <div>

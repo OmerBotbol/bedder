@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import OrderDisplay from './OrderDisplay';
+import '../styles/myOrders.css';
 
 function MyOrders({ user }) {
   const [orders, setOrders] = useState([]);
@@ -24,26 +25,28 @@ function MyOrders({ user }) {
   }, [user]);
 
   return (
-    <div>
+    <div id="my-orders">
       {user ? (
-        <>
-          <h1>My Orders</h1>
-          {orders.length > 0 ? (
-            orders.map((order, i) => {
-              return (
-                <OrderDisplay
-                  user={user}
-                  order={order}
-                  orders={orders}
-                  setOrders={setOrders}
-                  key={i}
-                />
-              );
-            })
-          ) : (
-            <p>no orders</p>
-          )}
-        </>
+        <div id="my-orders-container">
+          <h1 id="my-orders-header">My Orders</h1>
+          <div id="all-orders">
+            {orders.length > 0 ? (
+              orders.map((order, i) => {
+                return (
+                  <OrderDisplay
+                    user={user}
+                    order={order}
+                    orders={orders}
+                    setOrders={setOrders}
+                    key={i}
+                  />
+                );
+              })
+            ) : (
+              <p id="no-orders-message">no orders</p>
+            )}
+          </div>
+        </div>
       ) : (
         <Redirect to="/" />
       )}
