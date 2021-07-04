@@ -4,12 +4,18 @@ import { deleteHttp, postHttp, putHttp } from '../../utils/httpRequests';
 
 function NeedToBook({ offer, setNeedToBook, needToBook }) {
   const [renter, setRenter] = useState({});
+  const [asset, setAsset] = useState({});
   useEffect(() => {
-    axios
-      .get(`/api/renter/${offer.renter_id}`)
-      .then((data) => setRenter(data.data))
+    Promise.all([
+      axios.get(`/api/renter/${offer.renter_id}`),
+      axios.get(`/api/asset/${offer.asset_id}`),
+    ])
+      .then((data) => {
+        setRenter(data[0].data);
+        setAsset(data[1].data);
+      })
       .catch((err) => console.log(err));
-  }, [offer.renter_id]);
+  }, [offer]);
 
   const refreshNeedToBook = () => {
     const offersCopy = [...needToBook];
@@ -51,17 +57,33 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
   };
 
   return (
-    <div>
-      <p>start Date: {offer.started_at.slice(0, 10)}</p>
-      <p>end Date: {offer.ended_at.slice(0, 10)}</p>
-      <h3>Renter Details:</h3>
-      <p>
+    <div className="transaction">
+      <div className="transaction-details">
+        asset: {asset.address}, {asset.city}
+      </div>
+      <div className="transaction-details">
+        start Date: {offer.started_at.slice(0, 10)}
+      </div>
+      <div className="transaction-details">
+        end Date: {offer.ended_at.slice(0, 10)}
+      </div>
+      <div className="renter-details-header">Renter Details:</div>
+      <div className="renter-details">
         {renter.first_name} {renter.last_name}
-      </p>
-      <p>{renter.email}</p>
-      <p>{renter.phone_number}</p>
-      <button onClick={() => book()}>Book!</button>
-      <button onClick={() => deleteTransaction()}>Cancel</button>
+      </div>
+      <div className="renter-details">{renter.email}</div>
+      <div className="renter-details">{renter.phone_number}</div>
+      <div className="transaction-btn-container">
+        <button className="transaction-btn" onClick={() => book()}>
+          Book!
+        </button>
+        <button
+          className="transaction-btn cancel-btn"
+          onClick={() => deleteTransaction()}
+        >
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }

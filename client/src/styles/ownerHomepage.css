@@ -1,6 +1,17 @@
+#owner-homepage {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90vw;
+  height: 80vh;
+  margin-top: -3vh;
+}
+
 #assets-container {
   display: flex;
   flex-direction: column;
+  width: max-content;
+  height: 80vh;
 }
 
 .modal {
@@ -73,12 +84,13 @@
 
 #assets {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto;
   grid-column-gap: 20px;
   grid-row-gap: 10px;
   width: max-content;
   margin-left: auto;
   margin-right: auto;
+  overflow-y: auto;
 }
 
 .asset-top {
@@ -141,6 +153,12 @@
   text-transform: uppercase;
   position: relative;
   outline: none;
+  cursor: pointer;
+}
+
+.add-asset-button:hover {
+  background-color: white;
+  color: black;
 }
 .headlines-asset {
   display: flex;
@@ -151,12 +169,97 @@
 .add-asset-button-container {
   width: max-content;
 }
-#owner-assets {
-  margin-right: 35vw;
+
+#owner-requests {
+  width: 50vw;
+  max-height: 40vh;
+}
+
+#transaction-list {
+  list-style: none;
+  overflow-y: auto;
+  max-height: 35vh;
+}
+
+.transaction {
+  position: relative;
+  border: #ffccbc 1px solid;
+  border-radius: 20px;
+  padding: 10px 30px;
+  margin: 5px;
+}
+
+.transaction-btn-container {
+  position: absolute;
+  right: 15px;
+  bottom: 7px;
+}
+
+.transaction-text {
+  max-width: 83%;
+}
+
+.transaction-btn {
+  background-color: transparent;
+  border: #00887a 1px solid;
+  color: #77a6f7;
+  border-radius: 20px;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  border-color: #d4435c;
+}
+
+.transaction-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+.transaction-details,
+.renter-details-header,
+.renter-details {
+  width: max-content;
+}
+
+#owner-pending-orders-list {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  max-width: 50vw;
+}
+
+#all-requests {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 768px) {
-  #assets {
-    grid-template-columns: auto;
+  #owner-homepage {
+    flex-direction: column;
+  }
+  #assets-container {
+    height: max-content;
+  }
+  .transaction {
+    width: 90vw;
+  }
+  #owner-requests {
+    width: 90vw;
+    max-height: none;
+    margin-top: 10px;
+  }
+  #transaction-list {
+    max-height: none;
+  }
+  #owner-pending-orders {
+    margin-top: 10px;
+  }
+  #owner-pending-orders-list {
+    flex-direction: column;
+    max-width: 90vw;
   }
 }
