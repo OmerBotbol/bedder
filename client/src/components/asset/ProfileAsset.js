@@ -31,8 +31,10 @@ export default function ProfileAsset({ asset, user }) {
         </div>
       </div>
       <div className="asset-middle">
-        <div className="asset-details">
+        <div className="asset-details-left">
           <div className="detail">{asset.description}</div>
+          <div className="detail">Hospitality: {asset.Hospitality}</div>
+          <div className="detail">Room type: {asset.room_type}</div>
           <div className="detail">
             Number of people: {asset.number_of_peoples}
           </div>
@@ -42,7 +44,7 @@ export default function ProfileAsset({ asset, user }) {
             {new Date(asset.ended_at).toLocaleDateString()}
           </div>
         </div>
-        <div className="asset-details">
+        <div className="asset-details-right">
           <div className="detail">
             <i
               className={`fas fa-fan

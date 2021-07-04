@@ -6,7 +6,6 @@ const asset = require('./asset');
 const picture = require('./picture');
 const transaction = require('./transaction');
 const { login, validateToken } = require('../utils');
-const models = require('../models');
 const jwt = require('jsonwebtoken');
 
 api.use(express.json());
