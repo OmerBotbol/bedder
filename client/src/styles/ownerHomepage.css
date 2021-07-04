@@ -51,7 +51,7 @@
   width: 500px;
   max-width: 90%;
   background: #fff;
-  padding: 1em 2em;
+  padding-top: 2em;
 }
 .modal__close {
   position: absolute;
@@ -254,7 +254,7 @@
     width: 90vw;
   }
   #owner-requests {
-    width: 90vw;
+    width: 92vw;
     max-height: none;
     margin-top: 10px;
   }
@@ -266,6 +266,6 @@
   }
   #owner-pending-orders-list {
     flex-direction: column;
-    max-width: 90vw;
+    max-width: 92vw;
   }
 }

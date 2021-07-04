@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import SendRequest from './SendRequest';
+import AssetCard from './AssetCard';
 import '../../styles/assetCard.css';
 
 export default function ShowAsset({ user, asset, startedAt, endedAt }) {
   const [pictureUrl, setPictureUrl] = useState('');
   const [openSendRequest, setOpenSendRequest] = useState(false);
+  const [openAssetCard, setOpenAssetCard] = useState(false);
 
   //Show asset on home page
   useEffect(() => {
@@ -22,7 +24,12 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
   return (
     <div className="asset">
       <img className="asset-image" src={pictureUrl} alt="asset" />
-      <div className="asset-city">{asset.city}</div>
+      <div
+        className="asset-city"
+        onClick={() => setOpenAssetCard((prev) => !prev)}
+      >
+        {asset.city}
+      </div>
       <div className="card-footer">
         <button
           className="like-btn"
@@ -42,6 +49,9 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
           startedAt={startedAt}
           endedAt={endedAt}
         />
+      )}
+      {openAssetCard && (
+        <AssetCard asset={asset} setOpenAssetCard={setOpenAssetCard} />
       )}
     </div>
   );

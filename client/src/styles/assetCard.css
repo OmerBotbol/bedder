@@ -25,6 +25,11 @@
   bottom: 50px;
   padding: 2px 8px;
   text-transform: capitalize;
+  cursor: pointer;
+}
+
+.asset-city:hover {
+  color: white;
 }
 
 .asset-image {
@@ -153,11 +158,89 @@
   color: #7dafff;
 }
 
+.asset-full-card-background {
+  position: fixed;
+  background: rgba(77, 77, 77, 0.7);
+  width: 100vw;
+  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+  animation: fadeInOpacity 0.4s ease-in;
+  transition: all 0.4s ease-in-out;
+}
+
+.asset-full-card {
+  position: absolute;
+  background-color: white;
+  width: 50vw;
+  height: 95vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.asset-full-card-content {
+  position: relative;
+  height: 55vh;
+}
+
+.map {
+  height: 40vh;
+}
+
+.asset-big-image {
+  max-width: 50vw;
+  max-height: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.asset-data {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  bottom: 0;
+  max-height: 50%;
+}
+
+.accessories {
+  width: 40%;
+  text-align: center;
+}
+
+.asset-text-details {
+  max-width: 60%;
+  overflow: auto;
+}
+
 @media only screen and (max-width: 768px) {
   .assets-container {
     grid-template-columns: auto;
   }
   .asset {
     width: 100%;
+  }
+
+  .asset-full-card {
+    width: 90vw;
+    height: 90vh;
+  }
+  .asset-full-card-content {
+    height: 40vh;
+  }
+  .map {
+    height: 50vh;
+  }
+
+  .close-btn {
+    color: #7dafff;
   }
 }
