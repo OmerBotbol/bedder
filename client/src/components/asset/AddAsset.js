@@ -21,6 +21,8 @@ export default function AddAsset({ user }) {
   const [picture, setPicture] = useState('');
   const [startedAt, setStartedAt] = useState('');
   const [endedAt, setEndedAt] = useState('');
+  const [roomType, setRoomType] = useState('');
+  const [hospitality, setHospitality] = useState('');
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
   const [selectionRange, SetSelectionRange] = useState({
@@ -39,7 +41,9 @@ export default function AddAsset({ user }) {
         !numberOfRooms ||
         !startedAt ||
         !endedAt ||
-        !picture
+        !picture ||
+        !hospitality ||
+        !roomType
       ) {
         setMessage('Please fill all the fields');
       } else {
@@ -51,6 +55,8 @@ export default function AddAsset({ user }) {
           owner_id: user.id,
           city,
           address,
+          room_type: roomType,
+          Hospitality: hospitality,
           description,
           number_of_peoples: numberOfPeople,
           number_of_rooms: numberOfRooms,
@@ -94,6 +100,23 @@ export default function AddAsset({ user }) {
       <label>Address</label>
       <input type="text" onChange={(e) => setAddress(e.target.value)} />
       <br />
+
+      <label>Room Type</label>
+      <select onChange={(e) => setRoomType(e.target.value)}>
+        <option value="1">Apartment</option>
+        <option value="2">Couch</option>
+        <option value="3">Separate room</option>
+        <option value="4">Shared room</option>
+        <option value="5">Tent</option>
+      </select>
+      <br />
+      <label>Hospitality</label>
+      <select onChange={(e) => setHospitality(e.target.value)}>
+        <option value="1">Full</option>
+        <option value="2">Only sleep</option>
+      </select>
+      <br />
+
       <label>Description</label>
       <input type="email" onChange={(e) => setDescription(e.target.value)} />
       <br />
@@ -148,8 +171,7 @@ export default function AddAsset({ user }) {
       <button
         onClick={() => {
           handleClick();
-        }}
-      >
+        }}>
         Add
       </button>
       {message && <p>{message}</p>}
