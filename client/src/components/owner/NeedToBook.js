@@ -45,7 +45,13 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
       .then(() => {
         refreshNeedToBook();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.message.slice(-3) === '409') {
+          return alert('those are unavailable dates already');
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   const deleteTransaction = () => {
