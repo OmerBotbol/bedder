@@ -49,7 +49,16 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
   };
 
   const deleteTransaction = () => {
-    deleteHttp('/api/transaction', { id: offer.id })
+    const dataToSend = {
+      ownerId: offer.owner_id,
+      asset_id: offer.asset_id,
+      startedAt: offer.started_at,
+      endedAt: offer.ended_at,
+    };
+    Promise.all([
+      deleteHttp('/api/transaction', { id: offer.id }),
+      deleteHttp('/api/asset/deleteUnavailableDates', dataToSend),
+    ])
       .then(() => {
         refreshNeedToBook();
       })

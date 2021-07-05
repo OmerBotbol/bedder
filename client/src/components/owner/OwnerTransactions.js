@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { putHttp } from '../../utils/httpRequests';
+import { deleteHttp, putHttp } from '../../utils/httpRequests';
 
 function OwnerTransactions({ transaction, transactions, setTransactions }) {
   const [renterDetails, setRenterDetails] = useState('');
@@ -19,13 +19,24 @@ function OwnerTransactions({ transaction, transactions, setTransactions }) {
       .catch((err) => console.log(err));
   }, [transaction]);
 
-  const AcceptConnection = () => {
+  const acceptConnection = () => {
     const dataToSend = {
       value: true,
       field: 'owner_approvement',
       id: transaction.id,
     };
     putHttp('/api/transaction', dataToSend).then(() => {
+      const transactionsCopy = [...transactions];
+      const index = transactionsCopy.findIndex((option) => {
+        return option.id === transaction.id;
+      });
+      transactionsCopy.splice(index, 1);
+      setTransactions(transactionsCopy);
+    });
+  };
+
+  const cancelConnection = () => {
+    deleteHttp('/api/transaction', { id: transaction.id }).then(() => {
       const transactionsCopy = [...transactions];
       const index = transactionsCopy.findIndex((option) => {
         return option.id === transaction.id;
@@ -58,11 +69,16 @@ function OwnerTransactions({ transaction, transactions, setTransactions }) {
           <div className="transaction-btn-container">
             <button
               className="transaction-btn"
-              onClick={() => AcceptConnection()}
+              onClick={() => acceptConnection()}
             >
               Accept
             </button>
-            <button className="transaction-btn cancel-btn">Deny</button>
+            <button
+              className="transaction-btn cancel-btn"
+              onClick={() => cancelConnection()}
+            >
+              Deny
+            </button>
           </div>
         </div>
       )}

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Map from '../Map';
 
 function AssetCard({ asset, setOpenAssetCard }) {
   const [pictureUrl, setPictureUrl] = useState('');
   const [opacity, setOpacity] = useState(1);
+  const [assetLocation, setAssetLocation] = useState({ lat: null, lng: null });
+  const [currentLocation, setCurrentLocation] = useState('');
+  const [distance, setDistance] = useState('');
 
   useEffect(() => {
     axios
@@ -32,8 +36,14 @@ function AssetCard({ asset, setOpenAssetCard }) {
     <div className="asset-full-card-background" style={{ opacity: opacity }}>
       <div className="asset-full-card">
         <div className="map">
-          Map
-          {/* include location of the address */}
+          <Map
+            asset={asset}
+            currentLocation={currentLocation}
+            setCurrentLocation={setCurrentLocation}
+            assetLocation={assetLocation}
+            setAssetLocation={setAssetLocation}
+            setDistance={setDistance}
+          />
         </div>
         <div className="asset-full-card-content">
           <img className="asset-big-image" src={pictureUrl} alt="asset" />
@@ -50,6 +60,7 @@ function AssetCard({ asset, setOpenAssetCard }) {
               <div className="asset-details">
                 Number of rooms: {asset.number_of_rooms}
               </div>
+              <div className="asset-details">{distance} from you</div>
             </div>
             <div className="accessories">
               <div className="asset-details">
