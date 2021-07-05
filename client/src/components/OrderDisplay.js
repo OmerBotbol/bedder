@@ -54,6 +54,9 @@ function OrderDisplay({ user, order, orders, setOrders }) {
               {assetDetails.address}, {assetDetails.city} from{' '}
               {new Date(order.started_at).toLocaleDateString()} until{' '}
               {new Date(order.ended_at).toLocaleDateString()}
+              <div className={`status ${order.status}`}>
+                status: {order.status}
+              </div>
             </div>
           ) : (
             <div className="renter-alert">
@@ -61,8 +64,15 @@ function OrderDisplay({ user, order, orders, setOrders }) {
               {new Date(order.started_at).toLocaleDateString()} until{' '}
               {new Date(order.ended_at).toLocaleDateString()}
               <br />
-              for eny changes call to: {userDetails.phone_number} -{' '}
-              {userDetails.first_name} {userDetails.last_name}
+              {order.status !== 'pending' && (
+                <div>
+                  Your content man: {userDetails.phone_number} -{' '}
+                  {userDetails.first_name} {userDetails.last_name}
+                </div>
+              )}
+              <div className={`status ${order.status}`}>
+                status: {order.status}
+              </div>
             </div>
           )}
           <button className="delete-order-btn" onClick={() => deleteOrder()}>

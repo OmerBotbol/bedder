@@ -15,14 +15,29 @@ function MyOrders({ user }) {
         .then((data) => {
           const findOrders = data.data.reduce((filtered, option) => {
             if (option.owner_approvement && option.booked) {
-              filtered.push(option);
+              option.status = 'booked';
             }
+            if (option.owner_approvement && !option.booked) {
+              option.status = 'open';
+            }
+            if (!option.owner_approvement && !option.booked) {
+              option.status = 'pending';
+            }
+            filtered.push(option);
             return filtered;
           }, []);
-          setOrders(findOrders);
+          setOrders(sortByStatus(findOrders));
         });
     }
   }, [user]);
+
+  const sortByStatus = (arr) => {
+    const sortOrder = { pending: 0, open: 1, booked: 2 };
+    arr.sort((a, b) => {
+      return sortOrder[a.status] - sortOrder[b.status];
+    });
+    return arr;
+  };
 
   return (
     <div id="my-orders">
