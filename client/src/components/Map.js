@@ -10,7 +10,7 @@ const AssetPin = ({ address, city }) => (
 
 const CurrentPin = () => <div className="current-pin">your location</div>;
 
-const GOOGLE_API_KEY = 'AIzaSyB2t_IXNKOGvCdrdQ8aX2PQ0yqogcQiHE8';
+const GOOGLE_API_KEY = '';
 
 function Map({
   asset,
