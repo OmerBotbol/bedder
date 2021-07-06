@@ -4,6 +4,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
 import { deleteHttp, postHttp } from '../../utils/httpRequests';
+import axios from 'axios';
 import '../../styles/addAsset.css';
 
 export default function AddAsset({ user }) {
@@ -52,10 +53,18 @@ export default function AddAsset({ user }) {
         const imageInForm = new FormData();
         imageInForm.append('file', picture);
         const imageKey = await postHttp('/api/picture/upload', imageInForm);
+        const stringifyAddress = assetFormatted(address, city);
+        const addressLocationData = await axios.get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${stringifyAddress},israel&key=${GOOGLE_API_KEY}`
+        );
+        const assetLocation =
+          addressLocationData.data.results[0].geometry.location;
         const dataToSend = {
           owner_id: user.id,
           city,
           address,
+          lat: assetLocation.lat,
+          lng: assetLocation.lng,
           room_type: roomType,
           Hospitality: hospitality,
           description,
@@ -78,12 +87,26 @@ export default function AddAsset({ user }) {
           .then(() => {
             setRedirect(true);
           })
-          .catch(async (err) => {
+          .catch(async () => {
             await deleteHttp(`/api/picture/image/${user.id}/${imageKey.data}`);
             setMessage('Problem, please try again later');
           });
       }
     }
+  };
+
+  const assetFormatted = (address, city) => {
+    const addressArr = address.split(' ');
+    let addressNumber = '';
+    if (Number(addressArr[-1])) {
+      addressNumber = addressArr[-1];
+      addressArr.splice(-2, 1);
+    }
+    const streetName = addressArr.join('+');
+    const returnedString = addressNumber
+      ? addressNumber + ',' + streetName + ',' + city
+      : streetName + ',' + city;
+    return returnedString;
   };
 
   const handleSelect = (i) => {

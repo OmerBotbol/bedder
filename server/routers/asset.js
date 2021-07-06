@@ -87,6 +87,8 @@ asset.put('/update/:id', validateToken, (req, res) => {
   const {
     city,
     address,
+    lat,
+    lng,
     description,
     number_of_peoples,
     number_of_rooms,
@@ -105,6 +107,8 @@ asset.put('/update/:id', validateToken, (req, res) => {
     {
       city,
       address,
+      lat,
+      lng,
       description,
       number_of_peoples,
       number_of_rooms,
