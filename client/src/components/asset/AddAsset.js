@@ -7,6 +7,8 @@ import { deleteHttp, postHttp } from '../../utils/httpRequests';
 import axios from 'axios';
 import '../../styles/addAsset.css';
 
+const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+
 export default function AddAsset({ user }) {
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
@@ -98,7 +100,7 @@ export default function AddAsset({ user }) {
   const assetFormatted = (address, city) => {
     const addressArr = address.split(' ');
     let addressNumber = '';
-    if (Number(addressArr[-1])) {
+    if (typeof parseInt(addressArr[-1]) === 'number') {
       addressNumber = addressArr[-1];
       addressArr.splice(-2, 1);
     }

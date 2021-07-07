@@ -3,14 +3,23 @@ import GoogleMapReact from 'google-map-react';
 import axios from 'axios';
 
 const AssetPin = ({ address, city }) => (
-  <div className="asset-pin">
-    {address}, {city}
+  <div className="asset-pin-container">
+    <div className="asset-pin-name">
+      {address}, {city}
+    </div>
+    <div className="asset-pin"></div>
+    <div className="asset-pin-pulse"></div>
   </div>
 );
 
-const CurrentPin = () => <div className="current-pin">your location</div>;
+const CurrentPin = () => (
+  <div>
+    <div className="current-pin-container"></div>
+    <div className="current-pin"></div>
+  </div>
+);
 
-const GOOGLE_API_KEY = '';
+const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 
 function Map({ asset, currentLocation, setCurrentLocation, setDistance }) {
   useEffect(() => {
@@ -23,6 +32,7 @@ function Map({ asset, currentLocation, setCurrentLocation, setDistance }) {
               lng: position.coords.longitude,
             });
             try {
+              console.log(GOOGLE_API_KEY);
               const distanceData = await axios.get(
                 `https://maps.googleapis.com/maps/api/directions/json?origin=${asset.lat},${asset.lng}&destination=${position.coords.latitude},${position.coords.longitude}&key=${GOOGLE_API_KEY}&language=en`
               );
