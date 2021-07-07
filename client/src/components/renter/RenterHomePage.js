@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ShowAsset from '../asset/ShowAsset';
 import Search from '../Search';
+import GoogleMapReact from 'google-map-react';
 
 function RenterHomePage({ user }) {
   const [assets, setAssets] = useState([]);
@@ -19,7 +20,9 @@ function RenterHomePage({ user }) {
     { name: 'Parking', value: false },
     { name: 'Shabat', value: false },
   ]);
-
+  getLocation(); //gets user location
+  const GOOGLE_API_KEY = 'AIzaSyBwiV5ssJ3sw79n3pHDAosob46P5wIw0F0';
+  const AnyReactComponent = ({ text }) => <div>{text}</div>;
   const changeValue = (i) => {
     const copyArr = [...filterBy];
     copyArr[i].value = !filterBy[i].value;
@@ -52,6 +55,13 @@ function RenterHomePage({ user }) {
       setError('no assets found');
     }
   };
+  const defaultProps = {
+    center: {
+      lat: 59.955413,
+      lng: 30.337844,
+    },
+    zoom: 11,
+  };
 
   return (
     <div>
@@ -64,6 +74,21 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
+          <div style={{ height: '100vh', width: '100%' }}>
+            <GoogleMapReact
+              // bootstrapURLKeys={{ key: '' }}
+              bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
+              defaultCenter={defaultProps.center}
+              defaultZoom={defaultProps.zoom}
+            >
+              <AnyReactComponent
+                lat={defaultProps.center.lat}
+                lng={defaultProps.center.lng}
+                defaultCenter={defaultProps}
+                text="My Marker"
+              />
+            </GoogleMapReact>
+          </div>
           <Search
             searchInput={searchInput}
             setSearchInput={setSearchInput}
@@ -129,6 +154,26 @@ function RenterHomePage({ user }) {
       </div>
     </div>
   );
+}
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+  }
+}
+
+function showPosition(position) {
+  // x.innerHTML =
+  //   'Latitude: ' +
+  //   position.coords.latitude +
+  //   '<br>Longitude: ' +
+  //   position.coords.longitude;
+  // AnyReactComponent(
+  // lat={59.955413},
+  // lng={30.337844},
+  // text="My Marker");
+  // defaultProps(position.coords.latitude, position.coords.longitude);
 }
 
 export default RenterHomePage;
