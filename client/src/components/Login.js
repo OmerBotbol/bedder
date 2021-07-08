@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { createCookie } from '../utils/cookies';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-function Login({ user, setUser }) {
+function Login({ user, setUser,postion }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userDetails, setUserDetails] = useState([]);

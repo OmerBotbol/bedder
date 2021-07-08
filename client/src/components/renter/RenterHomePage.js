@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ShowAsset from '../asset/ShowAsset';
 import Search from '../Search';
 import GoogleMapReact from 'google-map-react';
@@ -11,6 +11,7 @@ function RenterHomePage({ user }) {
   const [startedAt, setStartedAt] = useState();
   const [endedAt, setEndedAt] = useState();
   const [openFilters, setOpenFilters] = useState(false);
+  const [position, setPosition] = useState();
   const [filterBy, setFilterBy] = useState([
     { name: 'Ac', value: false },
     { name: 'Accessibility', value: false },
@@ -20,8 +21,13 @@ function RenterHomePage({ user }) {
     { name: 'Parking', value: false },
     { name: 'Shabat', value: false },
   ]);
-  getLocation(); //gets user location
-  const GOOGLE_API_KEY = 'AIzaSyBwiV5ssJ3sw79n3pHDAosob46P5wIw0F0';
+
+  useEffect(() => {
+    getLocation(); //gets user location
+    constLocError();
+  }, []);
+  //  <GoogleMapReact let="map"/>;
+  const GOOGLE_API_KEY = 'AIzaSyAp8kdGLx_yalgpdHP7aLZ_wpzd4jh0etA';
   const AnyReactComponent = ({ text }) => <div>{text}</div>;
   const changeValue = (i) => {
     const copyArr = [...filterBy];
@@ -55,14 +61,41 @@ function RenterHomePage({ user }) {
       setError('no assets found');
     }
   };
-  const defaultProps = {
-    center: {
-      lat: 59.955413,
-      lng: 30.337844,
-    },
-    zoom: 11,
-  };
 
+  const usingNavigation = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log(position);
+    });
+  };
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert('Sorry Geolocation is not supported by this browser.');
+    }
+  }
+  const constLocError = () => {
+    if (navigator.permissions) {
+      navigator.permissions.query({ name: 'geolocation' }).then((res) => {
+        if (res.state === 'denied') {
+          alert(
+            'Enable location permissions for this website in your browser settings'
+          );
+        }
+      });
+    } else {
+      alert(
+        'Unable to access your location. You can continue by submitting location manually.'
+      );
+    }
+  };
+  const showPosition = (position) => {
+    console.log(position);
+    setPosition({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    });
+  };
   return (
     <div>
       <div className="search-container">
@@ -74,21 +107,21 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
-          <div style={{ height: '100vh', width: '100%' }}>
-            <GoogleMapReact
-              // bootstrapURLKeys={{ key: '' }}
-              bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
-              defaultCenter={defaultProps.center}
-              defaultZoom={defaultProps.zoom}
-            >
-              <AnyReactComponent
-                lat={defaultProps.center.lat}
-                lng={defaultProps.center.lng}
-                defaultCenter={defaultProps}
-                text="My Marker"
-              />
-            </GoogleMapReact>
-          </div>
+          {position && (
+            <div style={{ height: '70vh', width: '100%' }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
+                defaultCenter={{ lat: position.lat, lng: position.lng }}
+                defaultZoom={11}
+              >
+                <AnyReactComponent
+                  lat={position.lat}
+                  lng={position.lng}
+                  text="My Marker"
+                />
+              </GoogleMapReact>
+            </div>
+          )}
           <Search
             searchInput={searchInput}
             setSearchInput={setSearchInput}
@@ -154,26 +187,6 @@ function RenterHomePage({ user }) {
       </div>
     </div>
   );
-}
-
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else {
-  }
-}
-
-function showPosition(position) {
-  // x.innerHTML =
-  //   'Latitude: ' +
-  //   position.coords.latitude +
-  //   '<br>Longitude: ' +
-  //   position.coords.longitude;
-  // AnyReactComponent(
-  // lat={59.955413},
-  // lng={30.337844},
-  // text="My Marker");
-  // defaultProps(position.coords.latitude, position.coords.longitude);
 }
 
 export default RenterHomePage;
