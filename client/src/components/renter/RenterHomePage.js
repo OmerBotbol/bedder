@@ -28,7 +28,13 @@ function RenterHomePage({ user }) {
   }, []);
   //  <GoogleMapReact let="map"/>;
   const GOOGLE_API_KEY = 'AIzaSyAp8kdGLx_yalgpdHP7aLZ_wpzd4jh0etA';
-  const AnyReactComponent = ({ text }) => <div>{text}</div>;
+  const AnyReactComponent = () => (
+    <div>
+      <div className="current-pin-container"></div>
+      <div className="current-pin"></div>
+    </div>
+  );
+
   const changeValue = (i) => {
     const copyArr = [...filterBy];
     copyArr[i].value = !filterBy[i].value;

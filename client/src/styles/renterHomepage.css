@@ -270,3 +270,37 @@
     margin-top: 20px;
   }
 }
+.current-pin {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: #659ffc;
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(50%, 50%);
+}
+
+.current-pin-container {
+  width: 28px;
+  height: 28px;
+  background: #a0c4ff;
+  position: absolute;
+  border-radius: 50%;
+  animation: pulsate 1s ease-out;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  animation-delay: 1.1s;
+}
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1, 0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2, 1.2);
+    opacity: 0;
+  }
+}
