@@ -1,0 +1,73 @@
+#add-asset-container {
+  padding-top: 8vh;
+  color: #77a6f7;
+  animation: expand 0.8s ease forwards;
+  transition: all 0.8s ease;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 130vh;
+}
+
+#add-asset-header {
+  text-align: center;
+}
+.add-asset-label {
+  font-size: 1.5em;
+  color: black;
+}
+.add-asset-text {
+  font-size: 1.3em;
+  border-radius: 50px;
+  border: 1px solid #575756;
+  backface-visibility: hidden;
+  line-height: 18px;
+  width: 26vw;
+  padding: 6px 20px;
+  letter-spacing: 1.5px;
+  margin-bottom: 3vh;
+}
+.add-asset-btn {
+  /* position: absolute; */
+  /* bottom: 5vh; */
+  right: 5vw;
+  width: max-content;
+  background: transparent;
+  border: 1px solid var(--contrast-color);
+  border-radius: 50px;
+  padding: 8px 12px;
+  color: #77a6f7;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  outline: none;
+}
+
+.add-asset-btn:hover {
+  background-color: #fff;
+  color: #00887a;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+  .add-asset-label {
+    font-size: 1em;
+  }
+
+  .add-asset-text {
+    font-size: 0.8em;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    width: 60vw;
+    padding-left: 10px;
+    margin-bottom: 2vh;
+  }
+  #add-asset-container {
+    padding-top: 0;
+  }
+  .add-asset-btn {
+  }
+
+  .error {
+    margin-top: 20px;
+  }
+}
