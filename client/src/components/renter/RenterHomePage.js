@@ -1,8 +1,10 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ShowAsset from '../asset/ShowAsset';
 import Search from '../Search';
 import GoogleMapReact from 'google-map-react';
 
+const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 function RenterHomePage({ user }) {
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
@@ -23,11 +25,11 @@ function RenterHomePage({ user }) {
   ]);
 
   useEffect(() => {
+    console.log(GOOGLE_API_KEY);
     getLocation(); //gets user location
     constLocError();
   }, []);
-  //  <GoogleMapReact let="map"/>;
-  const GOOGLE_API_KEY = 'AIzaSyAp8kdGLx_yalgpdHP7aLZ_wpzd4jh0etA';
+
   const AnyReactComponent = () => (
     <div>
       <div className="current-pin-container"></div>
@@ -102,6 +104,16 @@ function RenterHomePage({ user }) {
       lng: position.coords.longitude,
     });
   };
+  const closeAssets = () => {
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${GOOGLE_API_KEY}`
+      )
+      .then((data) =>
+        setSearchInput(data.data.results[0].address_components[2].long_name)
+      );
+  };
+
   return (
     <div>
       <div className="search-container">
@@ -113,6 +125,7 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
+          <button onClick={() => closeAssets()}>current Location</button>
           {position && (
             <div style={{ height: '70vh', width: '100%' }}>
               <GoogleMapReact
@@ -179,6 +192,7 @@ function RenterHomePage({ user }) {
           </div>
         )}
       </div>
+
       {error ? <div>{error}</div> : ''}
       <div className="assets-container">
         {filteredAssets.map((asset, i) => (
