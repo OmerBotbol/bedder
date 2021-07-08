@@ -153,11 +153,14 @@ export default function AddAsset({ user }) {
                 className="add-asset-text"
                 onChange={(e) => setRoomType(e.target.value)}
               >
-                <option value="1">Apartment</option>
-                <option value="2">Couch</option>
-                <option value="3">Separate room</option>
-                <option value="4">Shared room</option>
-                <option value="5">Tent</option>
+                <option value="" disabled selected>
+                  Select your option
+                </option>
+                <option value="Apartment">Apartment</option>
+                <option value="Couch">Couch</option>
+                <option value="Separate room">Separate room</option>
+                <option value="Shared room">Shared room</option>
+                <option value="Tent">Tent</option>
               </select>
             </div>
             <div className="form-field">
@@ -166,8 +169,11 @@ export default function AddAsset({ user }) {
                 className="add-asset-text"
                 onChange={(e) => setHospitality(e.target.value)}
               >
-                <option value="1">Full</option>
-                <option value="2">Only sleep</option>
+                <option value="" disabled selected>
+                  Select your option
+                </option>
+                <option value="Full">Full</option>
+                <option value="Only sleep">Only sleep</option>
               </select>
             </div>
 
