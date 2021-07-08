@@ -70,11 +70,6 @@ function RenterHomePage({ user }) {
     }
   };
 
-  const usingNavigation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position);
-    });
-  };
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
