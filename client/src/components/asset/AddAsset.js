@@ -122,7 +122,7 @@ export default function AddAsset({ user }) {
       {user.isOwner ? (
         <div id="add-asset-container">
           <h1 id="add-asset-header">Add asset</h1>
-          <div className="form">
+          <div className="add-asset-form">
             <div className="form-field">
               <label className="add-asset-label">City</label>
               <input
@@ -255,8 +255,8 @@ export default function AddAsset({ user }) {
               />
             </div>
 
-            <div className="form-field">
-              <label className="add-asset-label">Available dates</label>
+            <div className="add-asset-dates">
+              <label className="add-asset-label">Available dates: </label>
               <DateRange
                 editableDateInputs={true}
                 moveRangeOnFirstSelection={false}
@@ -265,15 +265,17 @@ export default function AddAsset({ user }) {
                 minDate={new Date()}
               />
             </div>
+            <div className="button-container">
+              <button
+                className="add-asset-btn"
+                onClick={() => {
+                  handleClick();
+                }}
+              >
+                Add
+              </button>
+            </div>
           </div>
-          <button
-            className="add-asset-btn"
-            onClick={() => {
-              handleClick();
-            }}
-          >
-            Add
-          </button>
           {message && <p className="error">{message}</p>}
           {redirect && <Redirect to="/login" />}
         </div>
