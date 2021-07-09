@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 90vw;
-  background-color: #ffb19a;
-  position: relative;
+  width: 50vw;
+  position: fixed;
+  top: 26vh;
+  left: 43vw;
   height: 10vh;
   z-index: 2;
   flex-grow: 1;
@@ -303,4 +304,21 @@
     transform: scale(1.2, 1.2);
     opacity: 0;
   }
+}
+.currentLocation {
+  margin-left: 13vw;
+  background-color: white;
+  width: 10vw;
+  border: none;
+  padding: 8px 12px;
+  color: #77a6f7;
+  font-size: 16px;
+  text-transform: uppercase;
+  position: relative;
+  outline: none;
+}
+.currentLocation:hover {
+  background-color: #fff;
+  color: #00887a;
+  cursor: pointer;
 }

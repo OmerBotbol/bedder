@@ -120,9 +120,19 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
-          <button onClick={() => closeAssets()}>current Location</button>
           {position && (
-            <div style={{ height: '70vh', width: '100%' }}>
+            <div
+              style={{
+                height: '70vh',
+                width: '35vw',
+                position: 'fixed',
+                top: '18vh',
+                right: '60vw',
+              }}
+            >
+              <button onClick={() => closeAssets()} className="currentLocation">
+                current Location
+              </button>
               <GoogleMapReact
                 bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
                 defaultCenter={{ lat: position.lat, lng: position.lng }}
@@ -149,43 +159,48 @@ function RenterHomePage({ user }) {
             startedAt={startedAt}
             endedAt={endedAt}
           />
+          <div>
+            {filteredAssets.length > 0 && (
+              <button
+                className="open-filters-btn"
+                onClick={() => setOpenFilters((prev) => !prev)}
+              >
+                Filters
+              </button>
+            )}
+          </div>
           {filteredAssets.length > 0 && (
-            <button
-              className="open-filters-btn"
-              onClick={() => setOpenFilters((prev) => !prev)}
+            <div
+              className="filter"
+              style={{
+                maxHeight: openFilters ? '100vh' : '0vh',
+                visibility: openFilters ? 'visible' : 'hidden',
+              }}
             >
-              Filters
-            </button>
+              <ul className="ks-cboxtags">
+                {filterBy.map((option, i) => (
+                  <li key={i} className="filter-option">
+                    <input
+                      id={`checkbox-${i}`}
+                      defaultChecked={option.value}
+                      type="checkbox"
+                      onChange={() => changeValue(i)}
+                    />
+                    <label
+                      className="label-for-check"
+                      htmlFor={`checkbox-${i}`}
+                    >
+                      {option.name === 'Shabat' ? 'Shabbat' : option.name}
+                    </label>
+                  </li>
+                ))}
+                <button className="filter-btn" onClick={() => filterOptions()}>
+                  Filter
+                </button>
+              </ul>
+            </div>
           )}
         </div>
-        {filteredAssets.length > 0 && (
-          <div
-            className="filter"
-            style={{
-              maxHeight: openFilters ? '100vh' : '0vh',
-              visibility: openFilters ? 'visible' : 'hidden',
-            }}
-          >
-            <ul className="ks-cboxtags">
-              {filterBy.map((option, i) => (
-                <li key={i} className="filter-option">
-                  <input
-                    id={`checkbox-${i}`}
-                    defaultChecked={option.value}
-                    type="checkbox"
-                    onChange={() => changeValue(i)}
-                  />
-                  <label className="label-for-check" htmlFor={`checkbox-${i}`}>
-                    {option.name === 'Shabat' ? 'Shabbat' : option.name}
-                  </label>
-                </li>
-              ))}
-              <button className="filter-btn" onClick={() => filterOptions()}>
-                Filter
-              </button>
-            </ul>
-          </div>
-        )}
       </div>
 
       {error ? <div>{error}</div> : ''}
