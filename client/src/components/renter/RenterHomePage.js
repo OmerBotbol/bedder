@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import ShowAsset from '../asset/ShowAsset';
 import Search from '../Search';
 
+const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 function RenterHomePage({ user }) {
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
@@ -10,6 +12,7 @@ function RenterHomePage({ user }) {
   const [startedAt, setStartedAt] = useState();
   const [endedAt, setEndedAt] = useState();
   const [openFilters, setOpenFilters] = useState(false);
+  const [position, setPosition] = useState();
   const [filterBy, setFilterBy] = useState([
     { name: 'Ac', value: false },
     { name: 'Accessibility', value: false },
@@ -19,6 +22,19 @@ function RenterHomePage({ user }) {
     { name: 'Parking', value: false },
     { name: 'Shabat', value: false },
   ]);
+
+  useEffect(() => {
+    console.log(GOOGLE_API_KEY);
+    getLocation(); //gets user location
+    constLocError();
+  }, []);
+
+  const AnyReactComponent = () => (
+    <div>
+      <div className="current-pin-container"></div>
+      <div className="current-pin"></div>
+    </div>
+  );
 
   const changeValue = (i) => {
     const copyArr = [...filterBy];
@@ -53,6 +69,45 @@ function RenterHomePage({ user }) {
     }
   };
 
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert('Sorry Geolocation is not supported by this browser.');
+    }
+  }
+  const constLocError = () => {
+    if (navigator.permissions) {
+      navigator.permissions.query({ name: 'geolocation' }).then((res) => {
+        if (res.state === 'denied') {
+          alert(
+            'Enable location permissions for this website in your browser settings'
+          );
+        }
+      });
+    } else {
+      alert(
+        'Unable to access your location. You can continue by submitting location manually.'
+      );
+    }
+  };
+  const showPosition = (position) => {
+    console.log(position);
+    setPosition({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    });
+  };
+  const closeAssets = () => {
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${GOOGLE_API_KEY}`
+      )
+      .then((data) =>
+        setSearchInput(data.data.results[0].address_components[2].long_name)
+      );
+  };
+
   return (
     <div>
       <div className="search-container">
@@ -64,6 +119,32 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
+          {position && (
+            <div
+              style={{
+                height: '70vh',
+                width: '35vw',
+                position: 'fixed',
+                top: '18vh',
+                right: '60vw',
+              }}
+            >
+              <button onClick={() => closeAssets()} className="currentLocation">
+                current Location
+              </button>
+              <GoogleMapReact
+                bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
+                defaultCenter={{ lat: position.lat, lng: position.lng }}
+                defaultZoom={11}
+              >
+                <AnyReactComponent
+                  lat={position.lat}
+                  lng={position.lng}
+                  text="My Marker"
+                />
+              </GoogleMapReact>
+            </div>
+          )}
           <Search
             searchInput={searchInput}
             setSearchInput={setSearchInput}
@@ -77,44 +158,50 @@ function RenterHomePage({ user }) {
             startedAt={startedAt}
             endedAt={endedAt}
           />
+          <div>
+            {filteredAssets.length > 0 && (
+              <button
+                className="open-filters-btn"
+                onClick={() => setOpenFilters((prev) => !prev)}
+              >
+                Filters
+              </button>
+            )}
+          </div>
           {filteredAssets.length > 0 && (
-            <button
-              className="open-filters-btn"
-              onClick={() => setOpenFilters((prev) => !prev)}
+            <div
+              className="filter"
+              style={{
+                maxHeight: openFilters ? '100vh' : '0vh',
+                visibility: openFilters ? 'visible' : 'hidden',
+              }}
             >
-              Filters
-            </button>
+              <ul className="ks-cboxtags">
+                {filterBy.map((option, i) => (
+                  <li key={i} className="filter-option">
+                    <input
+                      id={`checkbox-${i}`}
+                      defaultChecked={option.value}
+                      type="checkbox"
+                      onChange={() => changeValue(i)}
+                    />
+                    <label
+                      className="label-for-check"
+                      htmlFor={`checkbox-${i}`}
+                    >
+                      {option.name === 'Shabat' ? 'Shabbat' : option.name}
+                    </label>
+                  </li>
+                ))}
+                <button className="filter-btn" onClick={() => filterOptions()}>
+                  Filter
+                </button>
+              </ul>
+            </div>
           )}
         </div>
-        {filteredAssets.length > 0 && (
-          <div
-            className="filter"
-            style={{
-              maxHeight: openFilters ? '100vh' : '0vh',
-              visibility: openFilters ? 'visible' : 'hidden',
-            }}
-          >
-            <ul className="ks-cboxtags">
-              {filterBy.map((option, i) => (
-                <li key={i} className="filter-option">
-                  <input
-                    id={`checkbox-${i}`}
-                    defaultChecked={option.value}
-                    type="checkbox"
-                    onChange={() => changeValue(i)}
-                  />
-                  <label className="label-for-check" htmlFor={`checkbox-${i}`}>
-                    {option.name === 'Shabat' ? 'Shabbat' : option.name}
-                  </label>
-                </li>
-              ))}
-              <button className="filter-btn" onClick={() => filterOptions()}>
-                Filter
-              </button>
-            </ul>
-          </div>
-        )}
       </div>
+
       {error ? <div>{error}</div> : ''}
       <div className="assets-container">
         {filteredAssets.map((asset, i) => (

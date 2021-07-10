@@ -65,6 +65,7 @@ export default function Search({
         className="search-bar"
         type="search"
         placeholder="Search By City"
+        value={searchInput}
         onChange={(event) => setSearchInput(event.target.value)}
       />
       <div id="date-container">
