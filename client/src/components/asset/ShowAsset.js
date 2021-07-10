@@ -38,8 +38,7 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
           <i className="fas fa-thumbs-up"></i> like
         </button>
         <span className="separator"></span>
-        {/* need to complete after GPS and map added */}
-        <div className="distance">X KM</div>
+        <div className="asset-address-card">{asset.address}</div>
       </div>
       {openSendRequest && (
         <SendRequest

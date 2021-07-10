@@ -5,7 +5,6 @@
   transition: all 0.8s ease;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 130vh;
 }
 
 #add-asset-header {
@@ -14,6 +13,15 @@
 .add-asset-label {
   font-size: 1.5em;
   color: black;
+}
+
+.add-asset-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
 }
 .add-asset-text {
   font-size: 1.3em;
@@ -27,9 +35,9 @@
   margin-bottom: 3vh;
 }
 .add-asset-btn {
-  /* position: absolute; */
-  /* bottom: 5vh; */
-  right: 5vw;
+  position: absolute;
+  bottom: 5vh;
+  right: 0;
   width: max-content;
   background: transparent;
   border: 1px solid var(--contrast-color);
@@ -48,6 +56,18 @@
   cursor: pointer;
 }
 
+.add-asset-dates {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  margin: 30px 0px;
+}
+
+.button-container {
+  position: relative;
+  height: 70px;
+}
+
 @media only screen and (max-width: 768px) {
   .add-asset-label {
     font-size: 1em;
@@ -61,10 +81,8 @@
     padding-left: 10px;
     margin-bottom: 2vh;
   }
-  #add-asset-container {
-    padding-top: 0;
-  }
-  .add-asset-btn {
+  .add-asset-form {
+    width: 90vw;
   }
 
   .error {

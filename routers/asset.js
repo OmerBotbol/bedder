@@ -87,6 +87,8 @@ asset.put('/update/:id', validateToken, (req, res) => {
   const {
     city,
     address,
+    lat,
+    lng,
     description,
     number_of_peoples,
     number_of_rooms,
@@ -105,6 +107,8 @@ asset.put('/update/:id', validateToken, (req, res) => {
     {
       city,
       address,
+      lat,
+      lng,
       description,
       number_of_peoples,
       number_of_rooms,
@@ -130,25 +134,36 @@ asset.put('/update/:id', validateToken, (req, res) => {
 });
 
 //POST request to add unavailable dates
-asset.post('/addUnavailableDates', validateToken, (req, res) => {
+asset.post('/addUnavailableDates', validateToken, async (req, res) => {
   const { ownerId, asset_id, startedAt, endedAt } = req.body;
   if (ownerId !== req.data.id)
     return res.status(403).send('only the owner can update assets');
   let date = new Date(new Date(startedAt).getTime() + 10800000);
   let endDate = new Date(new Date(endedAt).getTime() + 10800000);
   const dateArr = [];
-  while (date <= endDate) {
-    const newDate = { date: new Date(date), asset_id };
-    dateArr.push(newDate);
-    date = new Date(date.getTime() + 86400000);
+  try {
+    while (date <= endDate) {
+      const isExist = await models.Unavailable_Dates.findOne({
+        where: {
+          [Op.and]: [
+            { date: new Date(new Date(date).getTime() - 10800000) },
+            { asset_id },
+          ],
+        },
+      });
+      if (isExist) {
+        return res.status(409).send('already exist');
+      }
+      const newDate = { date: new Date(date), asset_id };
+      dateArr.push(newDate);
+      date = new Date(date.getTime() + 86400000);
+    }
+    await models.Unavailable_Dates.bulkCreate(dateArr);
+    res.send(dateArr);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
   }
-  models.Unavailable_Dates.bulkCreate(dateArr)
-    .then(() => {
-      res.send(dateArr);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
 });
 
 asset.delete('/deleteUnavailableDates', validateToken, (req, res) => {

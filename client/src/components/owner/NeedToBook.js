@@ -45,11 +45,26 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
       .then(() => {
         refreshNeedToBook();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.message.slice(-3) === '409') {
+          return alert('those are unavailable dates already');
+        } else {
+          console.log(err);
+        }
+      });
   };
 
   const deleteTransaction = () => {
-    deleteHttp('/api/transaction', { id: offer.id })
+    const dataToSend = {
+      ownerId: offer.owner_id,
+      asset_id: offer.asset_id,
+      startedAt: offer.started_at,
+      endedAt: offer.ended_at,
+    };
+    Promise.all([
+      deleteHttp('/api/transaction', { id: offer.id }),
+      deleteHttp('/api/asset/deleteUnavailableDates', dataToSend),
+    ])
       .then(() => {
         refreshNeedToBook();
       })

@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       owner_id: DataTypes.INTEGER,
       city: DataTypes.STRING,
       address: DataTypes.STRING,
+      lat: DataTypes.FLOAT,
+      lng: DataTypes.FLOAT,
       room_type: DataTypes.STRING,
       Hospitality: DataTypes.STRING,
       description: DataTypes.STRING,

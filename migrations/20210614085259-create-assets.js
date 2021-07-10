@@ -17,6 +17,12 @@ module.exports = {
       address: {
         type: Sequelize.STRING,
       },
+      lat: {
+        type: Sequelize.FLOAT,
+      },
+      lng: {
+        type: Sequelize.FLOAT,
+      },
       room_type: {
         type: Sequelize.STRING,
       },
