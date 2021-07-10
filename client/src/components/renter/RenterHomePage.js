@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ShowAsset from '../asset/ShowAsset';
 import Search from '../Search';
+import GoogleMapReact from 'google-map-react';
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 function RenterHomePage({ user }) {
@@ -24,8 +25,12 @@ function RenterHomePage({ user }) {
   ]);
 
   useEffect(() => {
-    console.log(GOOGLE_API_KEY);
-    getLocation(); //gets user location
+    //gets user location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert('Sorry Geolocation is not supported by this browser.');
+    }
     constLocError();
   }, []);
 
@@ -69,13 +74,6 @@ function RenterHomePage({ user }) {
     }
   };
 
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-      alert('Sorry Geolocation is not supported by this browser.');
-    }
-  }
   const constLocError = () => {
     if (navigator.permissions) {
       navigator.permissions.query({ name: 'geolocation' }).then((res) => {
@@ -92,7 +90,6 @@ function RenterHomePage({ user }) {
     }
   };
   const showPosition = (position) => {
-    console.log(position);
     setPosition({
       lat: position.coords.latitude,
       lng: position.coords.longitude,
@@ -110,6 +107,29 @@ function RenterHomePage({ user }) {
 
   return (
     <div>
+      {position && (
+        <div className="renter-map-container">
+          <button
+            onClick={() => closeAssets()}
+            className="current-location-btn"
+          >
+            current Location
+          </button>
+          <div className="renter-map">
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
+              defaultCenter={{ lat: position.lat, lng: position.lng }}
+              defaultZoom={11}
+            >
+              <AnyReactComponent
+                lat={position.lat}
+                lng={position.lng}
+                text="My Marker"
+              />
+            </GoogleMapReact>
+          </div>
+        </div>
+      )}
       <div className="search-container">
         <div
           id="search"
@@ -119,32 +139,6 @@ function RenterHomePage({ user }) {
             }, 1fr)`,
           }}
         >
-          {position && (
-            <div
-              style={{
-                height: '70vh',
-                width: '35vw',
-                position: 'fixed',
-                top: '18vh',
-                right: '60vw',
-              }}
-            >
-              <button onClick={() => closeAssets()} className="currentLocation">
-                current Location
-              </button>
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: GOOGLE_API_KEY }}
-                defaultCenter={{ lat: position.lat, lng: position.lng }}
-                defaultZoom={11}
-              >
-                <AnyReactComponent
-                  lat={position.lat}
-                  lng={position.lng}
-                  text="My Marker"
-                />
-              </GoogleMapReact>
-            </div>
-          )}
           <Search
             searchInput={searchInput}
             setSearchInput={setSearchInput}
@@ -158,48 +152,43 @@ function RenterHomePage({ user }) {
             startedAt={startedAt}
             endedAt={endedAt}
           />
-          <div>
-            {filteredAssets.length > 0 && (
-              <button
-                className="open-filters-btn"
-                onClick={() => setOpenFilters((prev) => !prev)}
-              >
-                Filters
-              </button>
-            )}
-          </div>
           {filteredAssets.length > 0 && (
-            <div
-              className="filter"
-              style={{
-                maxHeight: openFilters ? '100vh' : '0vh',
-                visibility: openFilters ? 'visible' : 'hidden',
-              }}
+            <button
+              className="open-filters-btn"
+              onClick={() => setOpenFilters((prev) => !prev)}
             >
-              <ul className="ks-cboxtags">
-                {filterBy.map((option, i) => (
-                  <li key={i} className="filter-option">
-                    <input
-                      id={`checkbox-${i}`}
-                      defaultChecked={option.value}
-                      type="checkbox"
-                      onChange={() => changeValue(i)}
-                    />
-                    <label
-                      className="label-for-check"
-                      htmlFor={`checkbox-${i}`}
-                    >
-                      {option.name === 'Shabat' ? 'Shabbat' : option.name}
-                    </label>
-                  </li>
-                ))}
-                <button className="filter-btn" onClick={() => filterOptions()}>
-                  Filter
-                </button>
-              </ul>
-            </div>
+              Filters
+            </button>
           )}
         </div>
+        {filteredAssets.length > 0 && (
+          <div
+            className="filter"
+            style={{
+              maxHeight: openFilters ? '100vh' : '0vh',
+              visibility: openFilters ? 'visible' : 'hidden',
+            }}
+          >
+            <ul className="ks-cboxtags">
+              {filterBy.map((option, i) => (
+                <li key={i} className="filter-option">
+                  <input
+                    id={`checkbox-${i}`}
+                    defaultChecked={option.value}
+                    type="checkbox"
+                    onChange={() => changeValue(i)}
+                  />
+                  <label className="label-for-check" htmlFor={`checkbox-${i}`}>
+                    {option.name === 'Shabat' ? 'Shabbat' : option.name}
+                  </label>
+                </li>
+              ))}
+              <button className="filter-btn" onClick={() => filterOptions()}>
+                Filter
+              </button>
+            </ul>
+          </div>
+        )}
       </div>
 
       {error ? <div>{error}</div> : ''}

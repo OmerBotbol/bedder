@@ -2,14 +2,27 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 50vw;
-  position: fixed;
-  top: 26vh;
-  left: 43vw;
+  width: 90vw;
+  background-color: #ffb19a;
+  position: relative;
   height: 10vh;
   z-index: 2;
   flex-grow: 1;
   transition: all 0.5 ease;
+}
+
+.renter-map-container {
+  height: 70vh;
+  width: 90vw;
+  position: absolute;
+  top: 30vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.renter-map {
+  height: 100%;
+  width: 100%;
 }
 
 .search-bar {
@@ -270,6 +283,9 @@
   .filter-btn {
     margin-top: 20px;
   }
+  .renter-map-container {
+    top: 35vh;
+  }
 }
 .current-pin {
   content: '';
@@ -305,17 +321,20 @@
     opacity: 0;
   }
 }
-.currentLocation {
-  margin-left: 13vw;
+.current-location-btn {
   background-color: white;
-  width: 10vw;
+  width: max-content;
   border: none;
   padding: 8px 12px;
   color: #77a6f7;
   font-size: 16px;
   text-transform: uppercase;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
   outline: none;
+  cursor: pointer;
 }
 .currentLocation:hover {
   background-color: #fff;
