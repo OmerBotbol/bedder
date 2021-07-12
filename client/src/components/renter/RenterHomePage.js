@@ -98,13 +98,12 @@ function RenterHomePage({ user }) {
   const closeAssets = () => {
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&key=${GOOGLE_API_KEY}`
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.lat},${position.lng}&language=en&key=${GOOGLE_API_KEY}`
       )
       .then((data) =>
         setSearchInput(data.data.results[0].address_components[2].long_name)
       );
   };
-
   return (
     <div>
       {position && filteredAssets.length <= 0 && (

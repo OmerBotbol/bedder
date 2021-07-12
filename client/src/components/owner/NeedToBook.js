@@ -77,17 +77,19 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
         asset: {asset.address}, {asset.city}
       </div>
       <div className="transaction-details">
-        start Date: {offer.started_at.slice(0, 10)}
+        start Date: {new Date(offer.started_at).toLocaleDateString()}
       </div>
       <div className="transaction-details">
-        end Date: {offer.ended_at.slice(0, 10)}
+        end Date: {new Date(offer.ended_at).toLocaleDateString()}
       </div>
       <div className="renter-details-header">Renter Details:</div>
       <div className="renter-details">
         {renter.first_name} {renter.last_name}
       </div>
       <div className="renter-details">{renter.email}</div>
-      <div className="renter-details">{renter.phone_number}</div>
+      <div className="renter-details">
+        <a href={`tel:${renter.phone_number}`}>{renter.phone_number}</a>
+      </div>
       <div className="transaction-btn-container">
         <button className="transaction-btn" onClick={() => book()}>
           Book!

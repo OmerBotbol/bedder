@@ -35,7 +35,7 @@ export default function ShowAsset({ user, asset, startedAt, endedAt }) {
           className="like-btn"
           onClick={() => setOpenSendRequest((prev) => !prev)}
         >
-          <i className="fas fa-thumbs-up"></i> like
+          <i className="fa fa-bell"></i> ring
         </button>
         <span className="separator"></span>
         <div className="asset-address-card">{asset.address}</div>

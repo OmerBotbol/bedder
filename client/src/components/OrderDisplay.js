@@ -88,12 +88,14 @@ function OrderDisplay({ user, order, orders, setOrders }) {
                   {new Date(order.ended_at).toLocaleDateString()}
                 </span>
               </div>
-              <br />
               {order.status !== 'pending' && (
                 <div className="alert-line">
                   Contact Man:{' '}
                   <span className="alert-data">
-                    {userDetails.first_name} {userDetails.last_name}
+                    {userDetails.first_name} {userDetails.last_name} -{' '}
+                    <a href={`tel:${userDetails.phone_number}`}>
+                      {userDetails.phone_number}
+                    </a>
                   </span>
                 </div>
               )}
