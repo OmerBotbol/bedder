@@ -50,24 +50,51 @@ function OrderDisplay({ user, order, orders, setOrders }) {
         <>
           {user.isOwner ? (
             <div className="owner-alert">
-              {userDetails.first_name} {userDetails.last_name} is coming to{' '}
-              {assetDetails.address}, {assetDetails.city} from{' '}
-              {new Date(order.started_at).toLocaleDateString()} until{' '}
-              {new Date(order.ended_at).toLocaleDateString()}
+              <div className="alert-line">
+                Guest Name:{' '}
+                <span className="alert-data">
+                  {userDetails.first_name} {userDetails.last_name}
+                </span>
+              </div>
+              <div className="alert-line">
+                Address:{' '}
+                <span className="alert-data">
+                  {assetDetails.address}, {assetDetails.city}
+                </span>
+              </div>
+              <div className="alert-line">
+                Dates:{' '}
+                <span className="alert-data">
+                  {new Date(order.started_at).toLocaleDateString()} -
+                  {new Date(order.ended_at).toLocaleDateString()}
+                </span>
+              </div>
               <div className={`status ${order.status}`}>
                 status: {order.status}
               </div>
             </div>
           ) : (
             <div className="renter-alert">
-              you are coming to {assetDetails.address}, {assetDetails.city} from{' '}
-              {new Date(order.started_at).toLocaleDateString()} until{' '}
-              {new Date(order.ended_at).toLocaleDateString()}
+              <div className="alert-line">
+                Address:{' '}
+                <span className="alert-data">
+                  {assetDetails.address}, {assetDetails.city}
+                </span>
+              </div>
+              <div className="alert-line">
+                Dates:{' '}
+                <span className="alert-data">
+                  {new Date(order.started_at).toLocaleDateString()} -
+                  {new Date(order.ended_at).toLocaleDateString()}
+                </span>
+              </div>
               <br />
               {order.status !== 'pending' && (
-                <div>
-                  Your content man: {userDetails.phone_number} -{' '}
-                  {userDetails.first_name} {userDetails.last_name}
+                <div className="alert-line">
+                  Contact Man:{' '}
+                  <span className="alert-data">
+                    {userDetails.first_name} {userDetails.last_name}
+                  </span>
                 </div>
               )}
               <div className={`status ${order.status}`}>
@@ -76,7 +103,7 @@ function OrderDisplay({ user, order, orders, setOrders }) {
             </div>
           )}
           <button className="delete-order-btn" onClick={() => deleteOrder()}>
-            Delete
+            Cancel
           </button>
         </>
       )}

@@ -243,6 +243,14 @@
   justify-content: space-between;
 }
 
+.transaction-data {
+  font-weight: normal;
+}
+
+.transaction-renter-line {
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 768px) {
   #owner-homepage {
     flex-direction: column;

@@ -107,7 +107,7 @@ function RenterHomePage({ user }) {
 
   return (
     <div>
-      {position && (
+      {position && filteredAssets.length <= 0 && (
         <div className="renter-map-container">
           <button
             onClick={() => closeAssets()}

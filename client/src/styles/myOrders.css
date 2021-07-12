@@ -58,6 +58,14 @@
   color: #5090ff;
 }
 
+.alert-data {
+  font-weight: normal;
+}
+
+.alert-line {
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 768px) {
   #all-orders {
     grid-template-columns: auto;

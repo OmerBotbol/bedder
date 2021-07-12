@@ -51,19 +51,34 @@ function OwnerTransactions({ transaction, transactions, setTransactions }) {
       {renterDetails && (
         <div className="transaction">
           <div className="transaction-text">
-            <p>
-              Hi! my name is {renterDetails.first_name}{' '}
-              {renterDetails.last_name} and I would like to come to{' '}
-              {assetDetails.address}, {assetDetails.city} from{' '}
-              {new Date(transaction.started_at).toLocaleDateString()} to{' '}
-              {new Date(transaction.ended_at).toLocaleDateString()}. my purpose
-              is {renterDetails.purpose}
-            </p>
+            <div className="transaction-renter-line">
+              Name:{' '}
+              <span className="transaction-data">
+                {renterDetails.first_name} {renterDetails.last_name}
+              </span>
+            </div>
+            <div className="transaction-renter-line">
+              Address:{' '}
+              <span className="transaction-data">
+                {assetDetails.address}, {assetDetails.city}
+              </span>
+            </div>
+            <div className="transaction-renter-line">
+              Dates:{' '}
+              <span className="transaction-data">
+                {new Date(transaction.started_at).toLocaleDateString()} -{' '}
+                {new Date(transaction.ended_at).toLocaleDateString()}
+              </span>
+            </div>
+            <div className="transaction-renter-line">
+              Purpose:{' '}
+              <span className="transaction-data">{renterDetails.purpose}</span>
+            </div>
             {transaction.comments && (
-              <p>
-                I have a few thing I would like to tell you first:{' '}
-                {transaction.comments}
-              </p>
+              <div className="transaction-renter-line">
+                comments:{' '}
+                <span className="transaction-data">{transaction.comments}</span>
+              </div>
             )}
           </div>
           <div className="transaction-btn-container">
