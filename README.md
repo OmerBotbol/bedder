@@ -22,7 +22,7 @@ There are 2 kinds of users: host & guest
    - Can search a place to stay by city/google maps/GPS
    - Can filter assets
    - Like a place he would like to stay
-   - If the host liked hom back their contact information will publish for both of them to confirm the order
+   - If the host liked him back, their contact information will publish for both of them to confirm the order
    
 Both host and guset, have a profile page to view their deatils and an my orders page to watch their order status
 
