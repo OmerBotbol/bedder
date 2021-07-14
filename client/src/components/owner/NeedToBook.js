@@ -88,7 +88,12 @@ function NeedToBook({ offer, setNeedToBook, needToBook }) {
       </div>
       <div className="renter-details">{renter.email}</div>
       <div className="renter-details">
-        <a href={`tel:${renter.phone_number}`}>{renter.phone_number}</a>
+        <a
+          href={`https://wa.me/${renter.phone_number}`}
+          className="whatsapp-icon"
+        >
+          <i className="fab fa-whatsapp"></i> {renter.phone_number}
+        </a>
       </div>
       <div className="transaction-btn-container">
         <button className="transaction-btn" onClick={() => book()}>

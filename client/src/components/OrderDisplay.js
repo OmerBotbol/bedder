@@ -91,12 +91,15 @@ function OrderDisplay({ user, order, orders, setOrders }) {
               {order.status !== 'pending' && (
                 <div className="alert-line">
                   Contact Man:{' '}
-                  <span className="alert-data">
-                    {userDetails.first_name} {userDetails.last_name} -{' '}
-                    <a href={`tel:${userDetails.phone_number}`}>
+                  <div className="alert-data">
+                    <a
+                      href={`https://wa.me/${userDetails.phone_number}`}
+                      className="whatsapp-icon"
+                    >
+                      <i className="fab fa-whatsapp"></i>
                       {userDetails.phone_number}
                     </a>
-                  </span>
+                  </div>
                 </div>
               )}
               <div className={`status ${order.status}`}>

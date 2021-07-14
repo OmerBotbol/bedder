@@ -251,6 +251,20 @@
   font-weight: bold;
 }
 
+.whatsapp-icon {
+  color: #2ba746;
+  text-decoration: none;
+}
+
+.whatsapp-icon:hover {
+  color: #41d361;
+}
+
+.whatsapp-icon:visited {
+  color: #2ba746;
+  text-decoration: none;
+}
+
 @media only screen and (max-width: 768px) {
   #owner-homepage {
     flex-direction: column;
