@@ -8,9 +8,6 @@ vision, we have developed an application that makes accessible and
 quick search for accommodation, as well as advertising accommodation
 at the click of a button.
 
-## Link
-[Bedder](https://serene-depths-29374.herokuapp.com/)
-
 ## How does it work?
 There are 2 kinds of users: host & guest
 - **Host:** 
